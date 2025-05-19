@@ -1,7 +1,7 @@
 // app/api/tenants/[tenantId]/projects/[projectId]/users/route.ts
-import { db } from '@/lib/db';
 import { auth } from '@clerk/nextjs/server';
 import { NextResponse } from 'next/server';
+import { db } from '@/lib/db';
 
 export async function GET(
   req: Request,
@@ -49,6 +49,10 @@ export async function GET(
         user: true,
       },
     });
+
+    console.log(
+      `Found ${userProjects.length} users assigned to project ${params.projectId}`
+    );
 
     return NextResponse.json(userProjects.map((up) => up.user));
   } catch (error) {
@@ -103,47 +107,50 @@ export async function POST(
       return new NextResponse('Project not found', { status: 404 });
     }
 
-    // Check if all users exist and belong to the same tenant
-    const users = await db.user.findMany({
-      where: {
-        id: {
-          in: userIds,
-        },
-        tenantId: params.tenantId,
-      },
-    });
+    console.log(
+      `Assigning users ${userIds.join(', ')} to project ${params.projectId}`
+    );
 
-    if (users.length !== userIds.length) {
-      return new NextResponse(
-        "Some users not found or don't belong to this tenant",
-        { status: 400 }
-      );
-    }
-
-    // Assign users to the project
+    // Create assignments for each user
     const assignments = await Promise.all(
-      userIds.map(async (userId) => {
-        // Check if assignment already exists
-        const existing = await db.userProject.findUnique({
-          where: {
-            userId_projectId: {
+      userIds.map(async (userId: string) => {
+        try {
+          // Check if assignment already exists
+          const existing = await db.userProject.findUnique({
+            where: {
+              userId_projectId: {
+                userId,
+                projectId: params.projectId,
+              },
+            },
+          });
+
+          if (existing) {
+            console.log(
+              `User ${userId} already assigned to project ${params.projectId}`
+            );
+            return existing;
+          }
+
+          // Create new assignment
+          const newAssignment = await db.userProject.create({
+            data: {
               userId,
               projectId: params.projectId,
             },
-          },
-        });
+          });
 
-        if (existing) {
-          return existing;
+          console.log(
+            `Created new assignment for user ${userId} to project ${params.projectId}`
+          );
+          return newAssignment;
+        } catch (error) {
+          console.error(
+            `Error assigning user ${userId} to project ${params.projectId}:`,
+            error
+          );
+          throw error;
         }
-
-        // Create new assignment
-        return db.userProject.create({
-          data: {
-            userId,
-            projectId: params.projectId,
-          },
-        });
       })
     );
 

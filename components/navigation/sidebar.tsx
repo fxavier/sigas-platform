@@ -3,7 +3,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import { Tenant, User } from '@prisma/client';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
@@ -34,21 +34,30 @@ interface Project {
 
 export function Sidebar({ tenant, user }: SidebarProps) {
   const pathname = usePathname();
-  const router = useRouter();
   const [isProjectsOpen, setIsProjectsOpen] = useState(true);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
 
   const canCreateProjects = user.role === 'ADMIN' || user.role === 'MANAGER';
+  const isAdmin = user.role === 'ADMIN';
+  const isAdminOrManager = user.role === 'ADMIN' || user.role === 'MANAGER';
 
-  // Fetch projects
-  const { data: projects, isLoading } = useQuery<Project[]>({
-    queryKey: ['sidebarProjects', tenant.id],
+  // Fetch projects based on user role
+  const { data: projects = [], isLoading } = useQuery<Project[]>({
+    queryKey: ['sidebarProjects', tenant.id, user.id, user.role],
     queryFn: async () => {
-      const response = await axios.get(`/api/tenants/${tenant.id}/projects`);
+      console.log('Fetching projects for user role:', user.role);
+      // Different endpoint based on user role
+      const endpoint = isAdminOrManager
+        ? `/api/tenants/${tenant.id}/projects`
+        : `/api/tenants/${tenant.id}/projects/assigned`;
+
+      const response = await axios.get(endpoint);
+      console.log('Received projects:', response.data);
       return response.data;
     },
   });
 
+  // Define navigation items - ALWAYS include Dashboard
   const navItems = [
     {
       title: 'Dashboard',
@@ -57,8 +66,8 @@ export function Sidebar({ tenant, user }: SidebarProps) {
     },
   ];
 
-  // Admin and manager settings
-  if (user.role === 'ADMIN' || user.role === 'MANAGER') {
+  // Add admin and manager specific items
+  if (isAdminOrManager) {
     navItems.push({
       title: 'User Management',
       href: `/tenants/${tenant.slug}/settings/users`,
@@ -66,8 +75,8 @@ export function Sidebar({ tenant, user }: SidebarProps) {
     });
   }
 
-  // Admin only settings
-  if (user.role === 'ADMIN') {
+  // Add admin only items
+  if (isAdmin) {
     navItems.push({
       title: 'Organization Settings',
       href: `/tenants/${tenant.slug}/settings/general`,
@@ -85,7 +94,7 @@ export function Sidebar({ tenant, user }: SidebarProps) {
 
       <ScrollArea className='flex-1'>
         <div className='p-2'>
-          {/* Main navigation items */}
+          {/* Main navigation items - ALWAYS show these */}
           <nav className='space-y-1'>
             {navItems.map((item) => (
               <Link
@@ -112,7 +121,7 @@ export function Sidebar({ tenant, user }: SidebarProps) {
             >
               <div className='flex items-center gap-3'>
                 <FolderKanban className='h-4 w-4' />
-                <span>Projects</span>
+                <span>{user.role === 'USER' ? 'My Projects' : 'Projects'}</span>
               </div>
               {isProjectsOpen ? (
                 <ChevronDown className='h-4 w-4' />
@@ -130,20 +139,25 @@ export function Sidebar({ tenant, user }: SidebarProps) {
                     <Skeleton className='h-8 w-full' />
                     <Skeleton className='h-8 w-full' />
                   </div>
-                ) : projects?.length === 0 ? (
+                ) : projects.length === 0 ? (
                   <div className='text-sm text-gray-500 py-2'>
-                    No projects yet
+                    {user.role === 'USER'
+                      ? 'No projects assigned yet'
+                      : 'No projects created yet'}
                   </div>
                 ) : (
                   // Project list
-                  projects?.map((project) => (
+                  projects.map((project) => (
                     <Link
                       key={project.id}
                       href={`/tenants/${tenant.slug}/projects/${project.id}`}
                       className={cn(
                         'block rounded-md px-3 py-2 text-sm font-medium',
                         pathname ===
-                          `/tenants/${tenant.slug}/projects/${project.id}`
+                          `/tenants/${tenant.slug}/projects/${project.id}` ||
+                          pathname.startsWith(
+                            `/tenants/${tenant.slug}/projects/${project.id}/`
+                          )
                           ? 'bg-gray-100 text-gray-900'
                           : 'text-gray-500 hover:text-gray-900 hover:bg-gray-50'
                       )}

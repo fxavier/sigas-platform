@@ -2,10 +2,12 @@
 import { redirect } from 'next/navigation';
 import { auth, currentUser } from '@clerk/nextjs/server';
 import { db } from '@/lib/db';
+import { Button } from '@/components/ui/button';
 import {
   Card,
   CardContent,
   CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
@@ -29,9 +31,9 @@ export default async function DashboardPage() {
     },
   });
 
-  // If user doesn't exist in DB, redirect to onboarding
+  // If user doesn't exist in DB, redirect to tenant selection/creation
   if (userWithTenants.length === 0) {
-    redirect('/onboarding');
+    redirect('/tenant-selection');
   }
 
   // If user belongs to only one tenant, redirect directly to that tenant's dashboard
@@ -41,7 +43,7 @@ export default async function DashboardPage() {
 
   // If user belongs to multiple tenants, show tenant selection
   return (
-    <div className='container mx-auto py-10'>
+    <div className='container mx-auto py-10 px-4'>
       <h1 className='text-2xl font-bold mb-6'>Select an Organization</h1>
 
       <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
@@ -63,7 +65,7 @@ export default async function DashboardPage() {
           </Link>
         ))}
 
-        <Link href='/onboarding'>
+        <Link href='/tenant-selection'>
           <Card className='cursor-pointer hover:shadow-md transition-shadow border-dashed'>
             <CardHeader>
               <CardTitle>Create New Organization</CardTitle>

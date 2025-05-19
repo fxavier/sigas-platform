@@ -10,7 +10,6 @@ export default async function TenantDashboardPage({
 }: {
   params: { slug: string };
 }) {
-  // Just use params.slug directly without destructuring
   const { userId } = await auth();
 
   if (!userId) {
@@ -49,6 +48,13 @@ export default async function TenantDashboardPage({
       where: {
         tenantId: tenant.id,
       },
+      include: {
+        _count: {
+          select: {
+            userProjects: true,
+          },
+        },
+      },
       orderBy: {
         createdAt: 'desc',
       },
@@ -58,9 +64,12 @@ export default async function TenantDashboardPage({
     projects = await db.project.findMany({
       where: {
         tenantId: tenant.id,
-        userProjects: {
-          some: {
-            userId: user.id,
+        // other conditions...
+      },
+      include: {
+        _count: {
+          select: {
+            userProjects: true,
           },
         },
       },
@@ -74,7 +83,11 @@ export default async function TenantDashboardPage({
     <div className='container mx-auto px-4 py-6'>
       <DashboardHeader
         title={tenant.name}
-        description='Welcome to your dashboard'
+        description={
+          user.role === 'USER'
+            ? 'Your assigned projects'
+            : 'Welcome to your dashboard'
+        }
         user={user}
       />
 

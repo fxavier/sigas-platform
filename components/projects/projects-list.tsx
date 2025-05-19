@@ -5,7 +5,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Project } from '@prisma/client';
-import { Plus, Settings } from 'lucide-react';
+import { Plus, Settings, Users } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -16,9 +16,10 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { CreateProjectModal } from '@/components/projects/create-project-modal';
+import { ProjectWithCount } from '@/lib/types';
 
 interface ProjectsListProps {
-  projects: Project[];
+  projects: ProjectWithCount[];
   canCreate: boolean;
   tenantId: string;
   tenantSlug: string;
@@ -71,11 +72,15 @@ export function ProjectsList({
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <p className='text-gray-600'>
-                  {project.description.length > 120
-                    ? project.description.slice(0, 120) + '...'
+                <p className='text-gray-600 mb-2'>
+                  {project.description.length > 100
+                    ? project.description.slice(0, 100) + '...'
                     : project.description}
                 </p>
+                <div className='flex items-center text-sm text-gray-500'>
+                  <Users className='h-4 w-4 mr-1' />
+                  <span>{project._count?.userProjects || 0} members</span>
+                </div>
               </CardContent>
               <CardFooter className='flex justify-between'>
                 <Button

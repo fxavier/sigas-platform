@@ -5,7 +5,7 @@ import { NextResponse } from 'next/server';
 
 export async function GET(
   req: Request,
-  { params: { tenantId } }: { params: { tenantId: string } }
+  { params }: { params: { tenantId: string } }
 ) {
   try {
     const { userId } = await auth();
@@ -15,11 +15,10 @@ export async function GET(
     }
 
     // Check if the user is authorized to access this tenant
-    // Use the destructured tenantId variable
     const currentUser = await db.user.findFirst({
       where: {
         clerkUserId: userId,
-        tenantId, // Using destructured parameter
+        tenantId: params.tenantId,
       },
       include: {
         userProjects: true,
@@ -37,12 +36,27 @@ export async function GET(
       // Admins and managers can see all projects
       projects = await db.project.findMany({
         where: {
-          tenantId,
+          tenantId: params.tenantId,
         },
         orderBy: {
-          createdAt: 'desc',
+          name: 'asc',
+        },
+        select: {
+          id: true,
+          name: true,
+          description: true,
+          createdAt: true,
+          updatedAt: true,
+          tenantId: true,
+          _count: {
+            select: {
+              userProjects: true,
+            },
+          },
         },
       });
+
+      console.log(`Found ${projects.length} projects for admin/manager`);
     } else {
       // Regular users can only see projects they're assigned to
       const projectIds = currentUser.userProjects.map((up) => up.projectId);
@@ -52,12 +66,29 @@ export async function GET(
           id: {
             in: projectIds,
           },
-          tenantId,
+          tenantId: params.tenantId,
         },
         orderBy: {
-          createdAt: 'desc',
+          name: 'asc',
+        },
+        select: {
+          id: true,
+          name: true,
+          description: true,
+          createdAt: true,
+          updatedAt: true,
+          tenantId: true,
+          _count: {
+            select: {
+              userProjects: true,
+            },
+          },
         },
       });
+
+      console.log(
+        `Found ${projects.length} assigned projects for regular user`
+      );
     }
 
     return NextResponse.json(projects);
