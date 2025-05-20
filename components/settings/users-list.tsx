@@ -2,8 +2,14 @@
 'use client';
 
 import { useState } from 'react';
-import { User, Tenant, UserInvitation } from '@prisma/client';
-import { UserPlus, MoreHorizontal, RefreshCw, X } from 'lucide-react';
+import { User, Tenant, UserInvitation, Project } from '@prisma/client';
+import {
+  UserPlus,
+  MoreHorizontal,
+  RefreshCw,
+  X,
+  FolderPlus,
+} from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -29,14 +35,16 @@ import {
 } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { InviteUserModal } from '@/components/settings/invite-user-modal';
-import { EditUserRoleModal } from '@/components/settings/edit-user-role-modal';
+import { InviteUserModal } from './invite-user-modal';
+import { EditUserRoleModal } from './edit-user-role-modal';
+import { AssignProjectsModal } from '@/components/settings/assign-projects-modal';
 import { toast } from 'sonner';
 import axios from 'axios';
 
 interface UsersListProps {
   users: User[];
   invitations: UserInvitation[];
+  projects: Project[];
   currentUser: User;
   tenant: Tenant;
 }
@@ -44,19 +52,29 @@ interface UsersListProps {
 export function UsersList({
   users,
   invitations,
+  projects,
   currentUser,
   tenant,
 }: UsersListProps) {
   const [isInviteModalOpen, setIsInviteModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [isAssignProjectsModalOpen, setIsAssignProjectsModalOpen] =
+    useState(false);
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
   const isAdmin = currentUser.role === 'ADMIN';
+  const isAdminOrManager =
+    currentUser.role === 'ADMIN' || currentUser.role === 'MANAGER';
 
   const handleEditUser = (user: User) => {
     setSelectedUser(user);
     setIsEditModalOpen(true);
+  };
+
+  const handleAssignProjects = (user: User) => {
+    setSelectedUser(user);
+    setIsAssignProjectsModalOpen(true);
   };
 
   const handleCancelInvitation = async (invitationId: string) => {
@@ -74,9 +92,7 @@ export function UsersList({
       // Refresh the page
       window.location.reload();
     } catch (error) {
-      toast.error('Error', {
-        description: 'Failed to cancel the invitation.',
-      });
+      toast.error('Failed to cancel the invitation.');
     } finally {
       setIsLoading(false);
     }
@@ -94,9 +110,7 @@ export function UsersList({
         description: 'The invitation has been resent successfully.',
       });
     } catch (error) {
-      toast.error('Error', {
-        description: 'Failed to resend the invitation.',
-      });
+      toast.error('Failed to resend the invitation.');
     } finally {
       setIsLoading(false);
     }
@@ -124,9 +138,7 @@ export function UsersList({
       // Refresh the page
       window.location.reload();
     } catch (error: any) {
-      toast.error('Error', {
-        description: error.response?.data || 'Failed to remove the user.',
-      });
+      toast.error(error.response?.data || 'Failed to remove the user.');
     } finally {
       setIsLoading(false);
     }
@@ -221,7 +233,20 @@ export function UsersList({
                               Edit Role
                             </DropdownMenuItem>
                           )}
+
+                          {/* New option for project assignment */}
+                          {(isAdmin ||
+                            (isAdminOrManager && user.role === 'USER')) && (
+                            <DropdownMenuItem
+                              onClick={() => handleAssignProjects(user)}
+                            >
+                              <FolderPlus className='h-4 w-4 mr-2' />
+                              Assign Projects
+                            </DropdownMenuItem>
+                          )}
+
                           <DropdownMenuSeparator />
+
                           {isAdmin && (
                             <DropdownMenuItem
                               className='text-red-600'
@@ -313,12 +338,22 @@ export function UsersList({
       />
 
       {selectedUser && (
-        <EditUserRoleModal
-          isOpen={isEditModalOpen}
-          onClose={() => setIsEditModalOpen(false)}
-          user={selectedUser}
-          tenantId={tenant.id}
-        />
+        <>
+          <EditUserRoleModal
+            isOpen={isEditModalOpen}
+            onClose={() => setIsEditModalOpen(false)}
+            user={selectedUser}
+            tenantId={tenant.id}
+          />
+
+          <AssignProjectsModal
+            isOpen={isAssignProjectsModalOpen}
+            onClose={() => setIsAssignProjectsModalOpen(false)}
+            user={selectedUser}
+            tenantId={tenant.id}
+            projects={projects}
+          />
+        </>
       )}
     </div>
   );

@@ -1,96 +1,81 @@
 // app/tenants/[slug]/projects/[projectId]/page.tsx
+import { redirect } from 'next/navigation';
+import { auth } from '@clerk/nextjs/server';
 import { db } from '@/lib/db';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
+import { ProjectDetail } from '@/components/projects/project-detail';
+import { getInstitutionByTenantId } from '@/lib/utils';
 
-interface ProjectPageProps {
-  params: {
-    slug: string;
-    projectId: string;
-  };
-}
+export default async function ProjectPage({
+  params,
+}: {
+  params: { slug: string; projectId: string };
+}) {
+  const { userId } = await auth();
 
-export default async function ProjectPage({ params }: ProjectPageProps) {
-  // Get project details with user count
+  if (!userId) {
+    redirect('/sign-in');
+  }
+
+  // Get the tenant by slug
+  const tenant = await db.tenant.findUnique({
+    where: {
+      slug: params.slug,
+    },
+  });
+
+  if (!tenant) {
+    redirect('/dashboard');
+  }
+
+  // Check if the user belongs to this tenant
+  const user = await db.user.findFirst({
+    where: {
+      clerkUserId: userId,
+      tenantId: tenant.id,
+    },
+  });
+
+  if (!user) {
+    redirect('/dashboard');
+  }
+
+  // Get the project
   const project = await db.project.findUnique({
     where: {
       id: params.projectId,
-    },
-    include: {
-      _count: {
-        select: {
-          userProjects: true,
-        },
-      },
+      tenantId: tenant.id,
     },
   });
 
   if (!project) {
-    return <div>Project not found</div>;
+    redirect(`/tenants/${params.slug}/dashboard`);
   }
 
+  // Check if the user has access to this project (admins and managers can access all)
+  if (user.role !== 'ADMIN' && user.role !== 'MANAGER') {
+    const userProject = await db.userProject.findUnique({
+      where: {
+        userId_projectId: {
+          userId: user.id,
+          projectId: params.projectId,
+        },
+      },
+    });
+
+    if (!userProject) {
+      redirect(`/tenants/${params.slug}/dashboard`);
+    }
+  }
+
+  // Get institution for this tenant
+  const institution = getInstitutionByTenantId(tenant.id);
+
   return (
-    <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
-      <Card>
-        <CardHeader>
-          <CardTitle>Project Overview</CardTitle>
-          <CardDescription>Key details about this project</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className='space-y-4'>
-            <div>
-              <h3 className='text-sm font-medium text-gray-500'>Created</h3>
-              <p>{new Date(project.createdAt).toLocaleDateString()}</p>
-            </div>
-            <div>
-              <h3 className='text-sm font-medium text-gray-500'>
-                Last Updated
-              </h3>
-              <p>{new Date(project.updatedAt).toLocaleDateString()}</p>
-            </div>
-            <div>
-              <h3 className='text-sm font-medium text-gray-500'>Team Size</h3>
-              <p>{project._count.userProjects} members</p>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Additional project cards can be added here */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Recent Activity</CardTitle>
-          <CardDescription>Latest updates and changes</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <p className='text-gray-500'>No recent activity to display.</p>
-        </CardContent>
-      </Card>
-
-      <Card>
-        <CardHeader>
-          <CardTitle>Quick Actions</CardTitle>
-          <CardDescription>Common tasks for this project</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <ul className='space-y-2'>
-            <li className='text-blue-600 hover:underline cursor-pointer'>
-              View project details
-            </li>
-            <li className='text-blue-600 hover:underline cursor-pointer'>
-              Manage team members
-            </li>
-            <li className='text-blue-600 hover:underline cursor-pointer'>
-              View project settings
-            </li>
-          </ul>
-        </CardContent>
-      </Card>
-    </div>
+    <ProjectDetail
+      project={project}
+      tenant={tenant}
+      user={user}
+      institution={institution}
+    />
   );
 }

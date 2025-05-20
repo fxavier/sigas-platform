@@ -4,10 +4,11 @@ import { auth } from '@clerk/nextjs/server';
 import { db } from '@/lib/db';
 import { Sidebar } from '@/components/navigation/sidebar';
 import { Header } from '@/components/navigation/header';
+import { AuthProvider } from '@/lib/context/auth-context';
 
 export default async function TenantLayout({
   children,
-  params: { slug },
+  params,
 }: {
   children: React.ReactNode;
   params: { slug: string };
@@ -21,7 +22,7 @@ export default async function TenantLayout({
   // Get tenant by slug
   const tenant = await db.tenant.findUnique({
     where: {
-      slug,
+      slug: params.slug,
     },
   });
 
@@ -42,12 +43,16 @@ export default async function TenantLayout({
   }
 
   return (
-    <div className='h-screen flex flex-col'>
-      <Header tenant={tenant} user={user} />
-      <div className='flex flex-1 overflow-hidden'>
-        <Sidebar tenant={tenant} user={user} />
-        <main className='flex-1 overflow-y-auto bg-gray-50'>{children}</main>
+    <AuthProvider initialUser={user}>
+      <div className='h-screen flex flex-col'>
+        <Header tenant={tenant} user={user} />
+        <div className='flex flex-1 overflow-hidden'>
+          <Sidebar tenant={tenant} user={user} />
+          <main className='flex-1 overflow-y-auto bg-gray-50 dark:bg-gray-900'>
+            {children}
+          </main>
+        </div>
       </div>
-    </div>
+    </AuthProvider>
   );
 }

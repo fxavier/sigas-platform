@@ -15,6 +15,7 @@ import {
   ChevronRight,
   ChevronDown,
   Plus,
+  Building,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -63,6 +64,11 @@ export function Sidebar({ tenant, user }: SidebarProps) {
       title: 'Dashboard',
       href: `/tenants/${tenant.slug}/dashboard`,
       icon: LayoutDashboard,
+    },
+    {
+      title: 'Organizações',
+      href: '/organizations',
+      icon: Building,
     },
   ];
 

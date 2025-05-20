@@ -1,10 +1,11 @@
-// app/tenants/[slug]/settings/users/page.tsx (continued)
+// app/tenants/[slug]/settings/users/page.tsx
 import { redirect } from 'next/navigation';
 import { auth } from '@clerk/nextjs/server';
 import { db } from '@/lib/db';
 import { UsersList } from '@/components/settings/users-list';
 import { SettingsHeader } from '@/components/settings/settings-header';
 
+// Make sure this is a proper React component that returns JSX
 export default async function UsersSettingsPage({
   params,
 }: {
@@ -27,7 +28,7 @@ export default async function UsersSettingsPage({
     redirect('/dashboard');
   }
 
-  // Check if the user belongs to this tenant and is an admin
+  // Check if the user belongs to this tenant and is an admin or manager
   const user = await db.user.findFirst({
     where: {
       clerkUserId: userId,
@@ -68,11 +69,22 @@ export default async function UsersSettingsPage({
     },
   });
 
+  // Get all projects for this tenant (for project assignment)
+  const projects = await db.project.findMany({
+    where: {
+      tenantId: tenant.id,
+    },
+    orderBy: {
+      name: 'asc',
+    },
+  });
+
+  // Make sure to return JSX
   return (
     <div className='container mx-auto px-4 py-6'>
       <SettingsHeader
         title='User Management'
-        description='Manage users and access permissions'
+        description='Manage users and their project assignments'
         tenant={tenant}
       />
 
@@ -80,6 +92,7 @@ export default async function UsersSettingsPage({
         <UsersList
           users={users}
           invitations={invitations}
+          projects={projects}
           currentUser={user}
           tenant={tenant}
         />

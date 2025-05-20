@@ -1,29 +1,37 @@
+// app/layout.tsx
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
-import './globals.css';
+import { Inter as FontSans } from 'next/font/google';
 import { ClerkProvider } from '@clerk/nextjs';
-import { Toaster } from '@/components/ui/sonner';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import Providers from './providers';
+import { Providers } from './providers';
+import { cn } from '@/lib/utils';
+import './globals.css';
 
-const inter = Inter({ subsets: ['latin'] });
+const fontSans = FontSans({
+  subsets: ['latin'],
+  variable: '--font-sans',
+});
+
 export const metadata: Metadata = {
-  title: 'SIGAS',
-  description: 'Sistema Integrado de Gestão Ambiental e Social',
+  title: 'Sistema de Gestão Ambiental e Social',
+  description:
+    'Plataforma para gestão de projetos de infraestrutura de água e saneamento',
 };
-
-// Create a client
-const queryClient = new QueryClient();
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
     <ClerkProvider>
-      <html lang='en'>
-        <body className='antialiased'>
+      <html lang='pt' suppressHydrationWarning>
+        <head />
+        <body
+          className={cn(
+            'min-h-screen bg-background font-sans antialiased',
+            fontSans.variable
+          )}
+        >
           <Providers>{children}</Providers>
         </body>
       </html>

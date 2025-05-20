@@ -15,7 +15,7 @@ export async function POST(req: Request) {
     const { name, slug, description } = await req.json();
 
     if (!name || !slug) {
-      return new NextResponse('Name and slug are required', { status: 400 });
+      return new NextResponse('Nome e slug são obrigatórios', { status: 400 });
     }
 
     // Check if slug is already taken
@@ -26,10 +26,10 @@ export async function POST(req: Request) {
     });
 
     if (existingTenant) {
-      return new NextResponse('Slug is already taken', { status: 400 });
+      return new NextResponse('Este slug já está em uso', { status: 400 });
     }
 
-    // Create the tenant
+    // Create the tenant without associating it with a user
     const tenant = await db.tenant.create({
       data: {
         name,
@@ -38,18 +38,7 @@ export async function POST(req: Request) {
       },
     });
 
-    // Create the user as an admin of the tenant
-    const dbUser = await db.user.create({
-      data: {
-        clerkUserId: userId,
-        email: user.emailAddresses[0].emailAddress,
-        name: `${user.firstName || ''} ${user.lastName || ''}`.trim() || null,
-        imageUrl: user.imageUrl,
-        role: 'ADMIN',
-        tenantId: tenant.id,
-      },
-    });
-
+    // Don't create a new user record, just return the created tenant
     return NextResponse.json(tenant);
   } catch (error) {
     console.error('[TENANTS_POST]', error);
@@ -57,7 +46,6 @@ export async function POST(req: Request) {
   }
 }
 
-// Get the list of tenants the current user has access to
 export async function GET(req: Request) {
   try {
     const { userId } = await auth();
@@ -66,18 +54,10 @@ export async function GET(req: Request) {
       return new NextResponse('Unauthorized', { status: 401 });
     }
 
-    // Find all tenants the user has access to
-    const userWithTenants = await db.user.findMany({
-      where: {
-        clerkUserId: userId,
-      },
-      include: {
-        tenant: true,
-      },
-    });
+    // Get all tenants from the database
+    const tenants = await db.tenant.findMany();
 
-    const tenants = userWithTenants.map((user) => user.tenant);
-
+    // Return all tenants, not just those associated with the user
     return NextResponse.json(tenants);
   } catch (error) {
     console.error('[TENANTS_GET]', error);

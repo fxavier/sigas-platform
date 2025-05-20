@@ -2,8 +2,8 @@
 import { redirect } from 'next/navigation';
 import { auth } from '@clerk/nextjs/server';
 import { db } from '@/lib/db';
-import { DashboardHeader } from '@/components/dashboard/dashboard-header';
-import { ProjectsList } from '@/components/projects/projects-list';
+import { DashboardContent } from '@/components/dashboard/dashboard-content';
+import { getInstitutionByTenantId } from '@/lib/utils';
 
 export default async function TenantDashboardPage({
   params,
@@ -64,7 +64,11 @@ export default async function TenantDashboardPage({
     projects = await db.project.findMany({
       where: {
         tenantId: tenant.id,
-        // other conditions...
+        userProjects: {
+          some: {
+            userId: user.id,
+          },
+        },
       },
       include: {
         _count: {
@@ -79,26 +83,15 @@ export default async function TenantDashboardPage({
     });
   }
 
-  return (
-    <div className='container mx-auto px-4 py-6'>
-      <DashboardHeader
-        title={tenant.name}
-        description={
-          user.role === 'USER'
-            ? 'Your assigned projects'
-            : 'Welcome to your dashboard'
-        }
-        user={user}
-      />
+  // Get the institution info based on tenant ID
+  const institution = getInstitutionByTenantId(tenant.id);
 
-      <div className='mt-8'>
-        <ProjectsList
-          projects={projects}
-          canCreate={user.role === 'ADMIN' || user.role === 'MANAGER'}
-          tenantId={tenant.id}
-          tenantSlug={tenant.slug}
-        />
-      </div>
-    </div>
+  return (
+    <DashboardContent
+      institution={institution}
+      tenantId={tenant.id}
+      projects={projects}
+      user={user}
+    />
   );
 }
