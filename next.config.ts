@@ -6,12 +6,20 @@ const nextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
-  // Completely disable static generation
   output: 'standalone',
-  // Disable export of not-found
+  // Move skipTrailingSlashRedirect to root level
+  skipTrailingSlashRedirect: true,
   experimental: {
-    skipTrailingSlashRedirect: true,
     disableOptimizedLoading: true,
+  },
+  // Completely disable 404 page generation
+  rewrites: async () => {
+    return [
+      {
+        source: '/_not-found',
+        destination: '/custom-404',
+      },
+    ];
   },
 };
 
