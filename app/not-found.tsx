@@ -1,6 +1,6 @@
 'use client';
 
-import { Suspense, useEffect, useState } from 'react';
+import { Suspense } from 'react';
 import Link from 'next/link';
 
 // Static component that doesn't use any client hooks
@@ -21,16 +21,6 @@ function NotFoundFallback() {
 
 // Client component that will only run in the browser
 function ClientNotFound() {
-  const [isClient, setIsClient] = useState(false);
-
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
-
-  if (!isClient) {
-    return <NotFoundFallback />;
-  }
-
   return (
     <div className='flex flex-col items-center justify-center min-h-screen px-4'>
       <h1 className='text-4xl font-bold text-gray-800 mb-4'>404</h1>
