@@ -56,6 +56,8 @@ model Tenant {
   formularios                   Formularios[]
   modelos                       Modelos[]
   userInvitations               UserInvitation[]
+  relatorioAuditoriaInterna     RelatorioAuditoriaInterna[]
+  descricaoNaoConformidade      DescricaoNaoConformidade[]
 
   @@map("tenants")
 }
@@ -85,6 +87,8 @@ model Project {
   formularios                  Formularios[]
   modelos                      Modelos[]
   userProjects                 UserProject[]
+  relatorioAuditoriaInterna    RelatorioAuditoriaInterna[]
+  descricaoNaoConformidade     DescricaoNaoConformidade[]
 
   @@unique([name, tenantId])
   @@index([tenantId])
@@ -1079,4 +1083,43 @@ model UserInvitation {
   @@unique([email, tenantId])
   @@index([tenantId, token])
   @@map("user_invitations")
+}
+
+model RelatorioAuditoriaInterna {
+  id                       String                     @id @default(uuid())
+  ambitoAuditoria          String
+  dataAuditoria            DateTime                   @default(now())
+  dataRelatorio            DateTime                   @default(now())
+  auditorLider             String
+  auditorObservador        String
+  resumoAuditoria          String
+  tenantId                 String
+  tenant                   Tenant                     @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  projectId                String
+  project                  Project                    @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  descricaoNaoConformidade DescricaoNaoConformidade[]
+  createdAt                DateTime                   @default(now())
+  updatedAt                DateTime                   @updatedAt
+
+  @@index([tenantId])
+  @@map("relatorio_auditoria_interna")
+}
+
+model DescricaoNaoConformidade {
+  id                          String                    @id @default(uuid())
+  processo                    String
+  clausula                    String
+  naoConformidade             String
+  relatorioAuditoriaInternaId String
+  relatorioAuditoriaInterna   RelatorioAuditoriaInterna @relation(fields: [relatorioAuditoriaInternaId], references: [id], onDelete: Cascade)
+  tenantId                    String
+  tenant                      Tenant                    @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  projectId                   String
+  project                     Project                   @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  createdAt                   DateTime                  @default(now())
+  updatedAt                   DateTime                  @updatedAt
+
+  @@index([relatorioAuditoriaInternaId])
+  @@index([tenantId])
+  @@map("descricao_nao_conformidade")
 }

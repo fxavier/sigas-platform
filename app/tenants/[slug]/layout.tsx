@@ -13,46 +13,53 @@ export default async function TenantLayout({
   children: React.ReactNode;
   params: { slug: string };
 }) {
-  const { userId } = await auth();
+  try {
+    const { userId } = await auth();
 
-  if (!userId) {
-    redirect('/sign-in');
-  }
+    if (!userId) {
+      redirect('/sign-in');
+    }
 
-  // Get tenant by slug
-  const tenant = await db.tenant.findUnique({
-    where: {
-      slug: params.slug,
-    },
-  });
+    const { slug } = await params;
 
-  if (!tenant) {
-    redirect('/dashboard');
-  }
+    // Get tenant by slug
+    const tenant = await db.tenant.findUnique({
+      where: {
+        slug,
+      },
+    });
 
-  // Check if the user belongs to this tenant
-  const user = await db.user.findFirst({
-    where: {
-      clerkUserId: userId,
-      tenantId: tenant.id,
-    },
-  });
+    if (!tenant) {
+      redirect('/dashboard');
+    }
 
-  if (!user) {
-    redirect('/dashboard');
-  }
+    // Check if the user belongs to this tenant
+    const user = await db.user.findFirst({
+      where: {
+        clerkUserId: userId,
+        tenantId: tenant.id,
+      },
+    });
 
-  return (
-    <AuthProvider initialUser={user}>
-      <div className='h-screen flex flex-col'>
-        <Header tenant={tenant} user={user} />
-        <div className='flex flex-1 overflow-hidden'>
-          <Sidebar tenant={tenant} user={user} />
-          <main className='flex-1 overflow-y-auto bg-gray-50 dark:bg-gray-900'>
-            {children}
-          </main>
+    if (!user) {
+      redirect('/dashboard');
+    }
+
+    return (
+      <AuthProvider initialUser={user}>
+        <div className='h-screen flex flex-col' suppressHydrationWarning>
+          <Header tenant={tenant} user={user} />
+          <div className='flex flex-1 overflow-hidden'>
+            <Sidebar tenant={tenant} user={user} />
+            <main className='flex-1 overflow-y-auto bg-gray-50 dark:bg-gray-900'>
+              {children}
+            </main>
+          </div>
         </div>
-      </div>
-    </AuthProvider>
-  );
+      </AuthProvider>
+    );
+  } catch (error) {
+    console.error('Error in tenant layout:', error);
+    redirect('/dashboard');
+  }
 }

@@ -9,6 +9,7 @@ export async function GET(
 ) {
   try {
     const { userId } = await auth();
+    const tenantId = await Promise.resolve(params.tenantId);
 
     if (!userId) {
       return new NextResponse('Unauthorized', { status: 401 });
@@ -18,7 +19,7 @@ export async function GET(
     const currentUser = await db.user.findFirst({
       where: {
         clerkUserId: userId,
-        tenantId: params.tenantId,
+        tenantId,
       },
       include: {
         userProjects: true,
@@ -36,7 +37,7 @@ export async function GET(
       // Admins and managers can see all projects
       projects = await db.project.findMany({
         where: {
-          tenantId: params.tenantId,
+          tenantId,
         },
         orderBy: {
           name: 'asc',
@@ -66,7 +67,7 @@ export async function GET(
           id: {
             in: projectIds,
           },
-          tenantId: params.tenantId,
+          tenantId,
         },
         orderBy: {
           name: 'asc',
