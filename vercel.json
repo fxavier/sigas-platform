@@ -5,7 +5,8 @@
       "use": "@vercel/next",
       "config": {
         "installCommand": "npm install --legacy-peer-deps",
-        "buildCommand": "npx prisma generate && next build"
+        "buildCommand": "node nuclear-build.js",
+        "outputDirectory": ".next"
       }
     }
   ]
