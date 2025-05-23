@@ -44,7 +44,6 @@ export default function NotFound() {
         stdio: 'inherit',
         env: {
           ...process.env,
-          NEXT_MINIMAL: '1',
           NODE_ENV: 'production',
         },
       }
