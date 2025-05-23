@@ -2,6 +2,7 @@
 
 import { Suspense } from 'react';
 import Link from 'next/link';
+import { TenantProjectProvider } from '@/lib/context/tenant-project-context';
 
 // Static component that doesn't use any client hooks
 function NotFoundFallback() {
@@ -39,8 +40,10 @@ function ClientNotFound() {
 
 export default function NotFound() {
   return (
-    <Suspense fallback={<NotFoundFallback />}>
-      <ClientNotFound />
-    </Suspense>
+    <TenantProjectProvider>
+      <Suspense fallback={<NotFoundFallback />}>
+        <ClientNotFound />
+      </Suspense>
+    </TenantProjectProvider>
   );
 }
