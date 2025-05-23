@@ -1,35 +1,56 @@
-// app/not-found.tsx
-import Link from 'next/link';
-import { Button } from '@/components/ui/button';
-import { Suspense } from 'react';
+'use client';
 
-function NotFoundContent() {
-  // rest of your code
+import { Suspense, useEffect, useState } from 'react';
+import Link from 'next/link';
+
+// Static component that doesn't use any client hooks
+function NotFoundFallback() {
   return (
-    <div>
-      <h1>Page not found</h1>
-      <div className='flex flex-col items-center justify-center min-h-screen px-4'>
-        <div className='text-center space-y-6 max-w-md'>
-          <h1 className='text-6xl font-bold text-gray-900'>404</h1>
-          <h2 className='text-2xl font-semibold text-gray-700'>
-            Pagina não encontrada
-          </h2>
-          <p className='text-gray-500'>
-            A pagina que voce esta procurando nao existe ou foi movida.
-          </p>
-          <Button asChild>
-            <Link href='/dashboard'>Voltar para o Dashboard</Link>
-          </Button>
-        </div>
-      </div>
+    <div className='flex flex-col items-center justify-center min-h-screen px-4'>
+      <h1 className='text-4xl font-bold text-gray-800 mb-4'>404</h1>
+      <p className='text-xl text-gray-600 mb-8'>Pagina não encontrada</p>
+      <Link
+        href='/dashboard'
+        className='px-4 py-2 rounded bg-blue-600 text-white hover:bg-blue-700 transition-colors'
+      >
+        Voltar para o Dashboard
+      </Link>
+    </div>
+  );
+}
+
+// Client component that will only run in the browser
+function ClientNotFound() {
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  if (!isClient) {
+    return <NotFoundFallback />;
+  }
+
+  return (
+    <div className='flex flex-col items-center justify-center min-h-screen px-4'>
+      <h1 className='text-4xl font-bold text-gray-800 mb-4'>404</h1>
+      <p className='text-xl text-gray-600 mb-8'>
+        Não conseguimos encontrar a pagina que voce esta procurando.
+      </p>
+      <Link
+        href='/dashboard'
+        className='px-4 py-2 rounded bg-blue-600 text-white hover:bg-blue-700 transition-colors'
+      >
+        Voltar para a pagina inicial
+      </Link>
     </div>
   );
 }
 
 export default function NotFound() {
   return (
-    <Suspense fallback={<div>Loading...</div>}>
-      <NotFoundContent />
+    <Suspense fallback={<NotFoundFallback />}>
+      <ClientNotFound />
     </Suspense>
   );
 }
