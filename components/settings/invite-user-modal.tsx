@@ -33,6 +33,7 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
 import { useTenantProjects } from '@/hooks/use-tenant-projects';
+import { useRouter } from 'next/navigation';
 
 const formSchema = z.object({
   email: z.string().email({
@@ -41,9 +42,16 @@ const formSchema = z.object({
   name: z.string().min(2, {
     message: 'Name must be at least 2 characters.',
   }),
-  password: z.string().min(8, {
-    message: 'Password must be at least 8 characters.',
-  }),
+  password: z
+    .string()
+    .min(8, 'Password must be at least 8 characters')
+    .regex(/[A-Z]/, 'Password must contain at least one uppercase letter')
+    .regex(/[a-z]/, 'Password must contain at least one lowercase letter')
+    .regex(/[0-9]/, 'Password must contain at least one number')
+    .regex(
+      /[!@#$%^&*(),.?":{}|<>]/,
+      'Password must contain at least one special character'
+    ),
   role: z.enum(['ADMIN', 'MANAGER', 'USER'], {
     message: 'Please select a valid role.',
   }),
@@ -74,6 +82,7 @@ export function InviteUserModal({
 }: InviteUserModalProps) {
   const [isLoading, setIsLoading] = useState(false);
   const { projects } = useTenantProjects(tenantId);
+  const router = useRouter();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -86,48 +95,48 @@ export function InviteUserModal({
     },
   });
 
-  async function onSubmit(values: z.infer<typeof formSchema>) {
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       setIsLoading(true);
-      console.log('Submitting form with values:', {
+      console.log('Form values being submitted:', {
         ...values,
         password: '[REDACTED]',
+        tenantId,
       });
 
       const response = await axios.post('/api/users', {
         ...values,
         tenantId,
       });
+      console.log('User created successfully:', response.data);
 
       toast.success('User created successfully', {
         description: `User ${values.email} has been created and assigned to the tenant.`,
       });
 
-      onClose();
       form.reset();
+      onClose();
+      router.refresh();
     } catch (error: any) {
       console.error('Error creating user:', error);
-      const errorMessage =
-        error.response?.data?.error || 'Failed to create user.';
-      const errorDetails = error.response?.data?.details;
-
-      console.log('Error response:', {
+      console.error('Error response:', {
         status: error.response?.status,
         data: error.response?.data,
         message: error.message,
       });
 
-      toast.error('Error', {
-        description: errorDetails
-          ? `${errorMessage} ${
-              typeof errorDetails === 'string' ? errorDetails : ''
-            }`
-          : errorMessage,
+      // Show more specific error message
+      const errorMessage =
+        error.response?.data?.details ||
+        error.response?.data?.error ||
+        'Failed to create user';
+      toast.error('Error creating user', {
+        description: errorMessage,
       });
     } finally {
       setIsLoading(false);
     }
-  }
+  };
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>

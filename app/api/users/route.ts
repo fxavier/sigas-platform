@@ -97,12 +97,53 @@ export async function POST(req: Request) {
       );
     }
 
+    // Validate email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return new NextResponse(
+        JSON.stringify({
+          error: 'Invalid email format',
+          details: 'Please provide a valid email address',
+        }),
+        { status: 400, headers: { 'Content-Type': 'application/json' } }
+      );
+    }
+
     // Validate password strength
     if (password.length < 8) {
       return new NextResponse(
         JSON.stringify({
           error: 'Invalid password',
           details: 'Password must be at least 8 characters long',
+        }),
+        { status: 400, headers: { 'Content-Type': 'application/json' } }
+      );
+    }
+
+    // Additional password validation
+    const hasUpperCase = /[A-Z]/.test(password);
+    const hasLowerCase = /[a-z]/.test(password);
+    const hasNumbers = /\d/.test(password);
+    const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+
+    if (!hasUpperCase || !hasLowerCase || !hasNumbers || !hasSpecialChar) {
+      return new NextResponse(
+        JSON.stringify({
+          error: 'Invalid password',
+          details:
+            'Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character',
+        }),
+        { status: 400, headers: { 'Content-Type': 'application/json' } }
+      );
+    }
+
+    // Validate role
+    const validRoles = ['ADMIN', 'MANAGER', 'USER'];
+    if (!validRoles.includes(role)) {
+      return new NextResponse(
+        JSON.stringify({
+          error: 'Invalid role',
+          details: `Role must be one of: ${validRoles.join(', ')}`,
         }),
         { status: 400, headers: { 'Content-Type': 'application/json' } }
       );
@@ -163,25 +204,18 @@ export async function POST(req: Request) {
     console.log('[USERS_POST] Creating user in Clerk');
     let clerkUser;
     try {
-      // First create the user with basic info
       clerkUser = await clerkClient.users.createUser({
         emailAddress: [email],
         firstName: name?.split(' ')[0] || '',
         lastName: name?.split(' ').slice(1).join(' ') || '',
         password: password,
-      });
-
-      console.log('[USERS_POST] User created in Clerk:', clerkUser.id);
-
-      // Then update their metadata
-      await clerkClient.users.updateUser(clerkUser.id, {
         publicMetadata: {
           role: role,
           tenantId: tenantId,
         },
       });
 
-      console.log('[USERS_POST] User metadata updated in Clerk');
+      console.log('[USERS_POST] User created in Clerk:', clerkUser.id);
     } catch (error: any) {
       console.error('[USERS_POST] Clerk error:', error);
       // Extract more detailed error information
