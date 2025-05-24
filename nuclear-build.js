@@ -12,17 +12,62 @@ try {
     console.log('Backing up existing not-found.tsx');
   }
 
-  // Create a simple not-found.tsx
+  // Create a simple not-found.tsx that returns a static HTML response
   const simpleNotFound = `
 export default function NotFound() {
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen px-4">
-      <h1 className="text-4xl font-bold text-gray-800 mb-4">404</h1>
-      <p className="text-xl text-gray-600 mb-8">Não conseguimos encontrar a pagina que voce esta procurando.</p>
-      <a href="/dashboard" className="px-4 py-2 rounded bg-blue-600 text-white hover:bg-blue-700 transition-colors">
-        Voltar para a pagina inicial
-      </a>
-    </div>
+    <html>
+      <head>
+        <title>404 - Página não encontrada</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <style>
+          body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background-color: #f9fafb;
+          }
+          .container {
+            text-align: center;
+            padding: 2rem;
+          }
+          h1 {
+            font-size: 2.5rem;
+            color: #1f2937;
+            margin-bottom: 1rem;
+          }
+          p {
+            font-size: 1.25rem;
+            color: #4b5563;
+            margin-bottom: 2rem;
+          }
+          a {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            background-color: #2563eb;
+            color: white;
+            text-decoration: none;
+            border-radius: 0.375rem;
+            transition: background-color 0.2s;
+          }
+          a:hover {
+            background-color: #1d4ed8;
+          }
+        </style>
+      </head>
+      <body>
+        <div className="container">
+          <h1>404</h1>
+          <p>Não conseguimos encontrar a pagina que voce esta procurando.</p>
+          <a href="/dashboard">Voltar para a pagina inicial</a>
+        </div>
+      </body>
+    </html>
   );
 }
 
