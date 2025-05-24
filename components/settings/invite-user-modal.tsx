@@ -32,15 +32,32 @@ import {
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
+import { useTenantProjects } from '@/hooks/use-tenant-projects';
 
 const formSchema = z.object({
   email: z.string().email({
     message: 'Please enter a valid email address.',
   }),
+  name: z.string().min(2, {
+    message: 'Name must be at least 2 characters.',
+  }),
+  password: z.string().min(8, {
+    message: 'Password must be at least 8 characters.',
+  }),
   role: z.enum(['ADMIN', 'MANAGER', 'USER'], {
     message: 'Please select a valid role.',
   }),
+  projectIds: z.array(z.string()).optional(),
 });
+
+interface Project {
+  id: string;
+  name: string;
+  description?: string;
+  tenantId: string;
+  createdAt: string;
+  updatedAt: string;
+}
 
 interface InviteUserModalProps {
   isOpen: boolean;
@@ -56,30 +73,56 @@ export function InviteUserModal({
   canInviteAdmin,
 }: InviteUserModalProps) {
   const [isLoading, setIsLoading] = useState(false);
+  const { projects } = useTenantProjects(tenantId);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       email: '',
+      name: '',
+      password: '',
       role: 'USER',
+      projectIds: [],
     },
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
       setIsLoading(true);
+      console.log('Submitting form with values:', {
+        ...values,
+        password: '[REDACTED]',
+      });
 
-      await axios.post(`/api/tenants/${tenantId}/invitations`, values);
+      const response = await axios.post('/api/users', {
+        ...values,
+        tenantId,
+      });
 
-      toast.success('Invitation sent', {
-        description: `An invitation has been sent to ${values.email}.`,
+      toast.success('User created successfully', {
+        description: `User ${values.email} has been created and assigned to the tenant.`,
       });
 
       onClose();
       form.reset();
     } catch (error: any) {
+      console.error('Error creating user:', error);
+      const errorMessage =
+        error.response?.data?.error || 'Failed to create user.';
+      const errorDetails = error.response?.data?.details;
+
+      console.log('Error response:', {
+        status: error.response?.status,
+        data: error.response?.data,
+        message: error.message,
+      });
+
       toast.error('Error', {
-        description: error.response?.data || 'Failed to send invitation.',
+        description: errorDetails
+          ? `${errorMessage} ${
+              typeof errorDetails === 'string' ? errorDetails : ''
+            }`
+          : errorMessage,
       });
     } finally {
       setIsLoading(false);
@@ -90,9 +133,9 @@ export function InviteUserModal({
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Invite a new user</DialogTitle>
+          <DialogTitle>Create a new user</DialogTitle>
           <DialogDescription>
-            Send an invitation to join your organization.
+            Create a new user and assign them to your organization.
           </DialogDescription>
         </DialogHeader>
 
@@ -108,6 +151,43 @@ export function InviteUserModal({
                     <Input
                       {...field}
                       placeholder='user@example.com'
+                      disabled={isLoading}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name='name'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Full Name</FormLabel>
+                  <FormControl>
+                    <Input
+                      {...field}
+                      placeholder='John Doe'
+                      disabled={isLoading}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name='password'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Password</FormLabel>
+                  <FormControl>
+                    <Input
+                      {...field}
+                      type='password'
+                      placeholder='Enter password'
                       disabled={isLoading}
                     />
                   </FormControl>
@@ -145,6 +225,70 @@ export function InviteUserModal({
               )}
             />
 
+            <FormField
+              control={form.control}
+              name='projectIds'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Projects</FormLabel>
+                  <Select
+                    disabled={isLoading}
+                    onValueChange={(value) => {
+                      const currentValues = field.value || [];
+                      if (currentValues.includes(value)) {
+                        field.onChange(
+                          currentValues.filter((id) => id !== value)
+                        );
+                      } else {
+                        field.onChange([...currentValues, value]);
+                      }
+                    }}
+                    value={field.value?.[0]}
+                  >
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder='Select projects' />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {projects?.map((project: Project) => (
+                        <SelectItem key={project.id} value={project.id}>
+                          {project.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <div className='mt-2 flex flex-wrap gap-2'>
+                    {field.value?.map((projectId) => {
+                      const project = projects?.find(
+                        (p: Project) => p.id === projectId
+                      );
+                      return project ? (
+                        <div
+                          key={project.id}
+                          className='flex items-center gap-1 rounded-full bg-secondary px-3 py-1 text-sm'
+                        >
+                          {project.name}
+                          <button
+                            type='button'
+                            onClick={() => {
+                              field.onChange(
+                                field.value?.filter((id) => id !== project.id)
+                              );
+                            }}
+                            className='ml-1 text-muted-foreground hover:text-foreground'
+                          >
+                            ×
+                          </button>
+                        </div>
+                      ) : null;
+                    })}
+                  </div>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
             <DialogFooter>
               <Button
                 type='button'
@@ -155,7 +299,7 @@ export function InviteUserModal({
                 Cancel
               </Button>
               <Button type='submit' disabled={isLoading}>
-                {isLoading ? 'Sending...' : 'Send Invitation'}
+                {isLoading ? 'Creating...' : 'Create User'}
               </Button>
             </DialogFooter>
           </form>

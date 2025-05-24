@@ -125,12 +125,16 @@ export function Sidebar({ tenant, user }: SidebarProps) {
       href: `/tenants/${tenant.slug}/dashboard`,
       icon: LayoutDashboard,
     },
-    {
+  ];
+
+  // Add Organizations only for ADMIN and MANAGER roles
+  if (isAdminOrManager) {
+    navItems.push({
       title: 'Organizações',
       href: '/organizations',
       icon: Building,
-    },
-  ];
+    });
+  }
 
   // Add admin and manager specific items
   if (isAdminOrManager) {
