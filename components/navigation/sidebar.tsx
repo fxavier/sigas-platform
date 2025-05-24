@@ -296,11 +296,16 @@ export function Sidebar({ tenant, user }: SidebarProps) {
                 className={cn(
                   'flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium',
                   pathname === item.href
-                    ? 'bg-gray-100 text-gray-900'
+                    ? 'bg-primary/10 text-primary'
                     : 'text-gray-500 hover:text-gray-900 hover:bg-gray-50'
                 )}
               >
-                <item.icon className='h-4 w-4' />
+                <item.icon
+                  className={cn(
+                    'h-4 w-4',
+                    pathname === item.href ? 'text-primary' : ''
+                  )}
+                />
                 <span>{item.title}</span>
               </Link>
             ))}
@@ -340,7 +345,7 @@ export function Sidebar({ tenant, user }: SidebarProps) {
                   className={cn(
                     'block rounded-md px-3 py-2 text-sm font-medium cursor-pointer',
                     pathname.includes('/esms-documents/politicas')
-                      ? 'bg-gray-100 text-gray-900'
+                      ? 'bg-primary/10 text-primary'
                       : 'text-gray-500 hover:text-gray-900 hover:bg-gray-50'
                   )}
                   onClick={() => navigateToESMS('/esms-documents/politicas')}
@@ -351,7 +356,7 @@ export function Sidebar({ tenant, user }: SidebarProps) {
                   className={cn(
                     'block rounded-md px-3 py-2 text-sm font-medium cursor-pointer',
                     pathname.includes('/esms-documents/manuais')
-                      ? 'bg-gray-100 text-gray-900'
+                      ? 'bg-primary/10 text-primary'
                       : 'text-gray-500 hover:text-gray-900 hover:bg-gray-50'
                   )}
                   onClick={() => navigateToESMS('/esms-documents/manuais')}
@@ -362,7 +367,7 @@ export function Sidebar({ tenant, user }: SidebarProps) {
                   className={cn(
                     'block rounded-md px-3 py-2 text-sm font-medium cursor-pointer',
                     pathname.includes('/esms-documents/procedimentos')
-                      ? 'bg-gray-100 text-gray-900'
+                      ? 'bg-primary/10 text-primary'
                       : 'text-gray-500 hover:text-gray-900 hover:bg-gray-50'
                   )}
                   onClick={() =>
@@ -375,7 +380,7 @@ export function Sidebar({ tenant, user }: SidebarProps) {
                   className={cn(
                     'block rounded-md px-3 py-2 text-sm font-medium cursor-pointer',
                     pathname.includes('/esms-documents/formularios')
-                      ? 'bg-gray-100 text-gray-900'
+                      ? 'bg-primary/10 text-primary'
                       : 'text-gray-500 hover:text-gray-900 hover:bg-gray-50'
                   )}
                   onClick={() => navigateToESMS('/esms-documents/formularios')}
@@ -386,7 +391,7 @@ export function Sidebar({ tenant, user }: SidebarProps) {
                   className={cn(
                     'block rounded-md px-3 py-2 text-sm font-medium cursor-pointer',
                     pathname.includes('/esms-documents/modelos')
-                      ? 'bg-gray-100 text-gray-900'
+                      ? 'bg-primary/10 text-primary'
                       : 'text-gray-500 hover:text-gray-900 hover:bg-gray-50'
                   )}
                   onClick={() => navigateToESMS('/esms-documents/modelos')}
@@ -541,7 +546,7 @@ export function Sidebar({ tenant, user }: SidebarProps) {
                           pathname.startsWith(
                             `/tenants/${tenant.slug}/projects/${project.id}/`
                           )
-                          ? 'bg-gray-100 text-gray-900'
+                          ? 'bg-primary/10 text-primary'
                           : 'text-gray-500 hover:text-gray-900 hover:bg-gray-50'
                       )}
                     >
