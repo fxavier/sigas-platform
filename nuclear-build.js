@@ -12,36 +12,9 @@ try {
     console.log('Backing up existing not-found.tsx');
   }
 
-  // Create a custom 404 page in a separate directory
-  const custom404Dir = path.join(process.cwd(), 'app', 'custom-404');
-  if (!fs.existsSync(custom404Dir)) {
-    fs.mkdirSync(custom404Dir, { recursive: true });
-  }
-
-  // Create a layout file for the custom 404 page
-  const custom404Layout = `
-export default function Custom404Layout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  return (
-    <html lang="pt">
-      <head>
-        <title>404 - Página não encontrada</title>
-        <meta name="description" content="A página que você está procurando não foi encontrada." />
-      </head>
-      <body>
-        {children}
-      </body>
-    </html>
-  );
-}
-`;
-
-  // Create the custom 404 page
-  const custom404Page = `
-export default function Custom404() {
+  // Create a simple not-found.tsx
+  const simpleNotFound = `
+export default function NotFound() {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen px-4">
       <h1 className="text-4xl font-bold text-gray-800 mb-4">404</h1>
@@ -52,20 +25,9 @@ export default function Custom404() {
     </div>
   );
 }
-`;
 
-  // Write the custom 404 files
-  fs.writeFileSync(path.join(custom404Dir, 'layout.tsx'), custom404Layout);
-  fs.writeFileSync(path.join(custom404Dir, 'page.tsx'), custom404Page);
-  console.log('Created custom 404 page');
-
-  // Create a simple not-found.tsx that redirects to the custom 404 page
-  const simpleNotFound = `
-import { redirect } from 'next/navigation';
-
-export default function NotFound() {
-  redirect('/custom-404');
-}
+export const dynamic = 'force-static';
+export const revalidate = false;
 `;
 
   // Write the simple version
@@ -93,10 +55,6 @@ export default function NotFound() {
     // We'll ignore build errors and consider it a "partial success"
     console.log('Build encountered errors but we will continue...');
   }
-
-  // Clean up custom 404 files
-  fs.rmSync(custom404Dir, { recursive: true, force: true });
-  console.log('Cleaned up custom 404 files');
 
   // Restore the original not-found.tsx if it existed
   if (backupContent) {

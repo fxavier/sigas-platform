@@ -9,13 +9,14 @@ const isPublicRoute = (path: string) => {
     '/sign-up(.*)',
     '/api/webhook(.*)',
     '/custom-404',
+    '/_not-found',
   ].some((pattern) => new RegExp(`^${pattern}$`).test(path));
 };
 
 export default clerkMiddleware(async (_, req: NextRequest) => {
   // Handle the 404 case first
   if (req.nextUrl.pathname === '/_not-found') {
-    return NextResponse.rewrite(new URL('/custom-404', req.url));
+    return NextResponse.redirect(new URL('/custom-404', req.url));
   }
 
   // Allow public routes
