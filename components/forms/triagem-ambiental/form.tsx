@@ -668,11 +668,7 @@ export function TriagemAmbientalForm({
                   <div className='flex items-center gap-2'>
                     <FormControl>
                       <Select
-                        disabled={
-                          isLoading ||
-                          isLoadingResultados ||
-                          !form.getValues('subprojectoId')
-                        }
+                        disabled={isLoading || isLoadingResultados}
                         value={field.value}
                         onValueChange={field.onChange}
                       >
