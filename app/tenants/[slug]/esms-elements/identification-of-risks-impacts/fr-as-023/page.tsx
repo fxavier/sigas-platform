@@ -36,8 +36,15 @@ export default function TriagemAmbientalPage() {
   const [selectedItem, setSelectedItem] = useState<any | undefined>(undefined);
 
   // Initialize hook for data fetching
-  const { data, isLoading, error, fetchData, create, update, remove } =
-    useTriagemAmbiental();
+  const {
+    data,
+    isLoading,
+    error,
+    fetchData,
+    createTriagemAmbiental,
+    updateTriagemAmbiental,
+    deleteTriagemAmbiental,
+  } = useTriagemAmbiental();
 
   // Set project ID from URL query param if available
   useEffect(() => {
@@ -50,11 +57,17 @@ export default function TriagemAmbientalPage() {
   // Handle successful form submission
   const handleSuccess = async (formData: TriagemAmbientalFormData) => {
     try {
+      const data = {
+        ...formData,
+        consultaEngajamento: formData.consultaEngajamento || null,
+        accoesRecomendadas: formData.accoesRecomendadas || null,
+      };
+
       if (selectedItem?.id) {
-        await update(selectedItem.id, formData);
+        await updateTriagemAmbiental(selectedItem.id, data);
         toast.success('Registro atualizado com sucesso');
       } else {
-        await create(formData);
+        await createTriagemAmbiental(data);
         toast.success('Registro criado com sucesso');
       }
 
@@ -83,7 +96,7 @@ export default function TriagemAmbientalPage() {
   const handleDelete = async (id: string) => {
     if (window.confirm('Tem certeza que deseja excluir este registro?')) {
       try {
-        await remove(id);
+        await deleteTriagemAmbiental(id);
         toast.success('Registro excluído com sucesso');
         fetchData();
       } catch (error) {

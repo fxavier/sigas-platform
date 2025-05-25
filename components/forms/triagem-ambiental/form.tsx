@@ -400,13 +400,17 @@ export function TriagemAmbientalForm({
           }
 
           endpoint = '/api/resultados-triagem';
+          params.append('projectId', currentProjectId || '');
           body = {
             categoriaRisco: value,
             descricao: 'Nova categoria de risco',
             instrumentosASeremDesenvolvidos: '',
             tenantId: currentTenantId,
-            subprojectoId: form.getValues('subprojectoId'),
+            subprojectoId: form.getValues('subprojectoId') || null,
           };
+          console.log('Sending request to:', endpoint);
+          console.log('Request body:', JSON.stringify(body));
+          console.log('Request URL:', `${endpoint}?${params.toString()}`);
           break;
         default:
           toast.error('Tipo não suportado');
@@ -423,6 +427,12 @@ export function TriagemAmbientalForm({
         },
         body: JSON.stringify(body),
       });
+
+      console.log('Response status:', response.status);
+      console.log(
+        'Response headers:',
+        Object.fromEntries(response.headers.entries())
+      );
 
       if (!response.ok) {
         const errorData = await response.json();
