@@ -709,7 +709,6 @@ export function TriagemAmbientalForm({
                     <AddOptionDialog
                       type='Resultado'
                       onAdd={(value) => handleAddNewOption('resultado', value)}
-                      disabled={!form.getValues('subprojectoId')}
                     />
                   </div>
                   <FormMessage />
