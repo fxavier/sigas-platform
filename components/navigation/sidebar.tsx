@@ -162,6 +162,14 @@ export function Sidebar({ tenant, user }: SidebarProps) {
     });
   }
 
+  if (isAdminOrManager) {
+    navItems.push({
+      title: 'Perguntas para Avaliação de Classificação de Emergência',
+      href: `/tenants/${tenant.slug}/perguntas-avaliacao-classificacao-emergencia`,
+      icon: FileText,
+    });
+  }
+
   // Function to navigate to ESMS section with project context
   const navigateToESMS = (path: string) => {
     if (!selectedProjectId) {
