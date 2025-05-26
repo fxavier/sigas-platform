@@ -483,6 +483,38 @@ export function Sidebar({ tenant, user }: SidebarProps) {
                           title: 'FR.AS.009 - Relatório de acidente_incidente',
                           href: `/esms-elements/management-programs/fr-as-009`,
                         },
+                        {
+                          title: 'FR.AS.028 - Relatório Inicial de Incidente',
+                          href: `/esms-elements/management-programs/relatorio-inicial-incidente`,
+                        },
+                      ],
+                    })}
+                  </div>
+                  {/* Organizational Capacity and Competence */}
+                  <div className='pl-4'>
+                    {renderSubmenuItem({
+                      title: 'Organizational Capacity and Competence',
+                      href: `/esms-elements/organizational-capacity-and-competence`,
+                      submenu: [
+                        {
+                          title:
+                            'FR.AS.005 - Matriz de Identificacao das necessidades de treinamento',
+                          href: `/esms-elements/organizational-capacity-and-competence/fr-as-005`,
+                        },
+                      ],
+                    })}
+                  </div>
+
+                  {/* Emergency Preparedness and Response */}
+                  <div className='pl-4'>
+                    {renderSubmenuItem({
+                      title: 'Emergency Preparedness and Response',
+                      href: `/esms-elements/emergency-preparedness-response`,
+                      submenu: [
+                        {
+                          title: 'FR.AS.010 - Relatório de Simulacro',
+                          href: `/esms-elements/emergency-preparedness-response/fr-as-010`,
+                        },
                       ],
                     })}
                   </div>

@@ -1003,5 +1003,345 @@ export function createContextualPrismaClient({
         return item;
       },
     },
+
+    // Add MatrizTreinamento model
+    matrizTreinamento: {
+      ...db.matrizTreinamento,
+      findMany: async (args: Prisma.MatrizTreinamentoFindManyArgs = {}) => {
+        const where = args.where || {};
+        return db.matrizTreinamento.findMany({
+          ...args,
+          where: {
+            ...where,
+            ...(tenantId ? { tenantId } : {}),
+            ...(projectId ? { projectId } : {}),
+          },
+        });
+      },
+      findFirst: async (args: Prisma.MatrizTreinamentoFindFirstArgs = {}) => {
+        const where = args.where || {};
+        return db.matrizTreinamento.findFirst({
+          ...args,
+          where: {
+            ...where,
+            ...(tenantId ? { tenantId } : {}),
+          },
+        });
+      },
+      findUnique: async (args: Prisma.MatrizTreinamentoFindUniqueArgs) => {
+        if (!args?.where?.id) {
+          throw new Error('ID is required for findUnique');
+        }
+
+        const item = await db.matrizTreinamento.findFirst({
+          ...args,
+          where: {
+            id: args.where.id,
+            ...(tenantId ? { tenantId } : {}),
+          },
+        });
+
+        return item;
+      },
+    },
+
+    // Add AreaTreinamento model
+    areaTreinamento: {
+      ...db.areaTreinamento,
+      findMany: async (args: Prisma.AreaTreinamentoFindManyArgs = {}) => {
+        const where = args.where || {};
+        return db.areaTreinamento.findMany({
+          ...args,
+          where: {
+            ...where,
+            ...(tenantId ? { tenantId } : {}),
+          },
+        });
+      },
+      findFirst: async (args: Prisma.AreaTreinamentoFindFirstArgs = {}) => {
+        const where = args.where || {};
+        return db.areaTreinamento.findFirst({
+          ...args,
+          where: {
+            ...where,
+            ...(tenantId ? { tenantId } : {}),
+          },
+        });
+      },
+      findUnique: async (args: Prisma.AreaTreinamentoFindUniqueArgs) => {
+        if (!args?.where?.id) {
+          throw new Error('ID is required for findUnique');
+        }
+
+        const item = await db.areaTreinamento.findFirst({
+          ...args,
+          where: {
+            id: args.where.id,
+            ...(tenantId ? { tenantId } : {}),
+          },
+        });
+
+        return item;
+      },
+    },
+
+    // Add CaixaFerramentas model
+    caixaFerramentas: {
+      ...db.caixaFerramentas,
+      findMany: async (args: Prisma.CaixaFerramentasFindManyArgs = {}) => {
+        const where = args.where || {};
+        return db.caixaFerramentas.findMany({
+          ...args,
+          where: {
+            ...where,
+            ...(tenantId ? { tenantId } : {}),
+          },
+        });
+      },
+      findFirst: async (args: Prisma.CaixaFerramentasFindFirstArgs = {}) => {
+        const where = args.where || {};
+        return db.caixaFerramentas.findFirst({
+          ...args,
+          where: {
+            ...where,
+            ...(tenantId ? { tenantId } : {}),
+          },
+        });
+      },
+      findUnique: async (args: Prisma.CaixaFerramentasFindUniqueArgs) => {
+        if (!args?.where?.id) {
+          throw new Error('ID is required for findUnique');
+        }
+
+        const item = await db.caixaFerramentas.findFirst({
+          ...args,
+          where: {
+            id: args.where.id,
+            ...(tenantId ? { tenantId } : {}),
+          },
+        });
+
+        return item;
+      },
+    },
+
+    // Add RelatorioDeSimulacro model
+    relatorioDeSimulacro: {
+      ...db.relatorioDeSimulacro,
+      findMany: async (args: Prisma.RelatorioDeSimulacroFindManyArgs = {}) => {
+        const where = args.where || {};
+        return db.relatorioDeSimulacro.findMany({
+          ...args,
+          where: {
+            ...where,
+            ...(tenantId ? { tenantId } : {}),
+            ...(projectId ? { projectId } : {}),
+          },
+        });
+      },
+      findFirst: async (
+        args: Prisma.RelatorioDeSimulacroFindFirstArgs = {}
+      ) => {
+        const where = args.where || {};
+        return db.relatorioDeSimulacro.findFirst({
+          ...args,
+          where: {
+            ...where,
+            ...(tenantId ? { tenantId } : {}),
+          },
+        });
+      },
+      findUnique: async (args: Prisma.RelatorioDeSimulacroFindUniqueArgs) => {
+        if (!args?.where?.id) {
+          throw new Error('ID is required for findUnique');
+        }
+
+        const item = await db.relatorioDeSimulacro.findFirst({
+          ...args,
+          where: {
+            id: args.where.id,
+            ...(tenantId ? { tenantId } : {}),
+          },
+        });
+
+        return item;
+      },
+    },
+
+    // Add AvaliacaoClassificacaoEmergencia model
+    avaliacaoClassificacaoEmergencia: {
+      ...db.avaliacaoClassificacaoEmergencia,
+      findMany: async (
+        args: Prisma.AvaliacaoClassificacaoEmergenciaFindManyArgs = {}
+      ) => {
+        const where = args.where || {};
+        return db.avaliacaoClassificacaoEmergencia.findMany({
+          ...args,
+          where: {
+            ...where,
+            ...(tenantId ? { tenantId } : {}),
+            ...(projectId ? { projectId } : {}),
+          },
+        });
+      },
+      findFirst: async (
+        args: Prisma.AvaliacaoClassificacaoEmergenciaFindFirstArgs = {}
+      ) => {
+        const where = args.where || {};
+        return db.avaliacaoClassificacaoEmergencia.findFirst({
+          ...args,
+          where: {
+            ...where,
+            ...(tenantId ? { tenantId } : {}),
+          },
+        });
+      },
+      findUnique: async (
+        args: Prisma.AvaliacaoClassificacaoEmergenciaFindUniqueArgs
+      ) => {
+        if (!args?.where?.id) {
+          throw new Error('ID is required for findUnique');
+        }
+
+        const item = await db.avaliacaoClassificacaoEmergencia.findFirst({
+          ...args,
+          where: {
+            id: args.where.id,
+            ...(tenantId ? { tenantId } : {}),
+          },
+        });
+
+        return item;
+      },
+    },
+
+    // Add Recomendacoes model
+    recomendacoes: {
+      ...db.recomendacoes,
+      findMany: async (args: Prisma.RecomendacoesFindManyArgs = {}) => {
+        const where = args.where || {};
+        return db.recomendacoes.findMany({
+          ...args,
+          where: {
+            ...where,
+            ...(tenantId ? { tenantId } : {}),
+            ...(projectId ? { projectId } : {}),
+          },
+        });
+      },
+      findFirst: async (args: Prisma.RecomendacoesFindFirstArgs = {}) => {
+        const where = args.where || {};
+        return db.recomendacoes.findFirst({
+          ...args,
+          where: {
+            ...where,
+            ...(tenantId ? { tenantId } : {}),
+          },
+        });
+      },
+      findUnique: async (args: Prisma.RecomendacoesFindUniqueArgs) => {
+        if (!args?.where?.id) {
+          throw new Error('ID is required for findUnique');
+        }
+
+        const item = await db.recomendacoes.findFirst({
+          ...args,
+          where: {
+            id: args.where.id,
+            ...(tenantId ? { tenantId } : {}),
+          },
+        });
+
+        return item;
+      },
+    },
+
+    // Add PerguntaAvaliacaoClassificacaoEmergencia model
+    perguntaAvaliacaoClassificacaoEmergencia: {
+      ...db.perguntaAvaliacaoClassificacaoEmergencia,
+      findMany: async (
+        args: Prisma.PerguntaAvaliacaoClassificacaoEmergenciaFindManyArgs = {}
+      ) => {
+        const where = args.where || {};
+        return db.perguntaAvaliacaoClassificacaoEmergencia.findMany({
+          ...args,
+          where: {
+            ...where,
+            ...(tenantId ? { tenantId } : {}),
+            ...(projectId ? { projectId } : {}),
+          },
+        });
+      },
+      findFirst: async (
+        args: Prisma.PerguntaAvaliacaoClassificacaoEmergenciaFindFirstArgs = {}
+      ) => {
+        const where = args.where || {};
+        return db.perguntaAvaliacaoClassificacaoEmergencia.findFirst({
+          ...args,
+          where: {
+            ...where,
+            ...(tenantId ? { tenantId } : {}),
+          },
+        });
+      },
+      findUnique: async (
+        args: Prisma.PerguntaAvaliacaoClassificacaoEmergenciaFindUniqueArgs
+      ) => {
+        if (!args?.where?.id) {
+          throw new Error('ID is required for findUnique');
+        }
+
+        const item =
+          await db.perguntaAvaliacaoClassificacaoEmergencia.findFirst({
+            ...args,
+            where: {
+              id: args.where.id,
+              ...(tenantId ? { tenantId } : {}),
+            },
+          });
+
+        return item;
+      },
+    },
+
+    // Add Funcao model
+    funcao: {
+      ...db.funcao,
+      findMany: async (args: Prisma.FuncaoFindManyArgs = {}) => {
+        const where = args.where || {};
+        return db.funcao.findMany({
+          ...args,
+          where: {
+            ...where,
+            ...(tenantId ? { tenantId } : {}),
+          },
+        });
+      },
+      findFirst: async (args: Prisma.FuncaoFindFirstArgs = {}) => {
+        const where = args.where || {};
+        return db.funcao.findFirst({
+          ...args,
+          where: {
+            ...where,
+            ...(tenantId ? { tenantId } : {}),
+          },
+        });
+      },
+      findUnique: async (args: Prisma.FuncaoFindUniqueArgs) => {
+        if (!args?.where?.id) {
+          throw new Error('ID is required for findUnique');
+        }
+
+        const item = await db.funcao.findFirst({
+          ...args,
+          where: {
+            id: args.where.id,
+            ...(tenantId ? { tenantId } : {}),
+          },
+        });
+
+        return item;
+      },
+    },
   };
 }

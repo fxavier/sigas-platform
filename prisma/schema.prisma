@@ -14,81 +14,89 @@ enum UserRole {
 }
 
 model Tenant {
-  id                            String                                                    @id @default(uuid())
-  name                          String
-  slug                          String                                                    @unique
-  description                   String?
-  createdAt                     DateTime                                                  @default(now())
-  updatedAt                     DateTime                                                  @updatedAt
-  accoesCorrectivasPermanentes  AccoesCorrectivasPermanentesTomar[]
-  areasTreinamento              AreaTreinamento[]
-  biodiversidadeRecursos        BiodeversidadeRecursosNaturais[]
-  caixaFerramentas              CaixaFerramentas[]
-  consultationEngagement        ConsultationAndEngagement[]
-  controleRequisitosLegais      ControleRequisitosLegais[]
-  factorAmbientalImpactado      FactorAmbientalImpactado[]
-  fichaInformacaoAmbiental      FichaInformacaoAmbientalPreliminar[]
-  fotografiasIncidente          FotografiasIncidente[]
-  funcao                        Funcao[]
-  identificacaoAvaliacaoRiscos  IdentificacaoAvaliacaoDeRiscosImapctosAmbientaisSociais[]
-  identificacaoRiscosSubprojeto IdentificacaoRiscosImpactosAmbientaisESociaisSubproject[]
-  incidentes                    Incidente[]
-  matrizTreinamento             MatrizTreinamento[]
-  membrosEquipa                 MembrosEquipa[]
-  objetivosMetasAmbientais      RegistoObjectivosMetasAmbientaisSociais[]
-  pessoaDoContacto              PessoaDoContacto[]
-  pessoasEnvolvidasInvestigacao PessoasEnvolvidasNaInvestigacao[]
-  projects                      Project[]
-  relatoriosIncidente           RelatorioIncidente[]
-  relatoriosIniciaisIncidente   RelatorioInicialIncidente[]
-  responsavelVerificacao        ResponsavelPelaVerificacao[]
-  responsavelPreenchimento      ResponsavelPeloPreenchimento[]
-  resultadoTriagem              ResultadoTriagem[]
-  riscosImpactos                RiscosImpactos[]
-  subprojecto                   Subprojecto[]
-  tabelaAccoes                  TabelaAccoes[]
-  transactions                  Transaction[]
-  triagemAmbientalSocial        TriagemAmbientalSocial[]
-  users                         User[]
-  politicas                     Politicas[]
-  manuais                       Manuais[]
-  procedimentos                 Procedimentos[]
-  formularios                   Formularios[]
-  modelos                       Modelos[]
-  userInvitations               UserInvitation[]
-  relatorioAuditoriaInterna     RelatorioAuditoriaInterna[]
-  descricaoNaoConformidade      DescricaoNaoConformidade[]
+  id                                       String                                                    @id @default(uuid())
+  name                                     String
+  slug                                     String                                                    @unique
+  description                              String?
+  createdAt                                DateTime                                                  @default(now())
+  updatedAt                                DateTime                                                  @updatedAt
+  accoesCorrectivasPermanentes             AccoesCorrectivasPermanentesTomar[]
+  areasTreinamento                         AreaTreinamento[]
+  biodiversidadeRecursos                   BiodeversidadeRecursosNaturais[]
+  caixaFerramentas                         CaixaFerramentas[]
+  consultationEngagement                   ConsultationAndEngagement[]
+  controleRequisitosLegais                 ControleRequisitosLegais[]
+  factorAmbientalImpactado                 FactorAmbientalImpactado[]
+  fichaInformacaoAmbiental                 FichaInformacaoAmbientalPreliminar[]
+  fotografiasIncidente                     FotografiasIncidente[]
+  funcao                                   Funcao[]
+  identificacaoAvaliacaoRiscos             IdentificacaoAvaliacaoDeRiscosImapctosAmbientaisSociais[]
+  identificacaoRiscosSubprojeto            IdentificacaoRiscosImpactosAmbientaisESociaisSubproject[]
+  incidentes                               Incidente[]
+  matrizTreinamento                        MatrizTreinamento[]
+  membrosEquipa                            MembrosEquipa[]
+  objetivosMetasAmbientais                 RegistoObjectivosMetasAmbientaisSociais[]
+  pessoaDoContacto                         PessoaDoContacto[]
+  pessoasEnvolvidasInvestigacao            PessoasEnvolvidasNaInvestigacao[]
+  projects                                 Project[]
+  relatoriosIncidente                      RelatorioIncidente[]
+  relatoriosIniciaisIncidente              RelatorioInicialIncidente[]
+  responsavelVerificacao                   ResponsavelPelaVerificacao[]
+  responsavelPreenchimento                 ResponsavelPeloPreenchimento[]
+  resultadoTriagem                         ResultadoTriagem[]
+  riscosImpactos                           RiscosImpactos[]
+  subprojecto                              Subprojecto[]
+  tabelaAccoes                             TabelaAccoes[]
+  transactions                             Transaction[]
+  triagemAmbientalSocial                   TriagemAmbientalSocial[]
+  users                                    User[]
+  politicas                                Politicas[]
+  manuais                                  Manuais[]
+  procedimentos                            Procedimentos[]
+  formularios                              Formularios[]
+  modelos                                  Modelos[]
+  userInvitations                          UserInvitation[]
+  relatorioAuditoriaInterna                RelatorioAuditoriaInterna[]
+  descricaoNaoConformidade                 DescricaoNaoConformidade[]
+  avaliacaoClassificacaoEmergencia         AvaliacaoClassificacaoEmergencia[]
+  relatorioDeSimulacro                     RelatorioDeSimulacro[]
+  perguntaAvaliacaoClassificacaoEmergencia PerguntaAvaliacaoClassificacaoEmergencia[]
+  recomendacoes                            Recomendacoes[]
 
   @@map("tenants")
 }
 
 model Project {
-  id                           String                                                    @id @default(uuid())
-  name                         String
-  description                  String
-  createdAt                    DateTime                                                  @default(now())
-  updatedAt                    DateTime                                                  @updatedAt
-  tenantId                     String
-  consultationEngagement       ConsultationAndEngagement[]
-  controleRequisitosLegais     ControleRequisitosLegais[]
-  fichaInformacaoAmbiental     FichaInformacaoAmbientalPreliminar[]
-  identificacaoAvaliacaoRiscos IdentificacaoAvaliacaoDeRiscosImapctosAmbientaisSociais[]
-  matrizTreinamento            MatrizTreinamento[]
-  objetivosMetasAmbientais     RegistoObjectivosMetasAmbientaisSociais[]
-  tenant                       Tenant                                                    @relation(fields: [tenantId], references: [id], onDelete: Cascade)
-  relatoriosIncidente          RelatorioIncidente[]
-  relatoriosIniciaisIncidente  RelatorioInicialIncidente[]
-  resultadoTriagem             ResultadoTriagem[]
-  transactions                 Transaction[]
-  triagemAmbientalSocial       TriagemAmbientalSocial[]
-  politicas                    Politicas[]
-  manuais                      Manuais[]
-  procedimentos                Procedimentos[]
-  formularios                  Formularios[]
-  modelos                      Modelos[]
-  userProjects                 UserProject[]
-  relatorioAuditoriaInterna    RelatorioAuditoriaInterna[]
-  descricaoNaoConformidade     DescricaoNaoConformidade[]
+  id                                       String                                                    @id @default(uuid())
+  name                                     String
+  description                              String
+  createdAt                                DateTime                                                  @default(now())
+  updatedAt                                DateTime                                                  @updatedAt
+  tenantId                                 String
+  consultationEngagement                   ConsultationAndEngagement[]
+  controleRequisitosLegais                 ControleRequisitosLegais[]
+  fichaInformacaoAmbiental                 FichaInformacaoAmbientalPreliminar[]
+  identificacaoAvaliacaoRiscos             IdentificacaoAvaliacaoDeRiscosImapctosAmbientaisSociais[]
+  matrizTreinamento                        MatrizTreinamento[]
+  objetivosMetasAmbientais                 RegistoObjectivosMetasAmbientaisSociais[]
+  tenant                                   Tenant                                                    @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  relatoriosIncidente                      RelatorioIncidente[]
+  relatoriosIniciaisIncidente              RelatorioInicialIncidente[]
+  resultadoTriagem                         ResultadoTriagem[]
+  transactions                             Transaction[]
+  triagemAmbientalSocial                   TriagemAmbientalSocial[]
+  politicas                                Politicas[]
+  manuais                                  Manuais[]
+  procedimentos                            Procedimentos[]
+  formularios                              Formularios[]
+  modelos                                  Modelos[]
+  userProjects                             UserProject[]
+  relatorioAuditoriaInterna                RelatorioAuditoriaInterna[]
+  descricaoNaoConformidade                 DescricaoNaoConformidade[]
+  avaliacaoClassificacaoEmergencia         AvaliacaoClassificacaoEmergencia[]
+  relatorioDeSimulacro                     RelatorioDeSimulacro[]
+  perguntaAvaliacaoClassificacaoEmergencia PerguntaAvaliacaoClassificacaoEmergencia[]
+  recomendacoes                            Recomendacoes[]
 
   @@unique([name, tenantId])
   @@index([tenantId])
@@ -1122,4 +1130,109 @@ model DescricaoNaoConformidade {
   @@index([relatorioAuditoriaInternaId])
   @@index([tenantId])
   @@map("descricao_nao_conformidade")
+}
+
+enum tipoEmergenciaSimulada {
+  SAUDE_E_SEGURANCA
+  AMBIENTAL
+}
+
+enum ObjectoDoSimulacro {
+  DISPOSITIVOS_DE_EMERGENCIA
+  REACAO_DOS_COLABORADORES
+  ACTUACAO_DA_EQUIPA_DE_EMERGENCIA
+}
+
+model PerguntaAvaliacaoClassificacaoEmergencia {
+  id                               String                             @id @default(uuid())
+  codigo                           String
+  pergunta                         String
+  tenantId                         String
+  tenant                           Tenant                             @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  projectId                        String
+  project                          Project                            @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  avaliacaoClassificacaoEmergencia AvaliacaoClassificacaoEmergencia[]
+
+  @@index([tenantId])
+  @@map("pergunta_avaliacao_classificacao_emergencia")
+}
+
+enum RespostaSiNaoNA {
+  SIM
+  NAO
+  N_A
+}
+
+model AvaliacaoClassificacaoEmergencia {
+  id                                                     String                                                   @id @default(uuid())
+  perguntaId                                             String
+  pergunta                                               PerguntaAvaliacaoClassificacaoEmergencia                 @relation(fields: [perguntaId], references: [id], onDelete: Cascade)
+  resposta                                               RespostaSiNaoNA
+  comentarios                                            String?
+  tenantId                                               String
+  tenant                                                 Tenant                                                   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  projectId                                              String
+  project                                                Project                                                  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  relatorioDeSimulacroOnAvaliacaoClassificacaoEmergencia RelatorioDeSimulacroOnAvaliacaoClassificacaoEmergencia[]
+  RelatorioDeSimulacro                                   RelatorioDeSimulacro?                                    @relation(fields: [relatorioDeSimulacroId], references: [id])
+  relatorioDeSimulacroId                                 String?
+
+  @@index([tenantId])
+  @@map("avaliacao_classificacao_emergencia")
+}
+
+model Recomendacoes {
+  id                                  String                                @id @default(uuid())
+  acao                                String
+  responsavel                         String
+  prazo                               String
+  tenantId                            String
+  tenant                              Tenant                                @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  projectId                           String
+  project                             Project                               @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  relatorioDeSimulacroOnRecomendacoes RelatorioDeSimulacroOnRecomendacoes[]
+
+  @@index([tenantId])
+  @@map("recomendacoes")
+}
+
+model RelatorioDeSimulacro {
+  id                                                     String                                                   @id @default(uuid())
+  local                                                  String
+  dataCriacao                                            DateTime                                                 @default(now())
+  tipoEmergenciaSimulada                                 tipoEmergenciaSimulada
+  objectoDoSimulacro                                     ObjectoDoSimulacro
+  descricaoDocenario                                     String
+  relatorioDeSimulacroOnAvaliacaoClassificacaoEmergencia RelatorioDeSimulacroOnAvaliacaoClassificacaoEmergencia[]
+  relatorioDeSimulacroOnRecomendacoes                    RelatorioDeSimulacroOnRecomendacoes[]
+  tenantId                                               String
+  tenant                                                 Tenant                                                   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  projectId                                              String
+  project                                                Project                                                  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  assinaturaCoordenadorEmergencia                        String
+  outraAssinatura                                        String?
+  AvaliacaoClassificacaoEmergencia                       AvaliacaoClassificacaoEmergencia[]
+
+  @@index([tenantId])
+  @@map("relatorio_de_simulacro")
+}
+
+model RelatorioDeSimulacroOnAvaliacaoClassificacaoEmergencia {
+  relatorioDeSimulacroId             String
+  avaliacaoClassificacaoEmergenciaId String
+  relatorioDeSimulacro               RelatorioDeSimulacro             @relation(fields: [relatorioDeSimulacroId], references: [id], onDelete: Cascade, map: "simulacro_fkey")
+  avaliacaoClassificacaoEmergencia   AvaliacaoClassificacaoEmergencia @relation(fields: [avaliacaoClassificacaoEmergenciaId], references: [id], onDelete: Cascade, map: "avaliacao_fkey")
+
+  @@id([relatorioDeSimulacroId, avaliacaoClassificacaoEmergenciaId])
+  @@map("relatorio_de_simulacro_on_avaliacao_classificacao_emergencia")
+}
+
+model RelatorioDeSimulacroOnRecomendacoes {
+  relatorioDeSimulacroId String
+  recomendacoesId        String
+  relatorioDeSimulacro   RelatorioDeSimulacro @relation(fields: [relatorioDeSimulacroId], references: [id], onDelete: Cascade)
+  recomendacoes          Recomendacoes        @relation(fields: [recomendacoesId], references: [id], onDelete: Cascade)
+
+  @@id([relatorioDeSimulacroId, recomendacoesId])
+  @@map("relatorio_de_simulacro_on_recomendacoes")
 }

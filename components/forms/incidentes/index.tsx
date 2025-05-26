@@ -1,0 +1,1 @@
+export { IncidenteForm } from './form';
