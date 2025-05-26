@@ -230,8 +230,8 @@ export function Sidebar({ tenant, user }: SidebarProps) {
   };
 
   return (
-    <div className='h-full border-r bg-white w-64 flex flex-col'>
-      <div className='p-4 border-b flex flex-col gap-2'>
+    <div className='h-full border-r bg-white w-64 flex flex-col overflow-hidden'>
+      <div className='p-4 border-b flex flex-col gap-2 flex-shrink-0'>
         <div className='flex justify-between items-center'>
           <h2 className='font-semibold'>Navigation</h2>
         </div>
@@ -285,293 +285,299 @@ export function Sidebar({ tenant, user }: SidebarProps) {
         </div>
       </div>
 
-      <ScrollArea className='flex-1'>
-        <div className='p-2'>
-          {/* Main navigation items - ALWAYS show these */}
-          <nav className='space-y-1'>
-            {navItems.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={cn(
-                  'flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium',
-                  pathname === item.href
-                    ? 'bg-primary/10 text-primary'
-                    : 'text-gray-500 hover:text-gray-900 hover:bg-gray-50'
-                )}
-              >
-                <item.icon
+      <div className='flex-1 overflow-hidden'>
+        <ScrollArea className='h-full'>
+          <div className='p-2 pb-6'>
+            {/* Main navigation items - ALWAYS show these */}
+            <nav className='space-y-1'>
+              {navItems.map((item) => (
+                <Link
+                  key={item.href}
+                  href={item.href}
                   className={cn(
-                    'h-4 w-4',
-                    pathname === item.href ? 'text-primary' : ''
+                    'flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium',
+                    pathname === item.href
+                      ? 'bg-primary/10 text-primary'
+                      : 'text-gray-500 hover:text-gray-900 hover:bg-gray-50'
                   )}
-                />
-                <span>{item.title}</span>
-              </Link>
-            ))}
-          </nav>
+                >
+                  <item.icon
+                    className={cn(
+                      'h-4 w-4',
+                      pathname === item.href ? 'text-primary' : ''
+                    )}
+                  />
+                  <span>{item.title}</span>
+                </Link>
+              ))}
+            </nav>
 
-          {/* ESMS Documents Section - Available to all users */}
-          <div className='mt-6'>
-            <div
-              className='flex items-center justify-between px-3 py-2 text-sm font-medium text-gray-500 cursor-pointer hover:text-gray-900'
-              onClick={() => {
-                if (!selectedProjectId) {
-                  toast.error('Selecione um projeto primeiro');
-                  setShowProjectSelection(true);
-                  return;
-                }
-                setIsESMSDocumentsOpen(!isESMSDocumentsOpen);
-              }}
-            >
-              <div className='flex items-center gap-3'>
-                <FileText className='h-4 w-4' />
-                <span>ESMS Documents</span>
-              </div>
-              <div className='flex items-center'>
-                {!selectedProjectId && (
-                  <AlertTriangle className='h-4 w-4 text-amber-500 mr-2' />
-                )}
-                {isESMSDocumentsOpen ? (
-                  <ChevronDown className='h-4 w-4' />
-                ) : (
-                  <ChevronRight className='h-4 w-4' />
-                )}
-              </div>
-            </div>
-            {isESMSDocumentsOpen && selectedProjectId && (
-              <div className='mt-1 pl-9 space-y-1'>
-                <div
-                  className={cn(
-                    'block rounded-md px-3 py-2 text-sm font-medium cursor-pointer',
-                    pathname.includes('/esms-documents/politicas')
-                      ? 'bg-primary/10 text-primary'
-                      : 'text-gray-500 hover:text-gray-900 hover:bg-gray-50'
-                  )}
-                  onClick={() => navigateToESMS('/esms-documents/politicas')}
-                >
-                  Políticas
-                </div>
-                <div
-                  className={cn(
-                    'block rounded-md px-3 py-2 text-sm font-medium cursor-pointer',
-                    pathname.includes('/esms-documents/manuais')
-                      ? 'bg-primary/10 text-primary'
-                      : 'text-gray-500 hover:text-gray-900 hover:bg-gray-50'
-                  )}
-                  onClick={() => navigateToESMS('/esms-documents/manuais')}
-                >
-                  Manuais
-                </div>
-                <div
-                  className={cn(
-                    'block rounded-md px-3 py-2 text-sm font-medium cursor-pointer',
-                    pathname.includes('/esms-documents/procedimentos')
-                      ? 'bg-primary/10 text-primary'
-                      : 'text-gray-500 hover:text-gray-900 hover:bg-gray-50'
-                  )}
-                  onClick={() =>
-                    navigateToESMS('/esms-documents/procedimentos')
+            {/* ESMS Documents Section - Available to all users */}
+            <div className='mt-6'>
+              <div
+                className='flex items-center justify-between px-3 py-2 text-sm font-medium text-gray-500 cursor-pointer hover:text-gray-900'
+                onClick={() => {
+                  if (!selectedProjectId) {
+                    toast.error('Selecione um projeto primeiro');
+                    setShowProjectSelection(true);
+                    return;
                   }
-                >
-                  Procedimentos
+                  setIsESMSDocumentsOpen(!isESMSDocumentsOpen);
+                }}
+              >
+                <div className='flex items-center gap-3'>
+                  <FileText className='h-4 w-4' />
+                  <span>ESMS Documents</span>
                 </div>
-                <div
-                  className={cn(
-                    'block rounded-md px-3 py-2 text-sm font-medium cursor-pointer',
-                    pathname.includes('/esms-documents/formularios')
-                      ? 'bg-primary/10 text-primary'
-                      : 'text-gray-500 hover:text-gray-900 hover:bg-gray-50'
+                <div className='flex items-center'>
+                  {!selectedProjectId && (
+                    <AlertTriangle className='h-4 w-4 text-amber-500 mr-2' />
                   )}
-                  onClick={() => navigateToESMS('/esms-documents/formularios')}
-                >
-                  Formulários
-                </div>
-                <div
-                  className={cn(
-                    'block rounded-md px-3 py-2 text-sm font-medium cursor-pointer',
-                    pathname.includes('/esms-documents/modelos')
-                      ? 'bg-primary/10 text-primary'
-                      : 'text-gray-500 hover:text-gray-900 hover:bg-gray-50'
+                  {isESMSDocumentsOpen ? (
+                    <ChevronDown className='h-4 w-4' />
+                  ) : (
+                    <ChevronRight className='h-4 w-4' />
                   )}
-                  onClick={() => navigateToESMS('/esms-documents/modelos')}
-                >
-                  Modelos
                 </div>
               </div>
-            )}
-          </div>
-
-          {/* ESMS Elements Section - Available to all users */}
-          <div className='mt-2'>
-            <div
-              className='flex items-center justify-between px-3 py-2 text-sm font-medium text-gray-500 cursor-pointer hover:text-gray-900'
-              onClick={() => {
-                if (!selectedProjectId) {
-                  toast.error('Selecione um projeto primeiro');
-                  setShowProjectSelection(true);
-                  return;
-                }
-                setIsESMSElementsOpen(!isESMSElementsOpen);
-              }}
-            >
-              <div className='flex items-center gap-3'>
-                <FileStack className='h-4 w-4' />
-                <span>ESMS Elements</span>
-              </div>
-              <div className='flex items-center'>
-                {!selectedProjectId && (
-                  <AlertTriangle className='h-4 w-4 text-amber-500 mr-2' />
-                )}
-                {isESMSElementsOpen ? (
-                  <ChevronDown className='h-4 w-4' />
-                ) : (
-                  <ChevronRight className='h-4 w-4' />
-                )}
-              </div>
-            </div>
-
-            {isESMSElementsOpen && selectedProjectId && (
-              <div className='mt-1 space-y-1'>
-                {/* ES Risks and Impacts Identification */}
-                <div className='pl-4'>
-                  {renderSubmenuItem({
-                    title: 'ES Risks and Impacts Identification',
-                    href: `/esms-elements/risks-impacts`,
-                    submenu: [
-                      {
-                        title:
-                          'FR.AS.002 - Identificação e Avaliação de impactos e riscos ambientais e sociais',
-                        href: `/esms-elements/identification-of-risks-impacts/fr-as-002`,
-                      },
-                      {
-                        title: 'FR.AS.003 - Controle de requisitos legais',
-                        href: `/esms-elements/identification-of-risks-impacts/fr-as-003`,
-                      },
-                      {
-                        title: 'FR.AS.023 - Triagem ambiental e social',
-                        href: `/esms-elements/identification-of-risks-impacts/fr-as-023`,
-                      },
-                      {
-                        title: 'MOD.AS.01 - Instrução do processo de AIA',
-                        href: `/esms-elements/identification-of-risks-impacts/mod-as-01`,
-                      },
-                      {
-                        title:
-                          'MOD.AS.02 - Ficha de informação ambiental preliminar',
-                        href: `/esms-elements/identification-of-risks-impacts/mod-as-02`,
-                      },
-                    ],
-                  })}
+              {isESMSDocumentsOpen && selectedProjectId && (
+                <div className='mt-1 pl-9 space-y-1'>
+                  <div
+                    className={cn(
+                      'block rounded-md px-3 py-2 text-sm font-medium cursor-pointer',
+                      pathname.includes('/esms-documents/politicas')
+                        ? 'bg-primary/10 text-primary'
+                        : 'text-gray-500 hover:text-gray-900 hover:bg-gray-50'
+                    )}
+                    onClick={() => navigateToESMS('/esms-documents/politicas')}
+                  >
+                    Políticas
+                  </div>
+                  <div
+                    className={cn(
+                      'block rounded-md px-3 py-2 text-sm font-medium cursor-pointer',
+                      pathname.includes('/esms-documents/manuais')
+                        ? 'bg-primary/10 text-primary'
+                        : 'text-gray-500 hover:text-gray-900 hover:bg-gray-50'
+                    )}
+                    onClick={() => navigateToESMS('/esms-documents/manuais')}
+                  >
+                    Manuais
+                  </div>
+                  <div
+                    className={cn(
+                      'block rounded-md px-3 py-2 text-sm font-medium cursor-pointer',
+                      pathname.includes('/esms-documents/procedimentos')
+                        ? 'bg-primary/10 text-primary'
+                        : 'text-gray-500 hover:text-gray-900 hover:bg-gray-50'
+                    )}
+                    onClick={() =>
+                      navigateToESMS('/esms-documents/procedimentos')
+                    }
+                  >
+                    Procedimentos
+                  </div>
+                  <div
+                    className={cn(
+                      'block rounded-md px-3 py-2 text-sm font-medium cursor-pointer',
+                      pathname.includes('/esms-documents/formularios')
+                        ? 'bg-primary/10 text-primary'
+                        : 'text-gray-500 hover:text-gray-900 hover:bg-gray-50'
+                    )}
+                    onClick={() =>
+                      navigateToESMS('/esms-documents/formularios')
+                    }
+                  >
+                    Formulários
+                  </div>
+                  <div
+                    className={cn(
+                      'block rounded-md px-3 py-2 text-sm font-medium cursor-pointer',
+                      pathname.includes('/esms-documents/modelos')
+                        ? 'bg-primary/10 text-primary'
+                        : 'text-gray-500 hover:text-gray-900 hover:bg-gray-50'
+                    )}
+                    onClick={() => navigateToESMS('/esms-documents/modelos')}
+                  >
+                    Modelos
+                  </div>
                 </div>
-
-                {/* Management Programs */}
-                <div className='pl-4'>
-                  {renderSubmenuItem({
-                    title: 'Management Programs',
-                    href: `/esms-elements/management-programs`,
-                    submenu: [
-                      {
-                        title:
-                          'FR.AS.020 - Registo do objectivos e metas ambientais e sociais',
-                        href: `/esms-elements/management-programs/fr-as-020`,
-                      },
-                      {
-                        title: 'FR.AS.009 - Relatório de acidente_incidente',
-                        href: `/esms-elements/management-programs/fr-as-009`,
-                      },
-                    ],
-                  })}
-                </div>
-
-                {/* Monitoring and Review - Just showing a couple as examples */}
-                <div className='pl-4'>
-                  {renderSubmenuItem({
-                    title: 'Monitoring and Review',
-                    href: `/esms-elements/monitoring-and-review`,
-                    submenu: [
-                      {
-                        title: 'FR.AS.016 - Relatório de Auditoria',
-                        href: `/esms-elements/monitoring-and-review/fr-as-016`,
-                      },
-                    ],
-                  })}
-                </div>
-              </div>
-            )}
-          </div>
-
-          {/* Projects section */}
-          <div className='mt-6'>
-            <div
-              className='flex items-center justify-between px-3 py-2 text-sm font-medium text-gray-500 cursor-pointer hover:text-gray-900'
-              onClick={() => setIsProjectsOpen(!isProjectsOpen)}
-            >
-              <div className='flex items-center gap-3'>
-                <FolderKanban className='h-4 w-4' />
-                <span>{user.role === 'USER' ? 'My Projects' : 'Projects'}</span>
-              </div>
-              {isProjectsOpen ? (
-                <ChevronDown className='h-4 w-4' />
-              ) : (
-                <ChevronRight className='h-4 w-4' />
               )}
             </div>
 
-            {isProjectsOpen && (
-              <div className='mt-1 pl-9 space-y-1'>
-                {isLoading ? (
-                  // Skeleton loaders for projects
-                  <div className='space-y-2'>
-                    <Skeleton className='h-8 w-full' />
-                    <Skeleton className='h-8 w-full' />
-                    <Skeleton className='h-8 w-full' />
-                  </div>
-                ) : projects.length === 0 ? (
-                  <div className='text-sm text-gray-500 py-2'>
-                    {user.role === 'USER'
-                      ? 'No projects assigned yet'
-                      : 'No projects created yet'}
-                  </div>
-                ) : (
-                  // Project list
-                  projects.map((project) => (
-                    <Link
-                      key={project.id}
-                      href={`/tenants/${tenant.slug}/projects/${project.id}`}
-                      className={cn(
-                        'block rounded-md px-3 py-2 text-sm font-medium',
-                        pathname ===
-                          `/tenants/${tenant.slug}/projects/${project.id}` ||
-                          pathname.startsWith(
-                            `/tenants/${tenant.slug}/projects/${project.id}/`
-                          )
-                          ? 'bg-primary/10 text-primary'
-                          : 'text-gray-500 hover:text-gray-900 hover:bg-gray-50'
-                      )}
-                    >
-                      {project.name}
-                    </Link>
-                  ))
-                )}
+            {/* ESMS Elements Section - Available to all users */}
+            <div className='mt-2'>
+              <div
+                className='flex items-center justify-between px-3 py-2 text-sm font-medium text-gray-500 cursor-pointer hover:text-gray-900'
+                onClick={() => {
+                  if (!selectedProjectId) {
+                    toast.error('Selecione um projeto primeiro');
+                    setShowProjectSelection(true);
+                    return;
+                  }
+                  setIsESMSElementsOpen(!isESMSElementsOpen);
+                }}
+              >
+                <div className='flex items-center gap-3'>
+                  <FileStack className='h-4 w-4' />
+                  <span>ESMS Elements</span>
+                </div>
+                <div className='flex items-center'>
+                  {!selectedProjectId && (
+                    <AlertTriangle className='h-4 w-4 text-amber-500 mr-2' />
+                  )}
+                  {isESMSElementsOpen ? (
+                    <ChevronDown className='h-4 w-4' />
+                  ) : (
+                    <ChevronRight className='h-4 w-4' />
+                  )}
+                </div>
+              </div>
 
-                {/* Create project button for admins and managers */}
-                {canCreateProjects && (
-                  <Button
-                    variant='ghost'
-                    size='sm'
-                    className='w-full justify-start text-gray-500 hover:text-gray-900 mt-2'
-                    onClick={() => setIsCreateModalOpen(true)}
-                  >
-                    <Plus className='h-4 w-4 mr-2' />
-                    New Project
-                  </Button>
+              {isESMSElementsOpen && selectedProjectId && (
+                <div className='mt-1 space-y-1'>
+                  {/* ES Risks and Impacts Identification */}
+                  <div className='pl-4'>
+                    {renderSubmenuItem({
+                      title: 'ES Risks and Impacts Identification',
+                      href: `/esms-elements/risks-impacts`,
+                      submenu: [
+                        {
+                          title:
+                            'FR.AS.002 - Identificação e Avaliação de impactos e riscos ambientais e sociais',
+                          href: `/esms-elements/identification-of-risks-impacts/fr-as-002`,
+                        },
+                        {
+                          title: 'FR.AS.003 - Controle de requisitos legais',
+                          href: `/esms-elements/identification-of-risks-impacts/fr-as-003`,
+                        },
+                        {
+                          title: 'FR.AS.023 - Triagem ambiental e social',
+                          href: `/esms-elements/identification-of-risks-impacts/fr-as-023`,
+                        },
+                        {
+                          title: 'MOD.AS.01 - Instrução do processo de AIA',
+                          href: `/esms-elements/identification-of-risks-impacts/mod-as-01`,
+                        },
+                        {
+                          title:
+                            'MOD.AS.02 - Ficha de informação ambiental preliminar',
+                          href: `/esms-elements/identification-of-risks-impacts/mod-as-02`,
+                        },
+                      ],
+                    })}
+                  </div>
+
+                  {/* Management Programs */}
+                  <div className='pl-4'>
+                    {renderSubmenuItem({
+                      title: 'Management Programs',
+                      href: `/esms-elements/management-programs`,
+                      submenu: [
+                        {
+                          title:
+                            'FR.AS.020 - Registo do objectivos e metas ambientais e sociais',
+                          href: `/esms-elements/management-programs/fr-as-020`,
+                        },
+                        {
+                          title: 'FR.AS.009 - Relatório de acidente_incidente',
+                          href: `/esms-elements/management-programs/fr-as-009`,
+                        },
+                      ],
+                    })}
+                  </div>
+
+                  {/* Monitoring and Review - Just showing a couple as examples */}
+                  <div className='pl-4'>
+                    {renderSubmenuItem({
+                      title: 'Monitoring and Review',
+                      href: `/esms-elements/monitoring-and-review`,
+                      submenu: [
+                        {
+                          title: 'FR.AS.016 - Relatório de Auditoria',
+                          href: `/esms-elements/monitoring-and-review/fr-as-016`,
+                        },
+                      ],
+                    })}
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Projects section */}
+            <div className='mt-6'>
+              <div
+                className='flex items-center justify-between px-3 py-2 text-sm font-medium text-gray-500 cursor-pointer hover:text-gray-900'
+                onClick={() => setIsProjectsOpen(!isProjectsOpen)}
+              >
+                <div className='flex items-center gap-3'>
+                  <FolderKanban className='h-4 w-4' />
+                  <span>
+                    {user.role === 'USER' ? 'My Projects' : 'Projects'}
+                  </span>
+                </div>
+                {isProjectsOpen ? (
+                  <ChevronDown className='h-4 w-4' />
+                ) : (
+                  <ChevronRight className='h-4 w-4' />
                 )}
               </div>
-            )}
+
+              {isProjectsOpen && (
+                <div className='mt-1 pl-9 space-y-1'>
+                  {isLoading ? (
+                    // Skeleton loaders for projects
+                    <div className='space-y-2'>
+                      <Skeleton className='h-8 w-full' />
+                      <Skeleton className='h-8 w-full' />
+                      <Skeleton className='h-8 w-full' />
+                    </div>
+                  ) : projects.length === 0 ? (
+                    <div className='text-sm text-gray-500 py-2'>
+                      {user.role === 'USER'
+                        ? 'No projects assigned yet'
+                        : 'No projects created yet'}
+                    </div>
+                  ) : (
+                    // Project list
+                    projects.map((project) => (
+                      <Link
+                        key={project.id}
+                        href={`/tenants/${tenant.slug}/projects/${project.id}`}
+                        className={cn(
+                          'block rounded-md px-3 py-2 text-sm font-medium',
+                          pathname ===
+                            `/tenants/${tenant.slug}/projects/${project.id}` ||
+                            pathname.startsWith(
+                              `/tenants/${tenant.slug}/projects/${project.id}/`
+                            )
+                            ? 'bg-primary/10 text-primary'
+                            : 'text-gray-500 hover:text-gray-900 hover:bg-gray-50'
+                        )}
+                      >
+                        {project.name}
+                      </Link>
+                    ))
+                  )}
+
+                  {/* Create project button for admins and managers */}
+                  {canCreateProjects && (
+                    <Button
+                      variant='ghost'
+                      size='sm'
+                      className='w-full justify-start text-gray-500 hover:text-gray-900 mt-2'
+                      onClick={() => setIsCreateModalOpen(true)}
+                    >
+                      <Plus className='h-4 w-4 mr-2' />
+                      New Project
+                    </Button>
+                  )}
+                </div>
+              )}
+            </div>
           </div>
-        </div>
-      </ScrollArea>
+        </ScrollArea>
+      </div>
 
       {/* Project Selection Dialog */}
       <Dialog
