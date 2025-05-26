@@ -110,6 +110,7 @@ export function TriagemAmbientalForm({
   const [isLoadingSubprojectos, setIsLoadingSubprojectos] = useState(false);
   const [isLoadingResultados, setIsLoadingResultados] = useState(false);
   const [isLoadingRecursos, setIsLoadingRecursos] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Parse the initial data for identificacaoRiscos if available
   const parseIdentificacaoRiscos = () => {
@@ -302,6 +303,7 @@ export function TriagemAmbientalForm({
       return;
     }
 
+    setIsSubmitting(true);
     try {
       // Ensure current tenant and project IDs are used
       const submissionData = {
@@ -314,6 +316,8 @@ export function TriagemAmbientalForm({
     } catch (error) {
       console.error('Error submitting form:', error);
       toast.error('Erro ao salvar formulário');
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -908,7 +912,7 @@ export function TriagemAmbientalForm({
         </FormSection>
 
         <FormActions
-          isSubmitting={isLoading}
+          isSubmitting={isSubmitting || isLoading}
           onCancel={onCancel}
           submitLabel={initialData?.id ? 'Atualizar' : 'Criar'}
           className='sticky bottom-0 py-4 px-6 bg-white border-t border-gray-200 -mx-6 mt-8'

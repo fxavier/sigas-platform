@@ -14,8 +14,8 @@ export const baseDocumentSchema = z.object({
     .min(1, { message: 'Nome do documento é obrigatório' }),
   ficheiro: z.string().min(1, { message: 'Ficheiro é obrigatório' }),
   estadoDocumento: estadoDocumentoEnum,
-  periodoRetencao: z.date().optional().nullable(),
-  dataRevisao: z.date().optional().nullable(),
+  periodoRetencao: z.coerce.date().optional().nullable(),
+  dataRevisao: z.coerce.date().optional().nullable(),
 });
 
 export const politicasSchema = baseDocumentSchema;
