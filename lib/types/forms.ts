@@ -45,3 +45,24 @@ export interface IdentificacaoAvaliacaoDeRiscosImapctosAmbientaisSociais {
     descricao: string;
   };
 }
+
+export interface MembroEquipa {
+  id: string;
+  nome: string;
+  cargo: string;
+  departamento: string;
+  tenantId: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface TabelaAccao {
+  id: string;
+  accao: string;
+  pessoaResponsavel: string;
+  prazo: Date;
+  dataConclusao: Date;
+  tenantId: string;
+  createdAt: Date;
+  updatedAt: Date;
+}

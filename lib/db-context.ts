@@ -799,6 +799,47 @@ export function createContextualPrismaClient({
       },
     },
 
+    // Add RelatorioIncidente model
+    relatorioIncidente: {
+      ...db.relatorioIncidente,
+      findMany: async (args: Prisma.RelatorioIncidenteFindManyArgs = {}) => {
+        const where = args.where || {};
+        return db.relatorioIncidente.findMany({
+          ...args,
+          where: {
+            ...where,
+            ...(tenantId ? { tenantId } : {}),
+            ...(projectId ? { projectId } : {}),
+          },
+        });
+      },
+      findFirst: async (args: Prisma.RelatorioIncidenteFindFirstArgs = {}) => {
+        const where = args.where || {};
+        return db.relatorioIncidente.findFirst({
+          ...args,
+          where: {
+            ...where,
+            ...(tenantId ? { tenantId } : {}),
+          },
+        });
+      },
+      findUnique: async (args: Prisma.RelatorioIncidenteFindUniqueArgs) => {
+        if (!args?.where?.id) {
+          throw new Error('ID is required for findUnique');
+        }
+
+        const item = await db.relatorioIncidente.findFirst({
+          ...args,
+          where: {
+            id: args.where.id,
+            ...(tenantId ? { tenantId } : {}),
+          },
+        });
+
+        return item;
+      },
+    },
+
     // Add Politicas model
     politicas: {
       ...db.politicas,

@@ -8,8 +8,10 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { ControleRequisitosForm } from '@/components/forms/controle-requisitos';
-import { createColumns } from '@/components/forms/controle-requisitos/columns';
+import {
+  ControleRequisitosForm,
+  createColumns,
+} from '@/components/forms/esms-documents/controle-requisitos';
 import { DataTable } from '@/components/ui/data-table';
 import { useRouter, useParams, useSearchParams } from 'next/navigation';
 import { Button } from '@/components/ui/button';
