@@ -21,9 +21,9 @@ export default async function DashboardPage() {
     },
   });
 
-  // If user doesn't exist in DB, redirect to onboarding
+  // If user doesn't exist in DB, redirect to sign-in
   if (userWithTenants.length === 0) {
-    redirect('/onboarding');
+    redirect('/sign-in');
   }
 
   // If user belongs to only one tenant, redirect directly to that tenant's dashboard

@@ -1511,8 +1511,6 @@ export function createContextualPrismaClient({
       },
     },
 
-    // Add this to your db-context.ts file after the existing models
-
     // Add RegistoComunicacoesRelatorioAsPartesInteressadas model
     registoComunicacoesRelatorioAsPartesInteressadas: {
       ...db.registoComunicacoesRelatorioAsPartesInteressadas,
@@ -1873,6 +1871,60 @@ export function createContextualPrismaClient({
             },
           }
         );
+
+        return item;
+      },
+    },
+
+    // Add this model to your createContextualPrismaClient function in db-context.ts
+
+    // ================================
+    // FORMULÁRIO REGISTO RECLAMAÇÕES TRABALHADORES MODEL
+    // ================================
+
+    // Add FormularioRegistoReclamacoesTrabalhadores model
+    formularioRegistoReclamacoesTrabalhadores: {
+      ...db.formularioRegistoReclamacoesTrabalhadores,
+      findMany: async (
+        args: Prisma.FormularioRegistoReclamacoesTrabalhadoresFindManyArgs = {}
+      ) => {
+        const where = args.where || {};
+        return db.formularioRegistoReclamacoesTrabalhadores.findMany({
+          ...args,
+          where: {
+            ...where,
+            ...(tenantId ? { tenantId } : {}),
+            ...(projectId ? { projectId } : {}),
+          },
+        });
+      },
+      findFirst: async (
+        args: Prisma.FormularioRegistoReclamacoesTrabalhadoresFindFirstArgs = {}
+      ) => {
+        const where = args.where || {};
+        return db.formularioRegistoReclamacoesTrabalhadores.findFirst({
+          ...args,
+          where: {
+            ...where,
+            ...(tenantId ? { tenantId } : {}),
+          },
+        });
+      },
+      findUnique: async (
+        args: Prisma.FormularioRegistoReclamacoesTrabalhadoresFindUniqueArgs
+      ) => {
+        if (!args?.where?.id) {
+          throw new Error('ID is required for findUnique');
+        }
+
+        const item =
+          await db.formularioRegistoReclamacoesTrabalhadores.findFirst({
+            ...args,
+            where: {
+              id: args.where.id,
+              ...(tenantId ? { tenantId } : {}),
+            },
+          });
 
         return item;
       },

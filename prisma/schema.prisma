@@ -74,6 +74,7 @@ model Tenant {
   subcategoriasQueixas                             SubcategoriaQueixa[]
   resolucoesQueixas                                ResolucaoQueixa[]
   fotosDocumentosComprovativoEncerramento          FotosDocumentosComprovativoEncerramento[]
+  formularioRegistoReclamacoesTrabalhadores        FormularioRegistoReclamacoesTrabalhadores[]
 
   @@map("tenants")
 }
@@ -121,6 +122,7 @@ model Project {
   subcategoriasQueixas                             SubcategoriaQueixa[]
   resolucoesQueixas                                ResolucaoQueixa[]
   fotosDocumentosComprovativoEncerramento          FotosDocumentosComprovativoEncerramento[]
+  formularioRegistoReclamacoesTrabalhadores        FormularioRegistoReclamacoesTrabalhadores[]
 
   @@unique([name, tenantId])
   @@index([tenantId])
@@ -1522,4 +1524,49 @@ model FichaRegistoQueixasReclamacoes {
   project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
 
   @@map("ficha_registo_queixas_reclamacoes")
+}
+
+enum MetodoPreferidoDoContacto {
+  TELEFONE
+  EMAIL
+  PRESENCIAL
+}
+
+enum LinguaPreferida {
+  PORTUGUES
+  INGLES
+  OUTRO
+}
+
+model FormularioRegistoReclamacoesTrabalhadores {
+  id                                     String                    @id @default(uuid())
+  nome                                   String?
+  empresa                                String
+  dataReclamacao                         DateTime
+  horaReclamacao                         String
+  metodoPreferidoDoContacto              MetodoPreferidoDoContacto
+  detalhesDoContacto                     String
+  linguaPreferida                        LinguaPreferida
+  outraLinguaPreferida                   String?
+  detalhesDareclamacao                   String
+  numeroIdentificacaoResponsavelRecepcao String
+  nomeResponsavelRecepcao                String?
+  funcaoResponsavelRecepcao              String?
+  assinaturaResponsavelRecepcao          String?
+  dataRecepcao                           String?
+  detalhesResponsavelRecepcao            String?
+  detalhesAcompanhamento                 String?
+  dataEncerramento                       DateTime?
+  assinatura                             String?
+  confirmarRecepcaoResposta              RespostaSimNao?
+  nomeDoConfirmante                      String?
+  dataConfirmacao                        DateTime?
+  assinaturaConfirmacao                  String?
+  tenantId                               String
+  tenant                                 Tenant                    @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  projectId                              String
+  project                                Project                   @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId])
+  @@map("formulario_registo_reclamacoes_trabalhadores")
 }
