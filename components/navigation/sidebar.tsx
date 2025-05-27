@@ -527,6 +527,21 @@ export function Sidebar({ tenant, user }: SidebarProps) {
                     })}
                   </div>
 
+                  {/* Stakeholders Engagement */}
+                  <div className='pl-4'>
+                    {renderSubmenuItem({
+                      title: 'Stakeholders Engagement',
+                      href: `/esms-elements/stakeholders-engagement`,
+                      submenu: [
+                        {
+                          title:
+                            'FR.AS.019 - Mapeamento das partes interessadas',
+                          href: `/esms-elements/stakeholders-engagement/fr-as-019`,
+                        },
+                      ],
+                    })}
+                  </div>
+
                   {/* Monitoring and Review - Just showing a couple as examples */}
                   <div className='pl-4'>
                     {renderSubmenuItem({

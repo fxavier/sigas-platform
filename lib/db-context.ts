@@ -1343,5 +1343,172 @@ export function createContextualPrismaClient({
         return item;
       },
     },
+
+    // ================================
+    // NEW STAKEHOLDER-RELATED MODELS
+    // ================================
+
+    // Add Categoria model
+    categorias: {
+      ...db.categoria,
+      findMany: async (args: Prisma.CategoriaFindManyArgs = {}) => {
+        const where = args.where || {};
+        return db.categoria.findMany({
+          ...args,
+          where: {
+            ...where,
+            ...(tenantId ? { tenantId } : {}),
+          },
+        });
+      },
+      findFirst: async (args: Prisma.CategoriaFindFirstArgs = {}) => {
+        const where = args.where || {};
+        return db.categoria.findFirst({
+          ...args,
+          where: {
+            ...where,
+            ...(tenantId ? { tenantId } : {}),
+          },
+        });
+      },
+      findUnique: async (args: Prisma.CategoriaFindUniqueArgs) => {
+        if (!args?.where?.id) {
+          throw new Error('ID is required for findUnique');
+        }
+
+        const item = await db.categoria.findFirst({
+          ...args,
+          where: {
+            id: args.where.id,
+            ...(tenantId ? { tenantId } : {}),
+          },
+        });
+
+        return item;
+      },
+    },
+
+    // Add AreaActuacao model
+    areaActuacao: {
+      ...db.areaActuacao,
+      findMany: async (args: Prisma.AreaActuacaoFindManyArgs = {}) => {
+        const where = args.where || {};
+        return db.areaActuacao.findMany({
+          ...args,
+          where: {
+            ...where,
+            ...(tenantId ? { tenantId } : {}),
+          },
+        });
+      },
+      findFirst: async (args: Prisma.AreaActuacaoFindFirstArgs = {}) => {
+        const where = args.where || {};
+        return db.areaActuacao.findFirst({
+          ...args,
+          where: {
+            ...where,
+            ...(tenantId ? { tenantId } : {}),
+          },
+        });
+      },
+      findUnique: async (args: Prisma.AreaActuacaoFindUniqueArgs) => {
+        if (!args?.where?.id) {
+          throw new Error('ID is required for findUnique');
+        }
+
+        const item = await db.areaActuacao.findFirst({
+          ...args,
+          where: {
+            id: args.where.id,
+            ...(tenantId ? { tenantId } : {}),
+          },
+        });
+
+        return item;
+      },
+    },
+
+    // Add PrincipaisInteresses model
+    principaisInteresses: {
+      ...db.principaisInteresses,
+      findMany: async (args: Prisma.PrincipaisInteressesFindManyArgs = {}) => {
+        const where = args.where || {};
+        return db.principaisInteresses.findMany({
+          ...args,
+          where: {
+            ...where,
+            ...(tenantId ? { tenantId } : {}),
+          },
+        });
+      },
+      findFirst: async (
+        args: Prisma.PrincipaisInteressesFindFirstArgs = {}
+      ) => {
+        const where = args.where || {};
+        return db.principaisInteresses.findFirst({
+          ...args,
+          where: {
+            ...where,
+            ...(tenantId ? { tenantId } : {}),
+          },
+        });
+      },
+      findUnique: async (args: Prisma.PrincipaisInteressesFindUniqueArgs) => {
+        if (!args?.where?.id) {
+          throw new Error('ID is required for findUnique');
+        }
+
+        const item = await db.principaisInteresses.findFirst({
+          ...args,
+          where: {
+            id: args.where.id,
+            ...(tenantId ? { tenantId } : {}),
+          },
+        });
+
+        return item;
+      },
+    },
+
+    // Add MatrizStakeholder model
+    matrizStakeholder: {
+      ...db.matrizStakeholder,
+      findMany: async (args: Prisma.MatrizStakeholderFindManyArgs = {}) => {
+        const where = args.where || {};
+        return db.matrizStakeholder.findMany({
+          ...args,
+          where: {
+            ...where,
+            ...(tenantId ? { tenantId } : {}),
+            ...(projectId ? { projectId } : {}),
+          },
+        });
+      },
+      findFirst: async (args: Prisma.MatrizStakeholderFindFirstArgs = {}) => {
+        const where = args.where || {};
+        return db.matrizStakeholder.findFirst({
+          ...args,
+          where: {
+            ...where,
+            ...(tenantId ? { tenantId } : {}),
+          },
+        });
+      },
+      findUnique: async (args: Prisma.MatrizStakeholderFindUniqueArgs) => {
+        if (!args?.where?.id) {
+          throw new Error('ID is required for findUnique');
+        }
+
+        const item = await db.matrizStakeholder.findFirst({
+          ...args,
+          where: {
+            id: args.where.id,
+            ...(tenantId ? { tenantId } : {}),
+          },
+        });
+
+        return item;
+      },
+    },
   };
 }

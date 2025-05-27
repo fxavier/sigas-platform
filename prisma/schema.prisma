@@ -62,6 +62,10 @@ model Tenant {
   relatorioDeSimulacro                     RelatorioDeSimulacro[]
   perguntaAvaliacaoClassificacaoEmergencia PerguntaAvaliacaoClassificacaoEmergencia[]
   recomendacoes                            Recomendacoes[]
+  categorias                               Categoria[]
+  areaActuacao                             AreaActuacao[]
+  principaisInteresses                     PrincipaisInteresses[]
+  matrizStakeholder                        MatrizStakeholder[]
 
   @@map("tenants")
 }
@@ -97,6 +101,10 @@ model Project {
   relatorioDeSimulacro                     RelatorioDeSimulacro[]
   perguntaAvaliacaoClassificacaoEmergencia PerguntaAvaliacaoClassificacaoEmergencia[]
   recomendacoes                            Recomendacoes[]
+  categorias                               Categoria[]
+  areaActuacao                             AreaActuacao[]
+  principaisInteresses                     PrincipaisInteresses[]
+  matrizStakeholder                        MatrizStakeholder[]
 
   @@unique([name, tenantId])
   @@index([tenantId])
@@ -1235,4 +1243,87 @@ model RelatorioDeSimulacroOnRecomendacoes {
 
   @@id([relatorioDeSimulacroId, recomendacoesId])
   @@map("relatorio_de_simulacro_on_recomendacoes")
+}
+
+enum Alcance {
+  LOCAL
+  REGIONAL
+  NACIONAL
+  INTERNACIONAL
+}
+
+model Categoria {
+  id                String              @id @default(uuid())
+  nome              String
+  tenantId          String
+  tenant            Tenant              @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  projectId         String
+  project           Project             @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  matrizStakeholder MatrizStakeholder[]
+
+  @@index([tenantId])
+  @@map("categorias")
+}
+
+enum PercepcaoOuPosicionamento {
+  POSITIVO
+  NEGATIVO
+  NEUTRO
+}
+
+enum PotenciaImpacto {
+  BAIXO
+  MEDIO
+  ALTO
+}
+
+model AreaActuacao {
+  id                String              @id @default(uuid())
+  nome              String
+  tenantId          String
+  tenant            Tenant              @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  projectId         String
+  project           Project             @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  matrizStakeholder MatrizStakeholder[]
+
+  @@index([tenantId])
+  @@map("area_actuacao")
+}
+
+model PrincipaisInteresses {
+  id                String              @id @default(uuid())
+  nome              String
+  tenantId          String
+  tenant            Tenant              @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  projectId         String
+  project           Project             @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  matrizStakeholder MatrizStakeholder[]
+
+  @@index([tenantId])
+  @@map("principais_interesses")
+}
+
+model MatrizStakeholder {
+  id                                          String                    @id @default(uuid())
+  stakeholder                                 String
+  categoria                                   Categoria                 @relation(fields: [categoriaId], references: [id], onDelete: Cascade)
+  categoriaId                                 String
+  alcance                                     Alcance
+  areaActuacao                                AreaActuacao              @relation(fields: [areaActuacaoId], references: [id], onDelete: Cascade)
+  areaActuacaoId                              String
+  descricao                                   String
+  historico_relacionamento                    String
+  percepcaoEmRelacaoAoEmprendedor             String
+  principaisInteresses                        PrincipaisInteresses      @relation(fields: [principaisInteressesId], references: [id], onDelete: Cascade)
+  principaisInteressesId                      String
+  oportunidades_associadas                    String
+  riscos_associados                           String
+  percepcaoOuPosicionamento                   PercepcaoOuPosicionamento
+  potenciaImpacto                             PotenciaImpacto
+  diagnostico_directriz_posicionamento        String
+  interlocutor_responsavel_por_relacionamento String
+  tenantId                                    String
+  tenant                                      Tenant                    @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  projectId                                   String
+  project                                     Project                   @relation(fields: [projectId], references: [id], onDelete: Cascade)
 }
