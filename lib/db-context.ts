@@ -1510,5 +1510,372 @@ export function createContextualPrismaClient({
         return item;
       },
     },
+
+    // Add this to your db-context.ts file after the existing models
+
+    // Add RegistoComunicacoesRelatorioAsPartesInteressadas model
+    registoComunicacoesRelatorioAsPartesInteressadas: {
+      ...db.registoComunicacoesRelatorioAsPartesInteressadas,
+      findMany: async (
+        args: Prisma.RegistoComunicacoesRelatorioAsPartesInteressadasFindManyArgs = {}
+      ) => {
+        const where = args.where || {};
+        return db.registoComunicacoesRelatorioAsPartesInteressadas.findMany({
+          ...args,
+          where: {
+            ...where,
+            ...(tenantId ? { tenantId } : {}),
+            ...(projectId ? { projectId } : {}),
+          },
+        });
+      },
+      findFirst: async (
+        args: Prisma.RegistoComunicacoesRelatorioAsPartesInteressadasFindFirstArgs = {}
+      ) => {
+        const where = args.where || {};
+        return db.registoComunicacoesRelatorioAsPartesInteressadas.findFirst({
+          ...args,
+          where: {
+            ...where,
+            ...(tenantId ? { tenantId } : {}),
+          },
+        });
+      },
+      findUnique: async (
+        args: Prisma.RegistoComunicacoesRelatorioAsPartesInteressadasFindUniqueArgs
+      ) => {
+        if (!args?.where?.id) {
+          throw new Error('ID is required for findUnique');
+        }
+
+        const item =
+          await db.registoComunicacoesRelatorioAsPartesInteressadas.findFirst({
+            ...args,
+            where: {
+              id: args.where.id,
+              ...(tenantId ? { tenantId } : {}),
+            },
+          });
+
+        return item;
+      },
+    },
+
+    // Add MinutasComiteGestaoAmbientalESocial model
+    minutasComiteGestaoAmbientalESocial: {
+      ...db.minutasComiteGestaoAmbientalESocial,
+      findMany: async (
+        args: Prisma.MinutasComiteGestaoAmbientalESocialFindManyArgs = {}
+      ) => {
+        const where = args.where || {};
+        return db.minutasComiteGestaoAmbientalESocial.findMany({
+          ...args,
+          where: {
+            ...where,
+            ...(tenantId ? { tenantId } : {}),
+            ...(projectId ? { projectId } : {}),
+          },
+        });
+      },
+      findFirst: async (
+        args: Prisma.MinutasComiteGestaoAmbientalESocialFindFirstArgs = {}
+      ) => {
+        const where = args.where || {};
+        return db.minutasComiteGestaoAmbientalESocial.findFirst({
+          ...args,
+          where: {
+            ...where,
+            ...(tenantId ? { tenantId } : {}),
+          },
+        });
+      },
+      findUnique: async (
+        args: Prisma.MinutasComiteGestaoAmbientalESocialFindUniqueArgs
+      ) => {
+        if (!args?.where?.id) {
+          throw new Error('ID is required for findUnique');
+        }
+
+        const item = await db.minutasComiteGestaoAmbientalESocial.findFirst({
+          ...args,
+          where: {
+            id: args.where.id,
+            ...(tenantId ? { tenantId } : {}),
+          },
+        });
+
+        return item;
+      },
+    },
+
+    // Add ResultadoComiteGestaoAmbientalESocial model
+    resultadoComiteGestaoAmbientalESocial: {
+      ...db.resultadoComiteGestaoAmbientalESocial,
+      findMany: async (
+        args: Prisma.ResultadoComiteGestaoAmbientalESocialFindManyArgs = {}
+      ) => {
+        const where = args.where || {};
+        return db.resultadoComiteGestaoAmbientalESocial.findMany({
+          ...args,
+          where: {
+            ...where,
+            ...(tenantId ? { tenantId } : {}),
+            ...(projectId ? { projectId } : {}),
+          },
+        });
+      },
+      findFirst: async (
+        args: Prisma.ResultadoComiteGestaoAmbientalESocialFindFirstArgs = {}
+      ) => {
+        const where = args.where || {};
+        return db.resultadoComiteGestaoAmbientalESocial.findFirst({
+          ...args,
+          where: {
+            ...where,
+            ...(tenantId ? { tenantId } : {}),
+          },
+        });
+      },
+      findUnique: async (
+        args: Prisma.ResultadoComiteGestaoAmbientalESocialFindUniqueArgs
+      ) => {
+        if (!args?.where?.id) {
+          throw new Error('ID is required for findUnique');
+        }
+
+        const item = await db.resultadoComiteGestaoAmbientalESocial.findFirst({
+          ...args,
+          where: {
+            id: args.where.id,
+            ...(tenantId ? { tenantId } : {}),
+          },
+        });
+
+        return item;
+      },
+    },
+
+    // ================================
+    // FICHA REGISTO QUEIXAS RECLAMAÇÕES MODELS
+    // ================================
+
+    // Add FichaRegistoQueixasReclamacoes model
+    fichaRegistoQueixasReclamacoes: {
+      ...db.fichaRegistoQueixasReclamacoes,
+      findMany: async (
+        args: Prisma.FichaRegistoQueixasReclamacoesFindManyArgs = {}
+      ) => {
+        const where = args.where || {};
+        return db.fichaRegistoQueixasReclamacoes.findMany({
+          ...args,
+          where: {
+            ...where,
+            ...(tenantId ? { tenantId } : {}),
+            ...(projectId ? { projectId } : {}),
+          },
+        });
+      },
+      findFirst: async (
+        args: Prisma.FichaRegistoQueixasReclamacoesFindFirstArgs = {}
+      ) => {
+        const where = args.where || {};
+        return db.fichaRegistoQueixasReclamacoes.findFirst({
+          ...args,
+          where: {
+            ...where,
+            ...(tenantId ? { tenantId } : {}),
+          },
+        });
+      },
+      findUnique: async (
+        args: Prisma.FichaRegistoQueixasReclamacoesFindUniqueArgs
+      ) => {
+        if (!args?.where?.id) {
+          throw new Error('ID is required for findUnique');
+        }
+
+        const item = await db.fichaRegistoQueixasReclamacoes.findFirst({
+          ...args,
+          where: {
+            id: args.where.id,
+            ...(tenantId ? { tenantId } : {}),
+          },
+        });
+
+        return item;
+      },
+    },
+
+    // Add CategoriaQueixa model
+    categoriaQueixa: {
+      ...db.categoriaQueixa,
+      findMany: async (args: Prisma.CategoriaQueixaFindManyArgs = {}) => {
+        const where = args.where || {};
+        return db.categoriaQueixa.findMany({
+          ...args,
+          where: {
+            ...where,
+            ...(tenantId ? { tenantId } : {}),
+            ...(projectId ? { projectId } : {}),
+          },
+        });
+      },
+      findFirst: async (args: Prisma.CategoriaQueixaFindFirstArgs = {}) => {
+        const where = args.where || {};
+        return db.categoriaQueixa.findFirst({
+          ...args,
+          where: {
+            ...where,
+            ...(tenantId ? { tenantId } : {}),
+          },
+        });
+      },
+      findUnique: async (args: Prisma.CategoriaQueixaFindUniqueArgs) => {
+        if (!args?.where?.id) {
+          throw new Error('ID is required for findUnique');
+        }
+
+        const item = await db.categoriaQueixa.findFirst({
+          ...args,
+          where: {
+            id: args.where.id,
+            ...(tenantId ? { tenantId } : {}),
+          },
+        });
+
+        return item;
+      },
+    },
+
+    // Add SubcategoriaQueixa model
+    subcategoriaQueixa: {
+      ...db.subcategoriaQueixa,
+      findMany: async (args: Prisma.SubcategoriaQueixaFindManyArgs = {}) => {
+        const where = args.where || {};
+        return db.subcategoriaQueixa.findMany({
+          ...args,
+          where: {
+            ...where,
+            ...(tenantId ? { tenantId } : {}),
+            ...(projectId ? { projectId } : {}),
+          },
+        });
+      },
+      findFirst: async (args: Prisma.SubcategoriaQueixaFindFirstArgs = {}) => {
+        const where = args.where || {};
+        return db.subcategoriaQueixa.findFirst({
+          ...args,
+          where: {
+            ...where,
+            ...(tenantId ? { tenantId } : {}),
+          },
+        });
+      },
+      findUnique: async (args: Prisma.SubcategoriaQueixaFindUniqueArgs) => {
+        if (!args?.where?.id) {
+          throw new Error('ID is required for findUnique');
+        }
+
+        const item = await db.subcategoriaQueixa.findFirst({
+          ...args,
+          where: {
+            id: args.where.id,
+            ...(tenantId ? { tenantId } : {}),
+          },
+        });
+
+        return item;
+      },
+    },
+
+    // Add ResolucaoQueixa model
+    resolucaoQueixa: {
+      ...db.resolucaoQueixa,
+      findMany: async (args: Prisma.ResolucaoQueixaFindManyArgs = {}) => {
+        const where = args.where || {};
+        return db.resolucaoQueixa.findMany({
+          ...args,
+          where: {
+            ...where,
+            ...(tenantId ? { tenantId } : {}),
+            ...(projectId ? { projectId } : {}),
+          },
+        });
+      },
+      findFirst: async (args: Prisma.ResolucaoQueixaFindFirstArgs = {}) => {
+        const where = args.where || {};
+        return db.resolucaoQueixa.findFirst({
+          ...args,
+          where: {
+            ...where,
+            ...(tenantId ? { tenantId } : {}),
+          },
+        });
+      },
+      findUnique: async (args: Prisma.ResolucaoQueixaFindUniqueArgs) => {
+        if (!args?.where?.id) {
+          throw new Error('ID is required for findUnique');
+        }
+
+        const item = await db.resolucaoQueixa.findFirst({
+          ...args,
+          where: {
+            id: args.where.id,
+            ...(tenantId ? { tenantId } : {}),
+          },
+        });
+
+        return item;
+      },
+    },
+
+    // Add FotosDocumentosComprovativoEncerramento model
+    fotosDocumentosComprovativoEncerramento: {
+      ...db.fotosDocumentosComprovativoEncerramento,
+      findMany: async (
+        args: Prisma.FotosDocumentosComprovativoEncerramentoFindManyArgs = {}
+      ) => {
+        const where = args.where || {};
+        return db.fotosDocumentosComprovativoEncerramento.findMany({
+          ...args,
+          where: {
+            ...where,
+            ...(tenantId ? { tenantId } : {}),
+            ...(projectId ? { projectId } : {}),
+          },
+        });
+      },
+      findFirst: async (
+        args: Prisma.FotosDocumentosComprovativoEncerramentoFindFirstArgs = {}
+      ) => {
+        const where = args.where || {};
+        return db.fotosDocumentosComprovativoEncerramento.findFirst({
+          ...args,
+          where: {
+            ...where,
+            ...(tenantId ? { tenantId } : {}),
+          },
+        });
+      },
+      findUnique: async (
+        args: Prisma.FotosDocumentosComprovativoEncerramentoFindUniqueArgs
+      ) => {
+        if (!args?.where?.id) {
+          throw new Error('ID is required for findUnique');
+        }
+
+        const item = await db.fotosDocumentosComprovativoEncerramento.findFirst(
+          {
+            ...args,
+            where: {
+              id: args.where.id,
+              ...(tenantId ? { tenantId } : {}),
+            },
+          }
+        );
+
+        return item;
+      },
+    },
   };
 }

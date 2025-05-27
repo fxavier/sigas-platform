@@ -542,6 +542,41 @@ export function Sidebar({ tenant, user }: SidebarProps) {
                     })}
                   </div>
 
+                  {/* External Communication and Grievance mechanism */}
+                  <div className='pl-4'>
+                    {renderSubmenuItem({
+                      title: 'External Communication and Grievance mechanism',
+                      href: `/esms-elements/external-communication-and-grievance-mechanism`,
+                      submenu: [
+                        {
+                          title:
+                            'FR.AS.026 - Ficha de registo de queixas e reclamações',
+                          href: `/esms-elements/external-communication-and-grievance-mechanism/fr-as-026`,
+                        },
+                        {
+                          title:
+                            'FR.AS.033 - formulario de registo de reclamacoes dos trabalhadores',
+                          href: `/esms-elements/external-communication-and-grievance-mechanism/fr-as-033`,
+                        },
+                      ],
+                    })}
+                  </div>
+
+                  {/* Ongoing reporting to affected communities */}
+                  <div className='pl-4'>
+                    {renderSubmenuItem({
+                      title: 'Ongoing reporting to affected communities',
+                      href: `/esms-elements/ongoing-reporting-to-affected-communities`,
+                      submenu: [
+                        {
+                          title:
+                            'FR.AS.024 - Registo de Comunicação, Dialogo e Relatórios as Partes Interessadas',
+                          href: `/esms-elements/ongoing-reporting-to-affected-communities/fr-as-024`,
+                        },
+                      ],
+                    })}
+                  </div>
+
                   {/* Monitoring and Review - Just showing a couple as examples */}
                   <div className='pl-4'>
                     {renderSubmenuItem({
@@ -551,6 +586,11 @@ export function Sidebar({ tenant, user }: SidebarProps) {
                         {
                           title: 'FR.AS.016 - Relatório de Auditoria',
                           href: `/esms-elements/monitoring-and-review/fr-as-016`,
+                        },
+                        {
+                          title:
+                            'FR.AS.036 - Minutas do comité de gestao ambiental e social',
+                          href: `/esms-elements/monitoring-and-review/fr-as-036`,
                         },
                       ],
                     })}

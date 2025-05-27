@@ -14,97 +14,113 @@ enum UserRole {
 }
 
 model Tenant {
-  id                                       String                                                    @id @default(uuid())
-  name                                     String
-  slug                                     String                                                    @unique
-  description                              String?
-  createdAt                                DateTime                                                  @default(now())
-  updatedAt                                DateTime                                                  @updatedAt
-  accoesCorrectivasPermanentes             AccoesCorrectivasPermanentesTomar[]
-  areasTreinamento                         AreaTreinamento[]
-  biodiversidadeRecursos                   BiodeversidadeRecursosNaturais[]
-  caixaFerramentas                         CaixaFerramentas[]
-  consultationEngagement                   ConsultationAndEngagement[]
-  controleRequisitosLegais                 ControleRequisitosLegais[]
-  factorAmbientalImpactado                 FactorAmbientalImpactado[]
-  fichaInformacaoAmbiental                 FichaInformacaoAmbientalPreliminar[]
-  fotografiasIncidente                     FotografiasIncidente[]
-  funcao                                   Funcao[]
-  identificacaoAvaliacaoRiscos             IdentificacaoAvaliacaoDeRiscosImapctosAmbientaisSociais[]
-  identificacaoRiscosSubprojeto            IdentificacaoRiscosImpactosAmbientaisESociaisSubproject[]
-  incidentes                               Incidente[]
-  matrizTreinamento                        MatrizTreinamento[]
-  membrosEquipa                            MembrosEquipa[]
-  objetivosMetasAmbientais                 RegistoObjectivosMetasAmbientaisSociais[]
-  pessoaDoContacto                         PessoaDoContacto[]
-  pessoasEnvolvidasInvestigacao            PessoasEnvolvidasNaInvestigacao[]
-  projects                                 Project[]
-  relatoriosIncidente                      RelatorioIncidente[]
-  relatoriosIniciaisIncidente              RelatorioInicialIncidente[]
-  responsavelVerificacao                   ResponsavelPelaVerificacao[]
-  responsavelPreenchimento                 ResponsavelPeloPreenchimento[]
-  resultadoTriagem                         ResultadoTriagem[]
-  riscosImpactos                           RiscosImpactos[]
-  subprojecto                              Subprojecto[]
-  tabelaAccoes                             TabelaAccoes[]
-  transactions                             Transaction[]
-  triagemAmbientalSocial                   TriagemAmbientalSocial[]
-  users                                    User[]
-  politicas                                Politicas[]
-  manuais                                  Manuais[]
-  procedimentos                            Procedimentos[]
-  formularios                              Formularios[]
-  modelos                                  Modelos[]
-  userInvitations                          UserInvitation[]
-  relatorioAuditoriaInterna                RelatorioAuditoriaInterna[]
-  descricaoNaoConformidade                 DescricaoNaoConformidade[]
-  avaliacaoClassificacaoEmergencia         AvaliacaoClassificacaoEmergencia[]
-  relatorioDeSimulacro                     RelatorioDeSimulacro[]
-  perguntaAvaliacaoClassificacaoEmergencia PerguntaAvaliacaoClassificacaoEmergencia[]
-  recomendacoes                            Recomendacoes[]
-  categorias                               Categoria[]
-  areaActuacao                             AreaActuacao[]
-  principaisInteresses                     PrincipaisInteresses[]
-  matrizStakeholder                        MatrizStakeholder[]
+  id                                               String                                                    @id @default(uuid())
+  name                                             String
+  slug                                             String                                                    @unique
+  description                                      String?
+  createdAt                                        DateTime                                                  @default(now())
+  updatedAt                                        DateTime                                                  @updatedAt
+  accoesCorrectivasPermanentes                     AccoesCorrectivasPermanentesTomar[]
+  areasTreinamento                                 AreaTreinamento[]
+  biodiversidadeRecursos                           BiodeversidadeRecursosNaturais[]
+  caixaFerramentas                                 CaixaFerramentas[]
+  consultationEngagement                           ConsultationAndEngagement[]
+  controleRequisitosLegais                         ControleRequisitosLegais[]
+  factorAmbientalImpactado                         FactorAmbientalImpactado[]
+  fichaInformacaoAmbiental                         FichaInformacaoAmbientalPreliminar[]
+  fotografiasIncidente                             FotografiasIncidente[]
+  funcao                                           Funcao[]
+  identificacaoAvaliacaoRiscos                     IdentificacaoAvaliacaoDeRiscosImapctosAmbientaisSociais[]
+  identificacaoRiscosSubprojeto                    IdentificacaoRiscosImpactosAmbientaisESociaisSubproject[]
+  incidentes                                       Incidente[]
+  matrizTreinamento                                MatrizTreinamento[]
+  membrosEquipa                                    MembrosEquipa[]
+  objetivosMetasAmbientais                         RegistoObjectivosMetasAmbientaisSociais[]
+  pessoaDoContacto                                 PessoaDoContacto[]
+  pessoasEnvolvidasInvestigacao                    PessoasEnvolvidasNaInvestigacao[]
+  projects                                         Project[]
+  relatoriosIncidente                              RelatorioIncidente[]
+  relatoriosIniciaisIncidente                      RelatorioInicialIncidente[]
+  responsavelVerificacao                           ResponsavelPelaVerificacao[]
+  responsavelPreenchimento                         ResponsavelPeloPreenchimento[]
+  resultadoTriagem                                 ResultadoTriagem[]
+  riscosImpactos                                   RiscosImpactos[]
+  subprojecto                                      Subprojecto[]
+  tabelaAccoes                                     TabelaAccoes[]
+  transactions                                     Transaction[]
+  triagemAmbientalSocial                           TriagemAmbientalSocial[]
+  users                                            User[]
+  politicas                                        Politicas[]
+  manuais                                          Manuais[]
+  procedimentos                                    Procedimentos[]
+  formularios                                      Formularios[]
+  modelos                                          Modelos[]
+  userInvitations                                  UserInvitation[]
+  relatorioAuditoriaInterna                        RelatorioAuditoriaInterna[]
+  descricaoNaoConformidade                         DescricaoNaoConformidade[]
+  avaliacaoClassificacaoEmergencia                 AvaliacaoClassificacaoEmergencia[]
+  relatorioDeSimulacro                             RelatorioDeSimulacro[]
+  perguntaAvaliacaoClassificacaoEmergencia         PerguntaAvaliacaoClassificacaoEmergencia[]
+  recomendacoes                                    Recomendacoes[]
+  categorias                                       Categoria[]
+  areaActuacao                                     AreaActuacao[]
+  principaisInteresses                             PrincipaisInteresses[]
+  matrizStakeholder                                MatrizStakeholder[]
+  registoComunicacoesRelatorioAsPartesInteressadas RegistoComunicacoesRelatorioAsPartesInteressadas[]
+  resultadoComiteGestaoAmbientalESocial            ResultadoComiteGestaoAmbientalESocial[]
+  minutasComiteGestaoAmbientalESocial              MinutasComiteGestaoAmbientalESocial[]
+  fichaRegistoQueixasReclamacoes                   FichaRegistoQueixasReclamacoes[]
+  categoriasQueixas                                CategoriaQueixa[]
+  subcategoriasQueixas                             SubcategoriaQueixa[]
+  resolucoesQueixas                                ResolucaoQueixa[]
+  fotosDocumentosComprovativoEncerramento          FotosDocumentosComprovativoEncerramento[]
 
   @@map("tenants")
 }
 
 model Project {
-  id                                       String                                                    @id @default(uuid())
-  name                                     String
-  description                              String
-  createdAt                                DateTime                                                  @default(now())
-  updatedAt                                DateTime                                                  @updatedAt
-  tenantId                                 String
-  consultationEngagement                   ConsultationAndEngagement[]
-  controleRequisitosLegais                 ControleRequisitosLegais[]
-  fichaInformacaoAmbiental                 FichaInformacaoAmbientalPreliminar[]
-  identificacaoAvaliacaoRiscos             IdentificacaoAvaliacaoDeRiscosImapctosAmbientaisSociais[]
-  matrizTreinamento                        MatrizTreinamento[]
-  objetivosMetasAmbientais                 RegistoObjectivosMetasAmbientaisSociais[]
-  tenant                                   Tenant                                                    @relation(fields: [tenantId], references: [id], onDelete: Cascade)
-  relatoriosIncidente                      RelatorioIncidente[]
-  relatoriosIniciaisIncidente              RelatorioInicialIncidente[]
-  resultadoTriagem                         ResultadoTriagem[]
-  transactions                             Transaction[]
-  triagemAmbientalSocial                   TriagemAmbientalSocial[]
-  politicas                                Politicas[]
-  manuais                                  Manuais[]
-  procedimentos                            Procedimentos[]
-  formularios                              Formularios[]
-  modelos                                  Modelos[]
-  userProjects                             UserProject[]
-  relatorioAuditoriaInterna                RelatorioAuditoriaInterna[]
-  descricaoNaoConformidade                 DescricaoNaoConformidade[]
-  avaliacaoClassificacaoEmergencia         AvaliacaoClassificacaoEmergencia[]
-  relatorioDeSimulacro                     RelatorioDeSimulacro[]
-  perguntaAvaliacaoClassificacaoEmergencia PerguntaAvaliacaoClassificacaoEmergencia[]
-  recomendacoes                            Recomendacoes[]
-  categorias                               Categoria[]
-  areaActuacao                             AreaActuacao[]
-  principaisInteresses                     PrincipaisInteresses[]
-  matrizStakeholder                        MatrizStakeholder[]
+  id                                               String                                                    @id @default(uuid())
+  name                                             String
+  description                                      String
+  createdAt                                        DateTime                                                  @default(now())
+  updatedAt                                        DateTime                                                  @updatedAt
+  tenantId                                         String
+  consultationEngagement                           ConsultationAndEngagement[]
+  controleRequisitosLegais                         ControleRequisitosLegais[]
+  fichaInformacaoAmbiental                         FichaInformacaoAmbientalPreliminar[]
+  identificacaoAvaliacaoRiscos                     IdentificacaoAvaliacaoDeRiscosImapctosAmbientaisSociais[]
+  matrizTreinamento                                MatrizTreinamento[]
+  objetivosMetasAmbientais                         RegistoObjectivosMetasAmbientaisSociais[]
+  tenant                                           Tenant                                                    @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  relatoriosIncidente                              RelatorioIncidente[]
+  relatoriosIniciaisIncidente                      RelatorioInicialIncidente[]
+  resultadoTriagem                                 ResultadoTriagem[]
+  transactions                                     Transaction[]
+  triagemAmbientalSocial                           TriagemAmbientalSocial[]
+  politicas                                        Politicas[]
+  manuais                                          Manuais[]
+  procedimentos                                    Procedimentos[]
+  formularios                                      Formularios[]
+  modelos                                          Modelos[]
+  userProjects                                     UserProject[]
+  relatorioAuditoriaInterna                        RelatorioAuditoriaInterna[]
+  descricaoNaoConformidade                         DescricaoNaoConformidade[]
+  avaliacaoClassificacaoEmergencia                 AvaliacaoClassificacaoEmergencia[]
+  relatorioDeSimulacro                             RelatorioDeSimulacro[]
+  perguntaAvaliacaoClassificacaoEmergencia         PerguntaAvaliacaoClassificacaoEmergencia[]
+  recomendacoes                                    Recomendacoes[]
+  categorias                                       Categoria[]
+  areaActuacao                                     AreaActuacao[]
+  principaisInteresses                             PrincipaisInteresses[]
+  matrizStakeholder                                MatrizStakeholder[]
+  registoComunicacoesRelatorioAsPartesInteressadas RegistoComunicacoesRelatorioAsPartesInteressadas[]
+  resultadoComiteGestaoAmbientalESocial            ResultadoComiteGestaoAmbientalESocial[]
+  minutasComiteGestaoAmbientalESocial              MinutasComiteGestaoAmbientalESocial[]
+  fichaRegistoQueixasReclamacoes                   FichaRegistoQueixasReclamacoes[]
+  categoriasQueixas                                CategoriaQueixa[]
+  subcategoriasQueixas                             SubcategoriaQueixa[]
+  resolucoesQueixas                                ResolucaoQueixa[]
+  fotosDocumentosComprovativoEncerramento          FotosDocumentosComprovativoEncerramento[]
 
   @@unique([name, tenantId])
   @@index([tenantId])
@@ -1326,4 +1342,184 @@ model MatrizStakeholder {
   tenant                                      Tenant                    @relation(fields: [tenantId], references: [id], onDelete: Cascade)
   projectId                                   String
   project                                     Project                   @relation(fields: [projectId], references: [id], onDelete: Cascade)
+}
+
+model RegistoComunicacoesRelatorioAsPartesInteressadas {
+  id                          String         @id @default(uuid())
+  data                        DateTime
+  local                       String
+  horario                     String
+  agenda                      String
+  participantes               String
+  encontroAtendeuSeuProposito RespostaSimNao
+  porqueNaoAtendeu            String
+  haNecessidadeRetomarTema    RespostaSimNao
+  poruqNecessarioRetomarTema  String
+  tenantId                    String
+  tenant                      Tenant         @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  projectId                   String
+  project                     Project        @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId])
+  @@map("registo_comunicacoes_relatorio_as_partes_interessadas")
+}
+
+model ResultadoComiteGestaoAmbientalESocial {
+  id                                  String                                @id @default(uuid())
+  pontosDebatidos                     String
+  accoesNecessarias                   String
+  responsavel                         String
+  prazo                               String
+  situacao                            String
+  revisaoEAprovacao                   String
+  dataRevisaoEAprovacao               DateTime
+  tenantId                            String
+  tenant                              Tenant                                @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  projectId                           String
+  project                             Project                               @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  minutasComiteGestaoAmbientalESocial MinutasComiteGestaoAmbientalESocial[]
+
+  @@index([tenantId])
+  @@map("resultado_comite_gestao_ambiental_e_social")
+}
+
+model MinutasComiteGestaoAmbientalESocial {
+  id                                      String                                @id @default(uuid())
+  presididoPor                            String
+  convidado                               String
+  ausenciasJustificadas                   String?
+  data                                    DateTime
+  hora                                    String
+  local                                   String
+  agenda                                  String
+  resultadoComiteGestaoAmbientalESocial   ResultadoComiteGestaoAmbientalESocial @relation(fields: [resultadoComiteGestaoAmbientalESocialId], references: [id], onDelete: Cascade)
+  resultadoComiteGestaoAmbientalESocialId String
+  tenantId                                String
+  tenant                                  Tenant                                @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  projectId                               String
+  project                                 Project                               @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId])
+  @@map("minutas_comite_gestao_ambiental_e_social")
+}
+
+enum Genero {
+  MASCULINO
+  FEMININO
+}
+
+enum MetodoNotificacao {
+  CARTA
+  EMAIL
+  WHATSAPP
+  OUTRO
+}
+
+model CategoriaQueixa {
+  id                             String                           @id @default(uuid())
+  nome                           String
+  subcategorias                  SubcategoriaQueixa[]
+  fichaRegistoQueixasReclamacoes FichaRegistoQueixasReclamacoes[]
+  tenantId                       String
+  tenant                         Tenant                           @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  projectId                      String
+  project                        Project                          @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@map("categoria_queixa")
+}
+
+model SubcategoriaQueixa {
+  id                             String                           @id @default(uuid())
+  nome                           String
+  categoriaQueixaId              String
+  categoriaQueixa                CategoriaQueixa                  @relation(fields: [categoriaQueixaId], references: [id], onDelete: Cascade)
+  fichaRegistoQueixasReclamacoes FichaRegistoQueixasReclamacoes[]
+  tenantId                       String
+  tenant                         Tenant                           @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  projectId                      String
+  project                        Project                          @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@map("subcategoria_queixa")
+}
+
+model ResolucaoQueixa {
+  id                               String                         @id @default(uuid())
+  accao_correctiva                 String
+  responsavel                      String
+  prazo                            String
+  estado                           String
+  fichaRegistoQueixasReclamacoesId String
+  fichaRegistoQueixasReclamacoes   FichaRegistoQueixasReclamacoes @relation(fields: [fichaRegistoQueixasReclamacoesId], references: [id], onDelete: Cascade)
+  tenantId                         String
+  tenant                           Tenant                         @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  projectId                        String
+  project                          Project                        @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@map("resolucao_queixa")
+}
+
+model FotosDocumentosComprovativoEncerramento {
+  id                               String                         @id @default(uuid())
+  foto                             String
+  fichaRegistoQueixasReclamacoesId String
+  fichaRegistoQueixasReclamacoes   FichaRegistoQueixasReclamacoes @relation(fields: [fichaRegistoQueixasReclamacoesId], references: [id], onDelete: Cascade)
+  tenantId                         String
+  tenant                           Tenant                         @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  projectId                        String
+  project                          Project                        @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@map("fotos_documentos_comprovativo_encerramento")
+}
+
+model FichaRegistoQueixasReclamacoes {
+  id                                      String                                    @id @default(uuid())
+  numeroQueixa                            String
+  nomeCompletoReclamante                  String?
+  genero                                  Genero
+  idade                                   Int
+  celular                                 String
+  email                                   String
+  endereco                                String
+  quarteirao                              String
+  bairro                                  String
+  localidade                              String
+  postoAdministrativo                     String
+  distrito                                String
+  local                                   String
+  dataReclamacao                          DateTime
+  hora                                    String
+  breveDescricaoFactos                    String
+  queixaAceita                            RespostaSimNao
+  justificativaParaRejeicao               String?
+  reclamanteNotificado                    RespostaSimNao?
+  metodoNotificacao                       MetodoNotificacao?
+  outroMetodoNotificacao                  String?
+  dataEncerramento                        DateTime?
+  categoriaQueixa                         CategoriaQueixa?                          @relation(fields: [categoriaQueixaId], references: [id], onDelete: Cascade)
+  categoriaQueixaId                       String?
+  subcategoriaQueixa                      SubcategoriaQueixa[]
+  descricao_factos_apos_investigacao      String?
+  resolucaoQueixa                         ResolucaoQueixa[]
+  reclamanteNotificadoSobreEncerramento   RespostaSimNao?
+  reclamanteSatisfeito                    RespostaSimNao?
+  fotosDocumentosComprovativoEncerramento FotosDocumentosComprovativoEncerramento[]
+  recursosGastosReparacaoReclamacao       String?
+  dataEncerramentoReclamacao              DateTime?
+  diasDesdeQueixaAoEncerramento           Int?
+  monitoriaAposEncerramento               RespostaSimNao?
+  accaoMonitoriaAposEncerramento          String?
+  responsavelMonitoriaAposEncerramento    String?
+  prazoMonitoriaAposEncerramento          String?
+  estadoMonitoriaAposEncerramento         String?
+  accoesPreventivasSugeridas              String?
+  responsavelAccoesPreventivasSugeridas   String?
+  prazoAccoesPreventivasSugeridas         String?
+  estadoAccoesPreventivasSugeridas        String?
+
+  tenantId  String
+  tenant    Tenant  @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  projectId String
+  project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@map("ficha_registo_queixas_reclamacoes")
 }
