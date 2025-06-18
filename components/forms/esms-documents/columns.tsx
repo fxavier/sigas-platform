@@ -84,7 +84,14 @@ export function createESMSDocumentColumns({
       cell: ({ row }) => {
         const date = row.getValue('dataCriacao');
         if (!date) return '';
-        return format(new Date(date as string), 'dd/MM/yyyy', { locale: ptBR });
+        try {
+          const dateObj = new Date(date as string);
+          if (isNaN(dateObj.getTime())) return '-';
+          return format(dateObj, 'dd/MM/yyyy', { locale: ptBR });
+        } catch (error) {
+          console.error('Error formatting date:', error);
+          return '-';
+        }
       },
     },
     {
@@ -93,7 +100,14 @@ export function createESMSDocumentColumns({
       cell: ({ row }) => {
         const date = row.getValue('dataRevisao');
         if (!date) return '-';
-        return format(new Date(date as string), 'dd/MM/yyyy', { locale: ptBR });
+        try {
+          const dateObj = new Date(date as string);
+          if (isNaN(dateObj.getTime())) return '-';
+          return format(dateObj, 'dd/MM/yyyy', { locale: ptBR });
+        } catch (error) {
+          console.error('Error formatting date:', error);
+          return '-';
+        }
       },
     },
     {
@@ -102,7 +116,14 @@ export function createESMSDocumentColumns({
       cell: ({ row }) => {
         const date = row.getValue('periodoRetencao');
         if (!date) return '-';
-        return format(new Date(date as string), 'dd/MM/yyyy', { locale: ptBR });
+        try {
+          const dateObj = new Date(date as string);
+          if (isNaN(dateObj.getTime())) return '-';
+          return format(dateObj, 'dd/MM/yyyy', { locale: ptBR });
+        } catch (error) {
+          console.error('Error formatting date:', error);
+          return '-';
+        }
       },
     },
     {

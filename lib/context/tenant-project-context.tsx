@@ -6,6 +6,7 @@ import {
   useState,
   useEffect,
   ReactNode,
+  Suspense,
 } from 'react';
 import { usePathname, useSearchParams } from 'next/navigation';
 
@@ -29,7 +30,8 @@ interface TenantProjectProviderProps {
   children: ReactNode;
 }
 
-export const TenantProjectProvider = ({
+// Inner component that uses useSearchParams
+const TenantProjectProviderInner = ({
   children,
 }: TenantProjectProviderProps) => {
   const [currentTenantId, setCurrentTenantId] = useState<string | null>(null);
@@ -133,5 +135,16 @@ export const TenantProjectProvider = ({
     >
       {children}
     </TenantProjectContext.Provider>
+  );
+};
+
+// Main provider with Suspense boundary
+export const TenantProjectProvider = ({
+  children,
+}: TenantProjectProviderProps) => {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <TenantProjectProviderInner>{children}</TenantProjectProviderInner>
+    </Suspense>
   );
 };

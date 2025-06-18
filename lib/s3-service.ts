@@ -41,11 +41,16 @@ export async function uploadFileToS3(file: File): Promise<string> {
   try {
     console.log('Uploading file:', file.name, file.size, file.type);
 
-    // Create form data
+    // Check if we're in server-side context
+    if (typeof window === 'undefined') {
+      // Server-side: use direct S3 upload to avoid circular dependency
+      return await uploadDirectlyToS3(file);
+    }
+
+    // Client-side: can safely use the main upload route
     const formData = new FormData();
     formData.append('file', file);
 
-    // Use the main upload route which handles S3 and fallback automatically
     const response = await fetch('/api/upload', {
       method: 'POST',
       body: formData,
@@ -102,7 +107,52 @@ async function uploadToLocalStorage(file: File): Promise<string> {
 }
 
 /**
- * Direct S3 upload function (bypasses fallback logic)
+ * Direct local storage upload (for server-side use)
+ * @param file The file to upload
+ * @returns The URL of the uploaded file
+ */
+async function uploadToLocalStorageDirect(file: File): Promise<string> {
+  const { writeFile, mkdir } = await import('fs/promises');
+  const { join } = await import('path');
+
+  // Validate file size (10MB limit)
+  const maxSize = 10 * 1024 * 1024; // 10MB
+  if (file.size > maxSize) {
+    throw new Error('Arquivo muito grande. Tamanho máximo: 10MB');
+  }
+
+  // Get file extension
+  const fileName = file.name
+    .replace(/[^a-zA-Z0-9.-]/g, '_') // Replace special chars
+    .substring(0, 50); // Limit length
+
+  const uniqueFileName = `${uuidv4().substring(0, 8)}-${fileName}`;
+
+  // Create uploads directory if it doesn't exist
+  const uploadsDir = join(process.cwd(), 'public', 'uploads');
+
+  try {
+    await mkdir(uploadsDir, { recursive: true });
+  } catch (error) {
+    // Directory might already exist, that's fine
+  }
+
+  // Convert file to buffer and write to filesystem
+  const bytes = await file.arrayBuffer();
+  const buffer = Buffer.from(bytes);
+
+  const filePath = join(uploadsDir, uniqueFileName);
+  await writeFile(filePath, buffer);
+
+  // Return the public URL
+  const fileUrl = `/uploads/${uniqueFileName}`;
+  console.log('File uploaded locally:', fileUrl);
+
+  return fileUrl;
+}
+
+/**
+ * Direct S3 upload function with fallback (for server-side use)
  * @param file The file to upload
  * @returns The URL of the uploaded file
  */
@@ -115,31 +165,57 @@ export async function uploadDirectlyToS3(file: File): Promise<string> {
       file.type
     );
 
-    // Create form data
-    const formData = new FormData();
-    formData.append('file', file);
-
-    // Upload directly to S3 via API route
-    const response = await fetch('/api/upload/s3', {
-      method: 'POST',
-      body: formData,
-    });
-
-    if (!response.ok) {
-      const errorData = await response.json().catch(() => ({}));
-      throw new Error(
-        errorData.error || `S3 upload failed with status ${response.status}`
-      );
+    // Check if AWS is configured
+    if (!AWS_S3_BUCKET || !AWS_ACCESS_KEY || !AWS_SECRET_KEY) {
+      console.log('AWS not configured, using local storage');
+      return await uploadToLocalStorageDirect(file);
     }
 
-    const result = await response.json();
-    console.log('File uploaded successfully to S3:', result);
+    // Try S3 upload first
+    try {
+      // Create S3 client and upload directly
+      const s3Client = new S3Client({
+        region: AWS_REGION,
+        credentials: {
+          accessKeyId: AWS_ACCESS_KEY,
+          secretAccessKey: AWS_SECRET_KEY,
+        },
+      });
 
-    return result.url;
+      // Generate unique filename
+      const fileName = file.name
+        .replace(/[^a-zA-Z0-9.-]/g, '_')
+        .substring(0, 50);
+      const key = `uploads/${uuidv4().substring(0, 8)}-${fileName}`;
+
+      // Convert file to buffer
+      const arrayBuffer = await file.arrayBuffer();
+      const buffer = Buffer.from(arrayBuffer);
+
+      // Upload to S3
+      const command = new PutObjectCommand({
+        Bucket: AWS_S3_BUCKET,
+        Key: key,
+        Body: buffer,
+        ContentType: file.type,
+        ACL: 'public-read',
+      });
+
+      await s3Client.send(command);
+
+      // Return the URL
+      const fileUrl = `https://${AWS_S3_BUCKET}.s3.${AWS_REGION}.amazonaws.com/${key}`;
+      console.log('File uploaded successfully to S3:', fileUrl);
+
+      return fileUrl;
+    } catch (s3Error) {
+      console.warn('S3 upload failed, falling back to local storage:', s3Error);
+      return await uploadToLocalStorageDirect(file);
+    }
   } catch (error) {
     console.error('Error in S3 upload process:', error);
     throw new Error(
-      `Failed to upload file to S3: ${
+      `Failed to upload file: ${
         error instanceof Error ? error.message : 'Unknown error'
       }`
     );
