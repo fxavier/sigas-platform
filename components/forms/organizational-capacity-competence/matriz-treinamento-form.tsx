@@ -217,7 +217,7 @@ export function MatrizTreinamentoForm({
                   >
                     <FormControl>
                       <SelectTrigger>
-                        <SelectValue placeholder='Selecione uma função' />
+                        <SelectValue placeholder='Seleciona a opção' />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
@@ -257,7 +257,7 @@ export function MatrizTreinamentoForm({
                   >
                     <FormControl>
                       <SelectTrigger>
-                        <SelectValue placeholder='Selecione uma área de treinamento' />
+                        <SelectValue placeholder='Seleciona a opção' />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
@@ -297,7 +297,7 @@ export function MatrizTreinamentoForm({
                   >
                     <FormControl>
                       <SelectTrigger>
-                        <SelectValue placeholder='Selecione uma caixa de ferramentas' />
+                        <SelectValue placeholder='Seleciona a opção' />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
@@ -426,7 +426,7 @@ export function MatrizTreinamentoForm({
                 >
                   <FormControl>
                     <SelectTrigger>
-                      <SelectValue placeholder='Selecione a eficácia' />
+                      <SelectValue placeholder='Seleciona a opção' />
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>

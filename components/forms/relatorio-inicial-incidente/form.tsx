@@ -362,7 +362,7 @@ export function RelatorioInicialIncidenteForm({
               render={({ field }) => (
                 <Select value={field.value} onValueChange={field.onChange}>
                   <SelectTrigger>
-                    <SelectValue placeholder='Selecione o tipo de incidente' />
+                    <SelectValue placeholder='Seleciona a opção' />
                   </SelectTrigger>
                   <SelectContent>
                     {tipoIncidenteOptions.map((option) => (
@@ -389,7 +389,7 @@ export function RelatorioInicialIncidenteForm({
                     onValueChange={field.onChange}
                   >
                     <SelectTrigger>
-                      <SelectValue placeholder='Selecione' />
+                      <SelectValue placeholder='Seleciona a opção' />
                     </SelectTrigger>
                     <SelectContent>
                       {simNaoOptions.map((option) => (
@@ -431,7 +431,7 @@ export function RelatorioInicialIncidenteForm({
                     onValueChange={field.onChange}
                   >
                     <SelectTrigger>
-                      <SelectValue placeholder='Selecione' />
+                      <SelectValue placeholder='Seleciona a opção' />
                     </SelectTrigger>
                     <SelectContent>
                       {simNaoOptions.map((option) => (
@@ -602,7 +602,7 @@ export function RelatorioInicialIncidenteForm({
                 render={({ field }) => (
                   <Select value={field.value} onValueChange={field.onChange}>
                     <SelectTrigger>
-                      <SelectValue placeholder='Selecione' />
+                      <SelectValue placeholder='Seleciona a opção' />
                     </SelectTrigger>
                     <SelectContent>
                       {simNaoOptions.map((option) => (
@@ -623,7 +623,7 @@ export function RelatorioInicialIncidenteForm({
                 render={({ field }) => (
                   <Select value={field.value} onValueChange={field.onChange}>
                     <SelectTrigger>
-                      <SelectValue placeholder='Selecione' />
+                      <SelectValue placeholder='Seleciona a opção' />
                     </SelectTrigger>
                     <SelectContent>
                       {simNaoOptions.map((option) => (
@@ -645,7 +645,7 @@ export function RelatorioInicialIncidenteForm({
               render={({ field }) => (
                 <Select value={field.value} onValueChange={field.onChange}>
                   <SelectTrigger>
-                    <SelectValue placeholder='Selecione' />
+                    <SelectValue placeholder='Seleciona a opção' />
                   </SelectTrigger>
                   <SelectContent>
                     {simNaoOptions.map((option) => (

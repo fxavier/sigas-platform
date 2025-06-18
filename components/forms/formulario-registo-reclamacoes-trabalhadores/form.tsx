@@ -237,7 +237,7 @@ export function FormularioRegistoReclamacoesTrabalhadoresForm({
                     defaultValue={field.value}
                   >
                     <SelectTrigger className={cn(error && 'border-red-500')}>
-                      <SelectValue placeholder='Selecione o método de contacto' />
+                      <SelectValue placeholder='Seleciona a opção' />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value='TELEFONE'>Telefone</SelectItem>
@@ -285,7 +285,7 @@ export function FormularioRegistoReclamacoesTrabalhadoresForm({
                     defaultValue={field.value}
                   >
                     <SelectTrigger className={cn(error && 'border-red-500')}>
-                      <SelectValue placeholder='Selecione a língua preferida' />
+                      <SelectValue placeholder='Seleciona a opção' />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value='PORTUGUES'>Português</SelectItem>
@@ -559,7 +559,7 @@ export function FormularioRegistoReclamacoesTrabalhadoresForm({
                     value={field.value || ''}
                   >
                     <SelectTrigger className={cn(error && 'border-red-500')}>
-                      <SelectValue placeholder='Selecione uma opção' />
+                      <SelectValue placeholder='Seleciona a opção' />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value='SIM'>Sim</SelectItem>

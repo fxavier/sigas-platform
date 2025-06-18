@@ -368,7 +368,7 @@ export function IdentificacaoAvaliacaoRiscosForm({
                         }
                       >
                         <SelectTrigger className='bg-white'>
-                          <SelectValue placeholder='Selecione um risco/impacto' />
+                          <SelectValue placeholder='Seleciona a opção' />
                         </SelectTrigger>
                         <SelectContent>
                           {isLoadingOptions ? (
@@ -411,7 +411,7 @@ export function IdentificacaoAvaliacaoRiscosForm({
                         }
                       >
                         <SelectTrigger className='bg-white'>
-                          <SelectValue placeholder='Selecione um fator ambiental' />
+                          <SelectValue placeholder='Seleciona a opção' />
                         </SelectTrigger>
                         <SelectContent>
                           {isLoadingOptions ? (
@@ -465,7 +465,7 @@ export function IdentificacaoAvaliacaoRiscosForm({
                     }
                   >
                     <SelectTrigger className='bg-white'>
-                      <SelectValue placeholder='Selecione a condição' />
+                      <SelectValue placeholder='Seleciona a opção' />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value='NORMAL'>Normal</SelectItem>
@@ -503,7 +503,7 @@ export function IdentificacaoAvaliacaoRiscosForm({
                     }
                   >
                     <SelectTrigger className='bg-white'>
-                      <SelectValue placeholder='Fase do projeto' />
+                      <SelectValue placeholder='Seleciona a opção' />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value='PRE_CONSTRUCAO'>
@@ -529,7 +529,7 @@ export function IdentificacaoAvaliacaoRiscosForm({
                     }
                   >
                     <SelectTrigger className='bg-white'>
-                      <SelectValue placeholder='Estatuto' />
+                      <SelectValue placeholder='Seleciona a opção' />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value='POSITIVO'>Positivo</SelectItem>
@@ -549,7 +549,7 @@ export function IdentificacaoAvaliacaoRiscosForm({
                     }
                   >
                     <SelectTrigger className='bg-white'>
-                      <SelectValue placeholder='Extensão' />
+                      <SelectValue placeholder='Seleciona a opção' />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value='LOCAL'>Local</SelectItem>
@@ -573,7 +573,7 @@ export function IdentificacaoAvaliacaoRiscosForm({
                     }
                   >
                     <SelectTrigger className='bg-white'>
-                      <SelectValue placeholder='Duração' />
+                      <SelectValue placeholder='Seleciona a opção' />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value='CURTO_PRAZO'>Curto Prazo</SelectItem>
@@ -594,7 +594,7 @@ export function IdentificacaoAvaliacaoRiscosForm({
                     }
                   >
                     <SelectTrigger className='bg-white'>
-                      <SelectValue placeholder='Intensidade' />
+                      <SelectValue placeholder='Seleciona a opção' />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value='BAIXA'>Baixa</SelectItem>
@@ -619,7 +619,7 @@ export function IdentificacaoAvaliacaoRiscosForm({
                     }
                   >
                     <SelectTrigger className='bg-white'>
-                      <SelectValue placeholder='Probabilidade' />
+                      <SelectValue placeholder='Seleciona a opção' />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value='IMPROVAVEL'>Improvável</SelectItem>

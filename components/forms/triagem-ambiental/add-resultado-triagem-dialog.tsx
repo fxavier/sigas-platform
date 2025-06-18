@@ -132,7 +132,7 @@ export function AddResultadoTriagemDialog({
                   <Select onValueChange={field.onChange} value={field.value}>
                     <FormControl>
                       <SelectTrigger className='bg-white'>
-                        <SelectValue placeholder='Selecione a categoria de risco' />
+                        <SelectValue placeholder='Seleciona a opção' />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
@@ -157,7 +157,7 @@ export function AddResultadoTriagemDialog({
                   <Select onValueChange={field.onChange} value={field.value}>
                     <FormControl>
                       <SelectTrigger className='bg-white'>
-                        <SelectValue placeholder='Selecione um subprojecto (opcional)' />
+                        <SelectValue placeholder='Seleciona a opção' />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>

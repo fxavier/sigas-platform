@@ -55,7 +55,7 @@ import {
 } from '@/components/ui/dialog';
 import { PlusCircle } from 'lucide-react';
 import { z } from 'zod';
-import { uploadFileToS3 } from '@/lib/s3-service';
+import { uploadFileToS3 } from '@/lib/upload-service';
 
 interface RelatorioIncidenteFormProps {
   initialData?: RelatorioIncidenteFormData;
@@ -414,7 +414,7 @@ export function RelatorioIncidenteForm({
                     defaultValue={field.value}
                   >
                     <SelectTrigger className={cn(error && 'border-red-500')}>
-                      <SelectValue placeholder='Selecione o tipo de funcionário' />
+                      <SelectValue placeholder='Seleciona a opção' />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value='CONTRATADO'>Contratado</SelectItem>
@@ -465,7 +465,7 @@ export function RelatorioIncidenteForm({
                     defaultValue={field.value}
                   >
                     <SelectTrigger className={cn(error && 'border-red-500')}>
-                      <SelectValue placeholder='Selecione a forma de atividade' />
+                      <SelectValue placeholder='Seleciona a opção' />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value='CONTROLADA'>Controlada</SelectItem>
@@ -494,7 +494,7 @@ export function RelatorioIncidenteForm({
                     defaultValue={field.value}
                   >
                     <SelectTrigger className={cn(error && 'border-red-500')}>
-                      <SelectValue placeholder='Selecione uma opção' />
+                      <SelectValue placeholder='Seleciona a opção' />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value='SIM'>Sim</SelectItem>
@@ -522,7 +522,7 @@ export function RelatorioIncidenteForm({
                     defaultValue={field.value}
                   >
                     <SelectTrigger className={cn(error && 'border-red-500')}>
-                      <SelectValue placeholder='Selecione uma opção' />
+                      <SelectValue placeholder='Seleciona a opção' />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value='SIM'>Sim</SelectItem>
@@ -548,7 +548,7 @@ export function RelatorioIncidenteForm({
                     defaultValue={field.value}
                   >
                     <SelectTrigger className={cn(error && 'border-red-500')}>
-                      <SelectValue placeholder='Selecione os efeitos' />
+                      <SelectValue placeholder='Seleciona a opção' />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value='SAUDE'>Saúde</SelectItem>
@@ -578,7 +578,7 @@ export function RelatorioIncidenteForm({
                     defaultValue={field.value}
                   >
                     <SelectTrigger className={cn(error && 'border-red-500')}>
-                      <SelectValue placeholder='Selecione uma opção' />
+                      <SelectValue placeholder='Seleciona a opção' />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value='SIM'>Sim</SelectItem>
@@ -604,7 +604,7 @@ export function RelatorioIncidenteForm({
                     defaultValue={field.value}
                   >
                     <SelectTrigger className={cn(error && 'border-red-500')}>
-                      <SelectValue placeholder='Selecione uma opção' />
+                      <SelectValue placeholder='Seleciona a opção' />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value='SIM'>Sim</SelectItem>
@@ -635,7 +635,7 @@ export function RelatorioIncidenteForm({
                     defaultValue={field.value}
                   >
                     <SelectTrigger className={cn(error && 'border-red-500')}>
-                      <SelectValue placeholder='Selecione uma opção' />
+                      <SelectValue placeholder='Seleciona a opção' />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value='SIM'>Sim</SelectItem>
@@ -661,7 +661,7 @@ export function RelatorioIncidenteForm({
                     defaultValue={field.value}
                   >
                     <SelectTrigger className={cn(error && 'border-red-500')}>
-                      <SelectValue placeholder='Selecione uma opção' />
+                      <SelectValue placeholder='Seleciona a opção' />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value='SIM'>Sim</SelectItem>

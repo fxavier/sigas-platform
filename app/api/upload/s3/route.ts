@@ -19,6 +19,23 @@ const s3Client = new S3Client({
 
 export async function POST(request: NextRequest) {
   try {
+    // Check if AWS credentials are available
+    if (!AWS_S3_BUCKET || !AWS_ACCESS_KEY || !AWS_SECRET_KEY) {
+      console.error('Missing AWS environment variables:', {
+        bucket: !!AWS_S3_BUCKET,
+        accessKey: !!AWS_ACCESS_KEY,
+        secretKey: !!AWS_SECRET_KEY,
+      });
+      return NextResponse.json(
+        {
+          error:
+            'AWS S3 não está configurado. Verifique as variáveis de ambiente.',
+          fallback: true,
+        },
+        { status: 500 }
+      );
+    }
+
     const formData = await request.formData();
     const file = formData.get('file') as File;
 
@@ -74,8 +91,39 @@ export async function POST(request: NextRequest) {
     });
   } catch (error) {
     console.error('S3 upload error:', error);
+
+    // More specific error messages
+    if (error instanceof Error) {
+      if (error.message.includes('NoSuchBucket')) {
+        return NextResponse.json(
+          { error: 'Bucket S3 não encontrado. Verifique a configuração.' },
+          { status: 500 }
+        );
+      }
+      if (error.message.includes('InvalidAccessKeyId')) {
+        return NextResponse.json(
+          { error: 'Credenciais AWS inválidas. Verifique ACCESS_KEY_ID.' },
+          { status: 500 }
+        );
+      }
+      if (error.message.includes('SignatureDoesNotMatch')) {
+        return NextResponse.json(
+          { error: 'Credenciais AWS inválidas. Verifique SECRET_ACCESS_KEY.' },
+          { status: 500 }
+        );
+      }
+
+      return NextResponse.json(
+        {
+          error: 'Erro ao fazer upload do arquivo',
+          details: error.message,
+        },
+        { status: 500 }
+      );
+    }
+
     return NextResponse.json(
-      { error: 'Erro ao fazer upload do arquivo' },
+      { error: 'Erro desconhecido ao fazer upload do arquivo' },
       { status: 500 }
     );
   }

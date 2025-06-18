@@ -9,7 +9,7 @@ import { Progress } from '@/components/ui/progress';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Upload, File, X, AlertTriangle, CheckCircle } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { uploadFileToS3 } from '@/lib/s3-service';
+import { uploadFileToS3 } from '@/lib/upload-service';
 
 interface FileUploadProps {
   label?: string;

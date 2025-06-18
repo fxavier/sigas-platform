@@ -839,7 +839,7 @@ export function ObjetivosMetasForm({
                 <div className='space-y-1'>
                   <Select value={field.value} onValueChange={field.onChange}>
                     <SelectTrigger className={cn(error && 'border-red-500')}>
-                      <SelectValue placeholder='Selecione o status' />
+                      <SelectValue placeholder='Seleciona a opção' />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value='SIM'>Sim</SelectItem>

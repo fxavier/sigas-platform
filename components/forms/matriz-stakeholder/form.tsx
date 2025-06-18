@@ -399,7 +399,7 @@ export function MatrizStakeholderForm({
                         onValueChange={field.onChange}
                       >
                         <SelectTrigger className='bg-white w-full'>
-                          <SelectValue placeholder='Selecione uma categoria' />
+                          <SelectValue placeholder='Seleciona a opção' />
                         </SelectTrigger>
                         <SelectContent>
                           {isLoadingCategorias ? (
@@ -449,7 +449,7 @@ export function MatrizStakeholderForm({
                       onValueChange={field.onChange}
                     >
                       <SelectTrigger className='bg-white'>
-                        <SelectValue placeholder='Selecione o alcance' />
+                        <SelectValue placeholder='Seleciona a opção' />
                       </SelectTrigger>
                       <SelectContent>
                         {Object.values(AlcanceEnum.Values).map((value) => (
@@ -484,7 +484,7 @@ export function MatrizStakeholderForm({
                         onValueChange={field.onChange}
                       >
                         <SelectTrigger className='bg-white w-full'>
-                          <SelectValue placeholder='Selecione uma área de actuação' />
+                          <SelectValue placeholder='Seleciona a opção' />
                         </SelectTrigger>
                         <SelectContent>
                           {isLoadingAreas ? (
@@ -534,7 +534,7 @@ export function MatrizStakeholderForm({
                         onValueChange={field.onChange}
                       >
                         <SelectTrigger className='bg-white w-full'>
-                          <SelectValue placeholder='Selecione os principais interesses' />
+                          <SelectValue placeholder='Seleciona a opção' />
                         </SelectTrigger>
                         <SelectContent>
                           {isLoadingInteresses ? (
@@ -712,7 +712,7 @@ export function MatrizStakeholderForm({
                       onValueChange={field.onChange}
                     >
                       <SelectTrigger className='bg-white'>
-                        <SelectValue placeholder='Selecione a percepção/posicionamento' />
+                        <SelectValue placeholder='Seleciona a opção' />
                       </SelectTrigger>
                       <SelectContent>
                         {Object.values(
@@ -746,7 +746,7 @@ export function MatrizStakeholderForm({
                       onValueChange={field.onChange}
                     >
                       <SelectTrigger className='bg-white'>
-                        <SelectValue placeholder='Selecione a potência de impacto' />
+                        <SelectValue placeholder='Seleciona a opção' />
                       </SelectTrigger>
                       <SelectContent>
                         {Object.values(PotenciaImpactoEnum.Values).map(

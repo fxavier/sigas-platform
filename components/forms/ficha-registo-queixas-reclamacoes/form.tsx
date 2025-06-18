@@ -368,7 +368,7 @@ export function FichaRegistoQueixasReclamacoesForm({
                     defaultValue={field.value}
                   >
                     <SelectTrigger className={cn(error && 'border-red-500')}>
-                      <SelectValue placeholder='Selecione o gênero' />
+                      <SelectValue placeholder='Seleciona a opção' />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value='MASCULINO'>Masculino</SelectItem>
@@ -762,7 +762,7 @@ export function FichaRegistoQueixasReclamacoesForm({
                       disabled={isLoadingCategorias}
                     >
                       <SelectTrigger className={cn(error && 'border-red-500')}>
-                        <SelectValue placeholder='Selecione uma categoria' />
+                        <SelectValue placeholder='Seleciona a opção' />
                       </SelectTrigger>
                       <SelectContent>
                         {categoriasQueixas.map((categoria) => (
@@ -950,7 +950,7 @@ export function FichaRegistoQueixasReclamacoesForm({
                     defaultValue={field.value}
                   >
                     <SelectTrigger className={cn(error && 'border-red-500')}>
-                      <SelectValue placeholder='Selecione uma opção' />
+                      <SelectValue placeholder='Seleciona a opção' />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value='SIM'>Sim</SelectItem>
@@ -1002,7 +1002,7 @@ export function FichaRegistoQueixasReclamacoesForm({
                     value={field.value || ''}
                   >
                     <SelectTrigger className={cn(error && 'border-red-500')}>
-                      <SelectValue placeholder='Selecione uma opção' />
+                      <SelectValue placeholder='Seleciona a opção' />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value='SIM'>Sim</SelectItem>
@@ -1029,7 +1029,7 @@ export function FichaRegistoQueixasReclamacoesForm({
                       value={field.value || ''}
                     >
                       <SelectTrigger className={cn(error && 'border-red-500')}>
-                        <SelectValue placeholder='Selecione o método' />
+                        <SelectValue placeholder='Seleciona a opção' />
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem value='CARTA'>Carta</SelectItem>
@@ -1309,7 +1309,7 @@ export function FichaRegistoQueixasReclamacoesForm({
                     value={field.value || ''}
                   >
                     <SelectTrigger className={cn(error && 'border-red-500')}>
-                      <SelectValue placeholder='Selecione uma opção' />
+                      <SelectValue placeholder='Seleciona a opção' />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value='SIM'>Sim</SelectItem>
@@ -1335,7 +1335,7 @@ export function FichaRegistoQueixasReclamacoesForm({
                     value={field.value || ''}
                   >
                     <SelectTrigger className={cn(error && 'border-red-500')}>
-                      <SelectValue placeholder='Selecione uma opção' />
+                      <SelectValue placeholder='Seleciona a opção' />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value='SIM'>Sim</SelectItem>
@@ -1701,7 +1701,7 @@ export function FichaRegistoQueixasReclamacoesForm({
                     value={field.value || ''}
                   >
                     <SelectTrigger className={cn(error && 'border-red-500')}>
-                      <SelectValue placeholder='Selecione uma opção' />
+                      <SelectValue placeholder='Seleciona a opção' />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value='SIM'>Sim</SelectItem>

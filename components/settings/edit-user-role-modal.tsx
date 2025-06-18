@@ -111,7 +111,7 @@ export function EditUserRoleModal({
                   >
                     <FormControl>
                       <SelectTrigger>
-                        <SelectValue placeholder='Select a role' />
+                        <SelectValue placeholder='Seleciona a opção' />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>

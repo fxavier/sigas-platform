@@ -1,6 +1,11 @@
 // app/api/upload/route.ts
 import { NextRequest, NextResponse } from 'next/server';
 import { uploadFileToS3 } from '@/lib/s3-service';
+import {
+  AWS_S3_BUCKET,
+  AWS_ACCESS_KEY,
+  AWS_SECRET_KEY,
+} from '@/lib/aws-config';
 
 export async function POST(request: NextRequest) {
   try {
@@ -48,16 +53,42 @@ export async function POST(request: NextRequest) {
       size: file.size,
     });
 
-    // Upload to S3
-    const fileUrl = await uploadFileToS3(file);
+    // Check if AWS is configured
+    const isAwsConfigured = AWS_S3_BUCKET && AWS_ACCESS_KEY && AWS_SECRET_KEY;
 
-    console.log('File uploaded successfully:', fileUrl);
+    let fileUrl: string;
+    let uploadMethod: string;
+
+    if (isAwsConfigured) {
+      try {
+        // Try S3 upload first
+        fileUrl = await uploadFileToS3(file);
+        uploadMethod = 'S3';
+        console.log('File uploaded successfully to S3:', fileUrl);
+      } catch (s3Error) {
+        console.warn(
+          'S3 upload failed, falling back to local storage:',
+          s3Error
+        );
+        // Fallback to local storage
+        fileUrl = await uploadToLocal(file);
+        uploadMethod = 'Local (S3 fallback)';
+      }
+    } else {
+      // Use local storage directly
+      console.log('AWS not configured, using local storage');
+      fileUrl = await uploadToLocal(file);
+      uploadMethod = 'Local';
+    }
+
+    console.log(`File uploaded successfully via ${uploadMethod}:`, fileUrl);
 
     return NextResponse.json({
       fileUrl,
       fileName: file.name,
       fileSize: file.size,
       fileType: file.type,
+      uploadMethod,
     });
   } catch (error) {
     console.error('Upload error:', error);
@@ -67,6 +98,48 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({ error: errorMessage }, { status: 500 });
   }
+}
+
+// Helper function to upload to local storage
+async function uploadToLocal(file: File): Promise<string> {
+  const { writeFile, mkdir } = await import('fs/promises');
+  const { join } = await import('path');
+  const { v4: uuidv4 } = await import('uuid');
+
+  // Validate file size (10MB limit)
+  const maxSize = 10 * 1024 * 1024; // 10MB
+  if (file.size > maxSize) {
+    throw new Error('Arquivo muito grande. Tamanho máximo: 10MB');
+  }
+
+  // Get file extension
+  const fileName = file.name
+    .replace(/[^a-zA-Z0-9.-]/g, '_') // Replace special chars
+    .substring(0, 50); // Limit length
+
+  const uniqueFileName = `${uuidv4().substring(0, 8)}-${fileName}`;
+
+  // Create uploads directory if it doesn't exist
+  const uploadsDir = join(process.cwd(), 'public', 'uploads');
+
+  try {
+    await mkdir(uploadsDir, { recursive: true });
+  } catch (error) {
+    // Directory might already exist, that's fine
+  }
+
+  // Convert file to buffer and write to filesystem
+  const bytes = await file.arrayBuffer();
+  const buffer = Buffer.from(bytes);
+
+  const filePath = join(uploadsDir, uniqueFileName);
+  await writeFile(filePath, buffer);
+
+  // Return the public URL
+  const fileUrl = `/uploads/${uniqueFileName}`;
+  console.log('File uploaded locally:', fileUrl);
+
+  return fileUrl;
 }
 
 // Handle OPTIONS request for CORS

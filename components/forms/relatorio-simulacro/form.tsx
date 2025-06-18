@@ -288,7 +288,7 @@ export function RelatorioSimulacroForm({
                       onValueChange={field.onChange}
                     >
                       <SelectTrigger className='bg-white'>
-                        <SelectValue placeholder='Selecione o tipo de emergência' />
+                        <SelectValue placeholder='Seleciona a opção' />
                       </SelectTrigger>
                       <SelectContent>
                         {tipoEmergenciaOptions.map((option) => (
@@ -322,7 +322,7 @@ export function RelatorioSimulacroForm({
                       onValueChange={field.onChange}
                     >
                       <SelectTrigger className='bg-white'>
-                        <SelectValue placeholder='Selecione o objeto do simulacro' />
+                        <SelectValue placeholder='Seleciona a opção' />
                       </SelectTrigger>
                       <SelectContent>
                         {objectoSimulacroOptions.map((option) => (
@@ -459,7 +459,7 @@ export function RelatorioSimulacroForm({
                               onValueChange={field.onChange}
                             >
                               <SelectTrigger className='bg-white'>
-                                <SelectValue placeholder='Selecione uma resposta' />
+                                <SelectValue placeholder='Seleciona a opção' />
                               </SelectTrigger>
                               <SelectContent>
                                 {respostaAvaliacaoOptions.map((option) => (

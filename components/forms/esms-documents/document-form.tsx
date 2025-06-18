@@ -155,7 +155,7 @@ export function ESMSDocumentForm({
                 <div className='space-y-1'>
                   <Select value={field.value} onValueChange={field.onChange}>
                     <SelectTrigger className={cn(error && 'border-red-500')}>
-                      <SelectValue placeholder='Selecione o estado' />
+                      <SelectValue placeholder='Seleciona a opção' />
                     </SelectTrigger>
                     <SelectContent>
                       {Object.entries(estadoDocumentoLabels).map(

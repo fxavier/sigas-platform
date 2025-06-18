@@ -218,7 +218,7 @@ export function InviteUserModal({
                   >
                     <FormControl>
                       <SelectTrigger>
-                        <SelectValue placeholder='Select a role' />
+                        <SelectValue placeholder='Seleciona a opção' />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
@@ -256,7 +256,7 @@ export function InviteUserModal({
                   >
                     <FormControl>
                       <SelectTrigger>
-                        <SelectValue placeholder='Select projects' />
+                        <SelectValue placeholder='Seleciona a opção' />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>

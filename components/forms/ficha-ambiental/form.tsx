@@ -285,7 +285,7 @@ export function FichaAmbientalForm({
                       onValueChange={field.onChange}
                     >
                       <SelectTrigger className='bg-white'>
-                        <SelectValue placeholder='Selecione o tipo de actividade' />
+                        <SelectValue placeholder='Seleciona a opção' />
                       </SelectTrigger>
                       <SelectContent>
                         {Object.values(TipoAtividadeEnum.Values).map(
@@ -561,7 +561,7 @@ export function FichaAmbientalForm({
                       onValueChange={field.onChange}
                     >
                       <SelectTrigger className='bg-white'>
-                        <SelectValue placeholder='Selecione a província' />
+                        <SelectValue placeholder='Seleciona a opção' />
                       </SelectTrigger>
                       <SelectContent>
                         {Object.values(ProvinciasEnum.Values).map((value) => (
@@ -618,7 +618,7 @@ export function FichaAmbientalForm({
                       onValueChange={field.onChange}
                     >
                       <SelectTrigger className='bg-white'>
-                        <SelectValue placeholder='Selecione o meio de inserção' />
+                        <SelectValue placeholder='Seleciona a opção' />
                       </SelectTrigger>
                       <SelectContent>
                         {Object.values(MeioInsercaoEnum.Values).map((value) => (
@@ -650,7 +650,7 @@ export function FichaAmbientalForm({
                       onValueChange={field.onChange}
                     >
                       <SelectTrigger className='bg-white'>
-                        <SelectValue placeholder='Selecione o enquadramento' />
+                        <SelectValue placeholder='Seleciona a opção' />
                       </SelectTrigger>
                       <SelectContent>
                         {Object.values(
@@ -1094,7 +1094,7 @@ export function FichaAmbientalForm({
                     onValueChange={field.onChange}
                   >
                     <SelectTrigger className='bg-white'>
-                      <SelectValue placeholder='Selecione o uso do solo' />
+                      <SelectValue placeholder='Seleciona a opção' />
                     </SelectTrigger>
                     <SelectContent>
                       {Object.values(UsoSoloEnum.Values).map((value) => (

@@ -322,7 +322,7 @@ export function RegistoComunicacoesForm({
                       onValueChange={field.onChange}
                     >
                       <SelectTrigger className='bg-white'>
-                        <SelectValue placeholder='Selecione uma opção' />
+                        <SelectValue placeholder='Seleciona a opção' />
                       </SelectTrigger>
                       <SelectContent>
                         {Object.values(RespostaSimNaoEnum.Values).map(
@@ -356,7 +356,7 @@ export function RegistoComunicacoesForm({
                       onValueChange={field.onChange}
                     >
                       <SelectTrigger className='bg-white'>
-                        <SelectValue placeholder='Selecione uma opção' />
+                        <SelectValue placeholder='Seleciona a opção' />
                       </SelectTrigger>
                       <SelectContent>
                         {Object.values(RespostaSimNaoEnum.Values).map(

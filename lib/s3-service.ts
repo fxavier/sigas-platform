@@ -45,8 +45,8 @@ export async function uploadFileToS3(file: File): Promise<string> {
     const formData = new FormData();
     formData.append('file', file);
 
-    // Upload to S3 via API route
-    const response = await fetch('/api/upload/s3', {
+    // Use the main upload route which handles S3 and fallback automatically
+    const response = await fetch('/api/upload', {
       method: 'POST',
       body: formData,
     });
@@ -61,7 +61,7 @@ export async function uploadFileToS3(file: File): Promise<string> {
     const result = await response.json();
     console.log('File uploaded successfully:', result);
 
-    return result.url;
+    return result.fileUrl;
   } catch (error) {
     console.error('Error in upload process:', error);
     throw new Error(
@@ -99,6 +99,51 @@ async function uploadToLocalStorage(file: File): Promise<string> {
   console.log('File uploaded to local storage:', result);
 
   return result.url;
+}
+
+/**
+ * Direct S3 upload function (bypasses fallback logic)
+ * @param file The file to upload
+ * @returns The URL of the uploaded file
+ */
+export async function uploadDirectlyToS3(file: File): Promise<string> {
+  try {
+    console.log(
+      'Uploading file directly to S3:',
+      file.name,
+      file.size,
+      file.type
+    );
+
+    // Create form data
+    const formData = new FormData();
+    formData.append('file', file);
+
+    // Upload directly to S3 via API route
+    const response = await fetch('/api/upload/s3', {
+      method: 'POST',
+      body: formData,
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}));
+      throw new Error(
+        errorData.error || `S3 upload failed with status ${response.status}`
+      );
+    }
+
+    const result = await response.json();
+    console.log('File uploaded successfully to S3:', result);
+
+    return result.url;
+  } catch (error) {
+    console.error('Error in S3 upload process:', error);
+    throw new Error(
+      `Failed to upload file to S3: ${
+        error instanceof Error ? error.message : 'Unknown error'
+      }`
+    );
+  }
 }
 
 /**

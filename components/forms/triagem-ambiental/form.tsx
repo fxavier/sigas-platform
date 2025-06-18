@@ -641,10 +641,10 @@ export function TriagemAmbientalForm({
                       onValueChange={field.onChange}
                     >
                       <SelectTrigger className='bg-white w-full'>
-                        <SelectValue placeholder='Selecione um responsável'>
+                        <SelectValue placeholder='Seleciona a opção'>
                           {field.value
                             ? getResponsavelNome(field.value, 'preenchimento')
-                            : 'Selecione um responsável'}
+                            : 'Seleciona a opção'}
                         </SelectValue>
                       </SelectTrigger>
                       <SelectContent>
@@ -709,10 +709,10 @@ export function TriagemAmbientalForm({
                       onValueChange={field.onChange}
                     >
                       <SelectTrigger className='bg-white w-full'>
-                        <SelectValue placeholder='Selecione um responsável'>
+                        <SelectValue placeholder='Seleciona a opção'>
                           {field.value
                             ? getResponsavelNome(field.value, 'verificacao')
-                            : 'Selecione um responsável'}
+                            : 'Seleciona a opção'}
                         </SelectValue>
                       </SelectTrigger>
                       <SelectContent>
@@ -775,10 +775,10 @@ export function TriagemAmbientalForm({
                       onValueChange={field.onChange}
                     >
                       <SelectTrigger className='bg-white w-full'>
-                        <SelectValue placeholder='Selecione um subprojeto'>
+                        <SelectValue placeholder='Seleciona a opção'>
                           {field.value
                             ? getSubprojectoNome(field.value)
-                            : 'Selecione um subprojeto'}
+                            : 'Seleciona a opção'}
                         </SelectValue>
                       </SelectTrigger>
                       <SelectContent>
@@ -860,7 +860,7 @@ export function TriagemAmbientalForm({
                               onValueChange={field.onChange}
                             >
                               <SelectTrigger className='bg-white'>
-                                <SelectValue placeholder='Selecione uma resposta' />
+                                <SelectValue placeholder='Seleciona a opção' />
                               </SelectTrigger>
                               <SelectContent>
                                 <SelectItem value='SIM'>Sim</SelectItem>
@@ -1014,10 +1014,10 @@ export function TriagemAmbientalForm({
                       onValueChange={field.onChange}
                     >
                       <SelectTrigger className='bg-white w-full'>
-                        <SelectValue placeholder='Selecione um resultado'>
+                        <SelectValue placeholder='Seleciona a opção'>
                           {field.value
                             ? getResultadoTriagem(field.value)
-                            : 'Selecione um resultado'}
+                            : 'Seleciona a opção'}
                         </SelectValue>
                       </SelectTrigger>
                       <SelectContent>
