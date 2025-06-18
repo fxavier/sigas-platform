@@ -63,7 +63,7 @@ export function RegistoComunicacoesForm({
   const { currentTenantId, currentProjectId } = useTenantProjectContext();
 
   const form = useForm<RegistoComunicacoesFormData>({
-    resolver: zodResolver(registoComunicacoesSchema),
+    resolver: zodResolver(registoComunicacoesSchema) as any,
     defaultValues: {
       id: initialData?.id,
       tenantId: currentTenantId || '',
@@ -118,7 +118,7 @@ export function RegistoComunicacoesForm({
   return (
     <Form {...form}>
       <form
-        onSubmit={form.handleSubmit(handleFormSubmit)}
+        onSubmit={form.handleSubmit(handleFormSubmit as any)}
         className='space-y-8'
       >
         <input

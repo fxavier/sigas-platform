@@ -690,7 +690,7 @@ model ConsultationAndEngagement {
 model ResultadoTriagem {
   id                              String                   @id @default(uuid())
   subprojectoId                   String
-  categoriaRisco                  String                   @db.VarChar(15)
+  categoriaRisco                  String                   @db.VarChar(500)
   descricao                       String
   instrumentosASeremDesenvolvidos String
   createdAt                       DateTime                 @default(now())
