@@ -6,8 +6,9 @@ import { db } from '@/lib/db';
 // Get projects assigned to a specific user
 export async function GET(
   req: Request,
-  { params }: { params: { userId: string } }
+  { params }: { params: Promise<{ userId: string }> }
 ) {
+  const { userId: targetUserId } = await params;
   try {
     const { userId: clerkUserId } = await auth();
 
@@ -29,7 +30,7 @@ export async function GET(
     // Only admins, managers, or the user themselves can view their projects
     const isAdminOrManager =
       requester.role === 'ADMIN' || requester.role === 'MANAGER';
-    const isSelf = requester.id === params.userId;
+    const isSelf = requester.id === targetUserId;
 
     if (!isAdminOrManager && !isSelf) {
       return new NextResponse('Forbidden', { status: 403 });
@@ -38,7 +39,7 @@ export async function GET(
     // Get user's assigned projects
     const userProjects = await db.userProject.findMany({
       where: {
-        userId: params.userId,
+        userId: targetUserId,
       },
       include: {
         project: true,
@@ -58,8 +59,9 @@ export async function GET(
 // Update project assignments for a user
 export async function PUT(
   req: Request,
-  { params }: { params: { userId: string } }
+  { params }: { params: Promise<{ userId: string }> }
 ) {
+  const { userId: targetUserId } = await params;
   try {
     const { userId: clerkUserId } = await auth();
 
@@ -92,7 +94,7 @@ export async function PUT(
     // Check if user exists
     const user = await db.user.findUnique({
       where: {
-        id: params.userId,
+        id: targetUserId,
       },
     });
 
@@ -103,7 +105,7 @@ export async function PUT(
     // Get user's current project assignments
     const currentAssignments = await db.userProject.findMany({
       where: {
-        userId: params.userId,
+        userId: targetUserId,
       },
     });
 
@@ -123,7 +125,7 @@ export async function PUT(
         projectsToAdd.map((projectId) =>
           db.userProject.create({
             data: {
-              userId: params.userId,
+              userId: targetUserId,
               projectId,
             },
           })
@@ -137,7 +139,7 @@ export async function PUT(
         projectsToRemove.map((projectId) =>
           db.userProject.deleteMany({
             where: {
-              userId: params.userId,
+              userId: targetUserId,
               projectId,
             },
           })

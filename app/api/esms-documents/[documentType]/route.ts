@@ -30,13 +30,13 @@ const modelNames = {
 
 export async function GET(
   req: Request,
-  { params }: { params: { documentType: DocumentType } }
+  { params }: { params: Promise<{ documentType: DocumentType }> }
 ) {
+  const { documentType } = await params;
   try {
     const { searchParams } = new URL(req.url);
     const tenantId = searchParams.get('tenantId');
     const projectId = searchParams.get('projectId');
-    const documentType = await Promise.resolve(params.documentType);
 
     if (!tenantId) {
       return NextResponse.json(
@@ -77,10 +77,7 @@ export async function GET(
 
     return NextResponse.json(documents);
   } catch (error) {
-    console.error(
-      `Error fetching ${await Promise.resolve(params.documentType)}:`,
-      error
-    );
+    console.error(`Error fetching ${documentType}:`, error);
     return NextResponse.json(
       { error: 'Erro ao buscar documentos' },
       { status: 500 }
@@ -90,13 +87,13 @@ export async function GET(
 
 export async function POST(
   req: Request,
-  { params }: { params: { documentType: DocumentType } }
+  { params }: { params: Promise<{ documentType: DocumentType }> }
 ) {
+  const { documentType } = await params;
   try {
     const { searchParams } = new URL(req.url);
     const tenantId = searchParams.get('tenantId');
     const projectId = searchParams.get('projectId');
-    const { documentType } = params;
 
     if (!tenantId) {
       return NextResponse.json(
@@ -150,7 +147,7 @@ export async function POST(
 
     return NextResponse.json(newDocument, { status: 201 });
   } catch (error) {
-    console.error(`Error creating ${params.documentType}:`, error);
+    console.error(`Error creating ${documentType}:`, error);
     return NextResponse.json(
       { error: 'Erro ao criar documento' },
       { status: 500 }
@@ -160,14 +157,14 @@ export async function POST(
 
 export async function PUT(
   req: Request,
-  { params }: { params: { documentType: DocumentType } }
+  { params }: { params: Promise<{ documentType: DocumentType }> }
 ) {
+  const { documentType } = await params;
   try {
     const { searchParams } = new URL(req.url);
     const id = searchParams.get('id');
     const tenantId = searchParams.get('tenantId');
     const projectId = searchParams.get('projectId');
-    const { documentType } = params;
 
     if (!id) {
       return NextResponse.json({ error: 'ID é obrigatório' }, { status: 400 });
@@ -238,7 +235,7 @@ export async function PUT(
 
     return NextResponse.json(updatedDocument);
   } catch (error) {
-    console.error(`Error updating ${params.documentType}:`, error);
+    console.error(`Error updating ${documentType}:`, error);
     return NextResponse.json(
       { error: 'Erro ao atualizar documento' },
       { status: 500 }
@@ -248,13 +245,13 @@ export async function PUT(
 
 export async function DELETE(
   req: Request,
-  { params }: { params: { documentType: DocumentType } }
+  { params }: { params: Promise<{ documentType: DocumentType }> }
 ) {
+  const { documentType } = await params;
   try {
     const { searchParams } = new URL(req.url);
     const id = searchParams.get('id');
     const tenantId = searchParams.get('tenantId');
-    const { documentType } = params;
 
     if (!id) {
       return NextResponse.json({ error: 'ID é obrigatório' }, { status: 400 });
@@ -308,7 +305,7 @@ export async function DELETE(
 
     return NextResponse.json({ success: true });
   } catch (error) {
-    console.error(`Error deleting ${params.documentType}:`, error);
+    console.error(`Error deleting ${documentType}:`, error);
     return NextResponse.json(
       { error: 'Erro ao excluir documento' },
       { status: 500 }

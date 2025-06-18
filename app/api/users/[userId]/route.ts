@@ -5,8 +5,9 @@ import { NextResponse } from 'next/server';
 
 export async function PATCH(
   req: Request,
-  { params }: { params: { userId: string } }
+  { params }: { params: Promise<{ userId: string }> }
 ) {
+  const { userId: targetUserId } = await params;
   try {
     const { userId } = await auth();
 
@@ -23,7 +24,7 @@ export async function PATCH(
     // Get the user to update
     const userToUpdate = await db.user.findUnique({
       where: {
-        id: params.userId,
+        id: targetUserId,
       },
     });
 
@@ -66,7 +67,7 @@ export async function PATCH(
 
     const updatedUser = await db.user.update({
       where: {
-        id: params.userId,
+        id: targetUserId,
       },
       data: {
         role,
@@ -82,8 +83,9 @@ export async function PATCH(
 
 export async function DELETE(
   req: Request,
-  { params }: { params: { userId: string } }
+  { params }: { params: Promise<{ userId: string }> }
 ) {
+  const { userId: targetUserId } = await params;
   try {
     const { userId } = await auth();
 
@@ -94,7 +96,7 @@ export async function DELETE(
     // Get the user to delete
     const userToDelete = await db.user.findUnique({
       where: {
-        id: params.userId,
+        id: targetUserId,
       },
     });
 
@@ -143,7 +145,7 @@ export async function DELETE(
     // Delete the user
     await db.user.delete({
       where: {
-        id: params.userId,
+        id: targetUserId,
       },
     });
 

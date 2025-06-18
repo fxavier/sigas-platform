@@ -1,6 +1,6 @@
 // app/api/forms/registo-comunicacoes/route.ts
 import { NextResponse } from 'next/server';
-import { auth } from '@clerk/nextjs';
+import { currentUser } from '@clerk/nextjs/server';
 import { db } from '@/lib/db';
 import { createContextualPrismaClient } from '@/lib/db-context';
 import { registoComunicacoesSchema } from '@/lib/validations/registo-comunicacoes';
@@ -8,8 +8,8 @@ import { registoComunicacoesSchema } from '@/lib/validations/registo-comunicacoe
 export async function GET(req: Request) {
   try {
     // Check authentication
-    const { userId } = auth();
-    if (!userId) {
+    const user = await currentUser();
+    if (!user) {
       return NextResponse.json({ error: 'Não autorizado' }, { status: 401 });
     }
 
@@ -63,8 +63,8 @@ export async function GET(req: Request) {
 export async function POST(req: Request) {
   try {
     // Check authentication
-    const { userId } = auth();
-    if (!userId) {
+    const user = await currentUser();
+    if (!user) {
       return NextResponse.json({ error: 'Não autorizado' }, { status: 401 });
     }
 
@@ -136,8 +136,8 @@ export async function POST(req: Request) {
 export async function PUT(req: Request) {
   try {
     // Check authentication
-    const { userId } = auth();
-    if (!userId) {
+    const user = await currentUser();
+    if (!user) {
       return NextResponse.json({ error: 'Não autorizado' }, { status: 401 });
     }
 
@@ -232,8 +232,8 @@ export async function PUT(req: Request) {
 export async function DELETE(req: Request) {
   try {
     // Check authentication
-    const { userId } = auth();
-    if (!userId) {
+    const user = await currentUser();
+    if (!user) {
       return NextResponse.json({ error: 'Não autorizado' }, { status: 401 });
     }
 

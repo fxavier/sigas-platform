@@ -7,8 +7,9 @@ import { sendInvitationEmail } from '@/lib/email';
 
 export async function GET(
   req: Request,
-  { params }: { params: { tenantId: string } }
+  { params }: { params: Promise<{ tenantId: string }> }
 ) {
+  const { tenantId } = await params;
   try {
     const { userId } = await auth();
 
@@ -20,7 +21,7 @@ export async function GET(
     const currentUser = await db.user.findFirst({
       where: {
         clerkUserId: userId,
-        tenantId: params.tenantId,
+        tenantId,
       },
     });
 
@@ -35,7 +36,7 @@ export async function GET(
 
     const invitations = await db.userInvitation.findMany({
       where: {
-        tenantId: params.tenantId,
+        tenantId,
         isAccepted: false,
         expires: {
           gt: new Date(),
@@ -55,8 +56,9 @@ export async function GET(
 
 export async function POST(
   req: Request,
-  { params }: { params: { tenantId: string } }
+  { params }: { params: Promise<{ tenantId: string }> }
 ) {
+  const { tenantId } = await params;
   try {
     const { userId } = await auth();
 
@@ -76,7 +78,7 @@ export async function POST(
     const currentUser = await db.user.findFirst({
       where: {
         clerkUserId: userId,
-        tenantId: params.tenantId,
+        tenantId,
       },
     });
 
@@ -100,7 +102,7 @@ export async function POST(
     const existingUser = await db.user.findFirst({
       where: {
         email,
-        tenantId: params.tenantId,
+        tenantId,
       },
     });
 
@@ -114,7 +116,7 @@ export async function POST(
     const existingInvitation = await db.userInvitation.findFirst({
       where: {
         email,
-        tenantId: params.tenantId,
+        tenantId,
         isAccepted: false,
         expires: {
           gt: new Date(),
@@ -131,7 +133,7 @@ export async function POST(
     // Get tenant info for the invitation email
     const tenant = await db.tenant.findUnique({
       where: {
-        id: params.tenantId,
+        id: tenantId,
       },
     });
 
@@ -150,7 +152,7 @@ export async function POST(
         role,
         token,
         expires,
-        tenantId: params.tenantId,
+        tenantId,
       },
     });
 

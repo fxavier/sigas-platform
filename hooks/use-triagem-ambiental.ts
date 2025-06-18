@@ -124,7 +124,8 @@ export const useTriagemAmbiental = ({
     ) => {
       try {
         setIsLoading(true);
-        const response = await fetch('/api/triagem-ambiental', {
+        const url = `/api/forms/triagem-ambiental?tenantId=${currentTenantId}`;
+        const response = await fetch(url, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -157,8 +158,9 @@ export const useTriagemAmbiental = ({
     ) => {
       try {
         setIsLoading(true);
-        const response = await fetch(`/api/triagem-ambiental/${id}`, {
-          method: 'PATCH',
+        const url = `/api/forms/triagem-ambiental?id=${id}&tenantId=${currentTenantId}`;
+        const response = await fetch(url, {
+          method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
           },
@@ -185,7 +187,8 @@ export const useTriagemAmbiental = ({
     async (id: string) => {
       try {
         setIsLoading(true);
-        const response = await fetch(`/api/triagem-ambiental/${id}`, {
+        const url = `/api/forms/triagem-ambiental?id=${id}&tenantId=${currentTenantId}`;
+        const response = await fetch(url, {
           method: 'DELETE',
         });
 

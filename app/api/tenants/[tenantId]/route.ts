@@ -5,8 +5,9 @@ import { db } from '@/lib/db';
 
 export async function PATCH(
   req: Request,
-  { params }: { params: { tenantId: string } }
+  { params }: { params: Promise<{ tenantId: string }> }
 ) {
+  const { tenantId } = await params;
   try {
     const { userId } = await auth();
 
@@ -24,7 +25,7 @@ export async function PATCH(
     const currentUser = await db.user.findFirst({
       where: {
         clerkUserId: userId,
-        tenantId: params.tenantId,
+        tenantId,
       },
     });
 
@@ -40,7 +41,7 @@ export async function PATCH(
     // Update the tenant
     const updatedTenant = await db.tenant.update({
       where: {
-        id: params.tenantId,
+        id: tenantId,
       },
       data: {
         name,

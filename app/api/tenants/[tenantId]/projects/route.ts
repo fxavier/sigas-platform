@@ -5,11 +5,11 @@ import { NextResponse } from 'next/server';
 
 export async function GET(
   req: Request,
-  { params }: { params: { tenantId: string } }
+  { params }: { params: Promise<{ tenantId: string }> }
 ) {
   try {
     const { userId } = await auth();
-    const tenantId = await Promise.resolve(params.tenantId);
+    const { tenantId } = await params;
 
     if (!userId) {
       return new NextResponse('Unauthorized', { status: 401 });
@@ -101,7 +101,7 @@ export async function GET(
 
 export async function POST(
   req: Request,
-  { params }: { params: { tenantId: string } }
+  { params }: { params: Promise<{ tenantId: string }> }
 ) {
   try {
     const { userId } = await auth();
@@ -111,6 +111,7 @@ export async function POST(
     }
 
     const { name, description } = await req.json();
+    const { tenantId } = await params;
 
     if (!name || !description) {
       return new NextResponse('Name and description are required', {
@@ -122,7 +123,7 @@ export async function POST(
     const currentUser = await db.user.findFirst({
       where: {
         clerkUserId: userId,
-        tenantId: params.tenantId,
+        tenantId,
       },
     });
 
@@ -139,7 +140,7 @@ export async function POST(
     const existingProject = await db.project.findFirst({
       where: {
         name,
-        tenantId: params.tenantId,
+        tenantId,
       },
     });
 
@@ -154,7 +155,7 @@ export async function POST(
       data: {
         name,
         description,
-        tenantId: params.tenantId,
+        tenantId,
       },
     });
 

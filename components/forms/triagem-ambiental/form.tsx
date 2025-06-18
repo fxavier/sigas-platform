@@ -38,6 +38,9 @@ import {
 import { useTenantProjectContext } from '@/lib/context/tenant-project-context';
 import { FormActions } from '../form-actions';
 import { AddOptionDialog } from '@/components/forms/add-option-dialog';
+import { AddResponsavelDialog } from './add-responsavel-dialog';
+import { AddSubprojectoDialog } from './add-subprojecto-dialog';
+import { AddResultadoTriagemDialog } from './add-resultado-triagem-dialog';
 // Debug log for component rendering
 console.log('TriagemAmbientalForm rendering');
 import { Badge } from '@/components/ui/badge';
@@ -340,10 +343,8 @@ export function TriagemAmbientalForm({
 
   // Helper to get resultado triagem
   const getResultadoTriagem = (id: string) => {
-    return (
-      resultadosTriagem.find((r) => r.id === id)?.categoriaRisco ||
-      'Não encontrado'
-    );
+    const resultado = resultadosTriagem.find((r) => r.id === id);
+    return resultado ? resultado.categoriaRisco : 'Não encontrado';
   };
 
   // Get resource by ID
@@ -351,6 +352,139 @@ export function TriagemAmbientalForm({
     return biodiversidadeRecursos.find((r) => r.id === id);
   };
 
+  // Handler for adding new responsavel with comprehensive form
+  const handleAddResponsavel = async (
+    type: 'preenchimento' | 'verificacao',
+    data: any
+  ) => {
+    if (!currentTenantId) {
+      toast.error('Tenant ID é obrigatório');
+      return;
+    }
+
+    try {
+      const params = new URLSearchParams();
+      params.append('tenantId', currentTenantId);
+      params.append('tipo', type);
+
+      const body = {
+        ...data,
+        data: new Date(data.data),
+        tenantId: currentTenantId,
+      };
+
+      const response = await fetch(`/api/responsaveis?${params.toString()}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(body),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to add responsavel');
+      }
+
+      const result = await response.json();
+
+      // Update state based on the type
+      if (type === 'preenchimento') {
+        setResponsaveisPreenchimento((prev) => [...prev, result]);
+      } else {
+        setResponsaveisVerificacao((prev) => [...prev, result]);
+      }
+    } catch (error) {
+      console.error('Error adding responsavel:', error);
+      throw error;
+    }
+  };
+
+  // Handler for adding new subprojecto with comprehensive form
+  const handleAddSubprojecto = async (data: any) => {
+    if (!currentTenantId) {
+      toast.error('Tenant ID é obrigatório');
+      return;
+    }
+
+    try {
+      const body = {
+        ...data,
+        custoEstimado: data.custoEstimado
+          ? parseFloat(data.custoEstimado)
+          : null,
+        tenantId: currentTenantId,
+      };
+
+      const response = await fetch(
+        `/api/subprojectos?tenantId=${currentTenantId}`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(body),
+        }
+      );
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to add subprojecto');
+      }
+
+      const result = await response.json();
+      setSubprojectos((prev) => [...prev, result]);
+    } catch (error) {
+      console.error('Error adding subprojecto:', error);
+      throw error;
+    }
+  };
+
+  // Handler for adding new resultado triagem with comprehensive form
+  const handleAddResultadoTriagem = async (data: any) => {
+    if (!currentTenantId) {
+      toast.error('Tenant ID é obrigatório');
+      return;
+    }
+
+    try {
+      const params = new URLSearchParams();
+      params.append('tenantId', currentTenantId);
+      if (currentProjectId) {
+        params.append('projectId', currentProjectId);
+      }
+
+      const body = {
+        ...data,
+        tenantId: currentTenantId,
+        subprojectoId: data.subprojectoId || null,
+      };
+
+      const response = await fetch(
+        `/api/resultados-triagem?${params.toString()}`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(body),
+        }
+      );
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to add resultado triagem');
+      }
+
+      const result = await response.json();
+      setResultadosTriagem((prev) => [...prev, result]);
+    } catch (error) {
+      console.error('Error adding resultado triagem:', error);
+      throw error;
+    }
+  };
+
+  // Legacy handler for simple add option dialog (kept for backward compatibility)
   const handleAddNewOption = async (type: string, value: string) => {
     if (!value || !currentTenantId) {
       toast.error('Valor e tenant ID são obrigatórios');
@@ -398,11 +532,6 @@ export function TriagemAmbientalForm({
           };
           break;
         case 'resultado':
-          if (!form.getValues('subprojectoId')) {
-            toast.error('É necessário selecionar um subprojeto primeiro');
-            return;
-          }
-
           endpoint = '/api/resultados-triagem';
           params.append('projectId', currentProjectId || '');
           body = {
@@ -490,45 +619,50 @@ export function TriagemAmbientalForm({
           </Alert>
         )}
 
+        {/* 1. Responsável pelo Preenchimento */}
         <FormSection
-          title='Informações Básicas'
-          description='Dados do responsável e subprojeto'
+          title='1. Responsável pelo Preenchimento'
+          description='Pessoa responsável pelo preenchimento do formulário'
         >
-          <FormRow>
-            <FormField
-              control={form.control}
-              name='responsavelPeloPreenchimentoId'
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>
-                    Responsável pelo Preenchimento
-                    <span className='text-destructive ml-1'>*</span>
-                  </FormLabel>
-                  <div className='flex items-center gap-2'>
-                    <FormControl>
-                      <Select
-                        disabled={isLoading || isLoadingResponsaveis}
-                        value={field.value}
-                        onValueChange={field.onChange}
-                      >
-                        <SelectTrigger className='bg-white w-full'>
-                          <SelectValue placeholder='Selecione um responsável'>
-                            {field.value
-                              ? getResponsavelNome(field.value, 'preenchimento')
-                              : 'Selecione um responsável'}
-                          </SelectValue>
-                        </SelectTrigger>
-                        <SelectContent>
-                          {isLoadingResponsaveis ? (
-                            <div className='p-2'>
-                              <Skeleton className='h-8 w-full' />
-                            </div>
-                          ) : responsaveisPreenchimento.length === 0 ? (
-                            <div className='p-2 text-sm text-muted-foreground text-center'>
-                              Nenhum responsável encontrado
-                            </div>
-                          ) : (
-                            responsaveisPreenchimento.map((responsavel) => (
+          <FormField
+            control={form.control}
+            name='responsavelPeloPreenchimentoId'
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>
+                  Responsável pelo Preenchimento
+                  <span className='text-destructive ml-1'>*</span>
+                </FormLabel>
+                <div className='flex items-center gap-2'>
+                  <FormControl>
+                    <Select
+                      disabled={isLoading || isLoadingResponsaveis}
+                      value={field.value}
+                      onValueChange={field.onChange}
+                    >
+                      <SelectTrigger className='bg-white w-full'>
+                        <SelectValue placeholder='Selecione um responsável'>
+                          {field.value
+                            ? getResponsavelNome(field.value, 'preenchimento')
+                            : 'Selecione um responsável'}
+                        </SelectValue>
+                      </SelectTrigger>
+                      <SelectContent>
+                        {isLoadingResponsaveis ? (
+                          <div className='p-2'>
+                            <Skeleton className='h-8 w-full' />
+                          </div>
+                        ) : responsaveisPreenchimento.length === 0 ? (
+                          <div className='p-2 text-sm text-muted-foreground text-center'>
+                            Nenhum responsável encontrado
+                          </div>
+                        ) : (
+                          responsaveisPreenchimento
+                            .filter(
+                              (responsavel) =>
+                                responsavel.id && responsavel.id.trim() !== ''
+                            )
+                            .map((responsavel) => (
                               <SelectItem
                                 key={responsavel.id}
                                 value={responsavel.id}
@@ -536,56 +670,67 @@ export function TriagemAmbientalForm({
                                 {responsavel.nome}
                               </SelectItem>
                             ))
-                          )}
-                        </SelectContent>
-                      </Select>
-                    </FormControl>
-                    <AddOptionDialog
-                      type='Responsável pelo Preenchimento'
-                      onAdd={(value) =>
-                        handleAddNewOption('responsável-preenchimento', value)
-                      }
-                    />
-                  </div>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+                        )}
+                      </SelectContent>
+                    </Select>
+                  </FormControl>
+                  <AddResponsavelDialog
+                    type='preenchimento'
+                    onAdd={(data) =>
+                      handleAddResponsavel('preenchimento', data)
+                    }
+                  />
+                </div>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </FormSection>
 
-            <FormField
-              control={form.control}
-              name='responsavelPelaVerificacaoId'
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>
-                    Responsável pela Verificação
-                    <span className='text-destructive ml-1'>*</span>
-                  </FormLabel>
-                  <div className='flex items-center gap-2'>
-                    <FormControl>
-                      <Select
-                        disabled={isLoading || isLoadingResponsaveis}
-                        value={field.value}
-                        onValueChange={field.onChange}
-                      >
-                        <SelectTrigger className='bg-white w-full'>
-                          <SelectValue placeholder='Selecione um responsável'>
-                            {field.value
-                              ? getResponsavelNome(field.value, 'verificacao')
-                              : 'Selecione um responsável'}
-                          </SelectValue>
-                        </SelectTrigger>
-                        <SelectContent>
-                          {isLoadingResponsaveis ? (
-                            <div className='p-2'>
-                              <Skeleton className='h-8 w-full' />
-                            </div>
-                          ) : responsaveisVerificacao.length === 0 ? (
-                            <div className='p-2 text-sm text-muted-foreground text-center'>
-                              Nenhum responsável encontrado
-                            </div>
-                          ) : (
-                            responsaveisVerificacao.map((responsavel) => (
+        {/* 2. Responsável pela Verificação */}
+        <FormSection
+          title='2. Responsável pela Verificação'
+          description='Pessoa responsável pela verificação do formulário'
+        >
+          <FormField
+            control={form.control}
+            name='responsavelPelaVerificacaoId'
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>
+                  Responsável pela Verificação
+                  <span className='text-destructive ml-1'>*</span>
+                </FormLabel>
+                <div className='flex items-center gap-2'>
+                  <FormControl>
+                    <Select
+                      disabled={isLoading || isLoadingResponsaveis}
+                      value={field.value}
+                      onValueChange={field.onChange}
+                    >
+                      <SelectTrigger className='bg-white w-full'>
+                        <SelectValue placeholder='Selecione um responsável'>
+                          {field.value
+                            ? getResponsavelNome(field.value, 'verificacao')
+                            : 'Selecione um responsável'}
+                        </SelectValue>
+                      </SelectTrigger>
+                      <SelectContent>
+                        {isLoadingResponsaveis ? (
+                          <div className='p-2'>
+                            <Skeleton className='h-8 w-full' />
+                          </div>
+                        ) : responsaveisVerificacao.length === 0 ? (
+                          <div className='p-2 text-sm text-muted-foreground text-center'>
+                            Nenhum responsável encontrado
+                          </div>
+                        ) : (
+                          responsaveisVerificacao
+                            .filter(
+                              (responsavel) =>
+                                responsavel.id && responsavel.id.trim() !== ''
+                            )
+                            .map((responsavel) => (
                               <SelectItem
                                 key={responsavel.id}
                                 value={responsavel.id}
@@ -593,62 +738,65 @@ export function TriagemAmbientalForm({
                                 {responsavel.nome}
                               </SelectItem>
                             ))
-                          )}
-                        </SelectContent>
-                      </Select>
-                    </FormControl>
-                    <AddOptionDialog
-                      type='Responsável pela Verificação'
-                      onAdd={(value) =>
-                        handleAddNewOption('responsável-verificacao', value)
-                      }
-                    />
-                  </div>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </FormRow>
+                        )}
+                      </SelectContent>
+                    </Select>
+                  </FormControl>
+                  <AddResponsavelDialog
+                    type='verificacao'
+                    onAdd={(data) => handleAddResponsavel('verificacao', data)}
+                  />
+                </div>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </FormSection>
 
-          <FormRow>
-            <FormField
-              control={form.control}
-              name='subprojectoId'
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>
-                    Subprojeto
-                    <span className='text-destructive ml-1'>*</span>
-                  </FormLabel>
-                  <div className='flex items-center gap-2'>
-                    <FormControl>
-                      <Select
-                        disabled={isLoading || isLoadingSubprojectos}
-                        value={field.value}
-                        onValueChange={(value) => {
-                          field.onChange(value);
-                          // Reset resultadoTriagemId when subproject changes
-                          form.setValue('resultadoTriagemId', '');
-                        }}
-                      >
-                        <SelectTrigger className='bg-white w-full'>
-                          <SelectValue placeholder='Selecione um subprojeto'>
-                            {field.value
-                              ? getSubprojectoNome(field.value)
-                              : 'Selecione um subprojeto'}
-                          </SelectValue>
-                        </SelectTrigger>
-                        <SelectContent>
-                          {isLoadingSubprojectos ? (
-                            <div className='p-2'>
-                              <Skeleton className='h-8 w-full' />
-                            </div>
-                          ) : subprojectos.length === 0 ? (
-                            <div className='p-2 text-sm text-muted-foreground text-center'>
-                              Nenhum subprojeto encontrado
-                            </div>
-                          ) : (
-                            subprojectos.map((subprojeto) => (
+        {/* 3. Subprojeto */}
+        <FormSection
+          title='3. Subprojeto'
+          description='Seleção do subprojeto relacionado à triagem'
+        >
+          <FormField
+            control={form.control}
+            name='subprojectoId'
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>
+                  Subprojeto
+                  <span className='text-destructive ml-1'>*</span>
+                </FormLabel>
+                <div className='flex items-center gap-2'>
+                  <FormControl>
+                    <Select
+                      disabled={isLoading || isLoadingSubprojectos}
+                      value={field.value}
+                      onValueChange={field.onChange}
+                    >
+                      <SelectTrigger className='bg-white w-full'>
+                        <SelectValue placeholder='Selecione um subprojeto'>
+                          {field.value
+                            ? getSubprojectoNome(field.value)
+                            : 'Selecione um subprojeto'}
+                        </SelectValue>
+                      </SelectTrigger>
+                      <SelectContent>
+                        {isLoadingSubprojectos ? (
+                          <div className='p-2'>
+                            <Skeleton className='h-8 w-full' />
+                          </div>
+                        ) : subprojectos.length === 0 ? (
+                          <div className='p-2 text-sm text-muted-foreground text-center'>
+                            Nenhum subprojeto encontrado
+                          </div>
+                        ) : (
+                          subprojectos
+                            .filter(
+                              (subprojeto) =>
+                                subprojeto.id && subprojeto.id.trim() !== ''
+                            )
+                            .map((subprojeto) => (
                               <SelectItem
                                 key={subprojeto.id}
                                 value={subprojeto.id}
@@ -656,140 +804,21 @@ export function TriagemAmbientalForm({
                                 {subprojeto.nome}
                               </SelectItem>
                             ))
-                          )}
-                        </SelectContent>
-                      </Select>
-                    </FormControl>
-                    <AddOptionDialog
-                      type='Subprojeto'
-                      onAdd={(value) => handleAddNewOption('subprojeto', value)}
-                    />
-                  </div>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name='resultadoTriagemId'
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>
-                    Resultado da Triagem
-                    <span className='text-destructive ml-1'>*</span>
-                  </FormLabel>
-                  <div className='flex items-center gap-2'>
-                    <FormControl>
-                      <Select
-                        disabled={isLoading || isLoadingResultados}
-                        value={field.value}
-                        onValueChange={field.onChange}
-                      >
-                        <SelectTrigger className='bg-white w-full'>
-                          <SelectValue placeholder='Selecione um resultado'>
-                            {field.value
-                              ? getResultadoTriagem(field.value)
-                              : 'Selecione um resultado'}
-                          </SelectValue>
-                        </SelectTrigger>
-                        <SelectContent>
-                          {isLoadingResultados ? (
-                            <div className='p-2'>
-                              <Skeleton className='h-8 w-full' />
-                            </div>
-                          ) : !form.getValues('subprojectoId') ? (
-                            <div className='p-2 text-sm text-muted-foreground text-center'>
-                              Selecione um subprojeto primeiro
-                            </div>
-                          ) : resultadosTriagem.length === 0 ? (
-                            <div className='p-2 text-sm text-muted-foreground text-center'>
-                              Nenhum resultado de triagem encontrado. Adicione
-                              um resultado primeiro.
-                            </div>
-                          ) : (
-                            resultadosTriagem.map((resultado) => (
-                              <SelectItem
-                                key={resultado.id}
-                                value={resultado.id}
-                              >
-                                {resultado.categoriaRisco}
-                              </SelectItem>
-                            ))
-                          )}
-                        </SelectContent>
-                      </Select>
-                    </FormControl>
-                    <AddOptionDialog
-                      type='Resultado'
-                      onAdd={(value) => handleAddNewOption('resultado', value)}
-                    />
-                  </div>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </FormRow>
-        </FormSection>
-
-        <Alert className='bg-blue-50 border-blue-200'>
-          <Info className='h-4 w-4 text-blue-600' />
-          <AlertTitle className='text-blue-600'>Informação</AlertTitle>
-          <AlertDescription className='text-blue-700'>
-            A triagem ambiental é um processo importante para identificar e
-            avaliar os potenciais impactos ambientais e sociais de um projeto. O
-            resultado da triagem determina quais instrumentos ambientais serão
-            necessários.
-          </AlertDescription>
-        </Alert>
-
-        <FormSection
-          title='Detalhes da Triagem'
-          description='Informações sobre a consulta e ações recomendadas'
-        >
-          <FormField
-            control={form.control}
-            name='consultaEngajamento'
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Consulta de Engajamento</FormLabel>
-                <FormControl>
-                  <Textarea
-                    placeholder='Descreva a consulta e o engajamento realizado com as partes interessadas'
-                    className='min-h-[100px] bg-white'
-                    disabled={isLoading}
-                    {...field}
-                    value={field.value || ''}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
-            name='accoesRecomendadas'
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Ações Recomendadas</FormLabel>
-                <FormControl>
-                  <Textarea
-                    placeholder='Descreva as ações recomendadas com base na triagem'
-                    className='min-h-[100px] bg-white'
-                    disabled={isLoading}
-                    {...field}
-                    value={field.value || ''}
-                  />
-                </FormControl>
+                        )}
+                      </SelectContent>
+                    </Select>
+                  </FormControl>
+                  <AddSubprojectoDialog onAdd={handleAddSubprojecto} />
+                </div>
                 <FormMessage />
               </FormItem>
             )}
           />
         </FormSection>
 
+        {/* 4. Identificação de Riscos */}
         <FormSection
-          title='Identificação de Riscos'
+          title='4. Identificação de Riscos'
           description='Avalie os riscos ambientais e sociais para cada categoria'
         >
           {isLoadingRecursos ? (
@@ -910,6 +939,136 @@ export function TriagemAmbientalForm({
             </Alert>
           )}
         </FormSection>
+
+        {/* 5. Consulta de Engajamento */}
+        <FormSection
+          title='5. Consulta de Engajamento'
+          description='Descrição da consulta e engajamento com as partes interessadas'
+        >
+          <FormField
+            control={form.control}
+            name='consultaEngajamento'
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Consulta de Engajamento</FormLabel>
+                <FormControl>
+                  <Textarea
+                    placeholder='Descreva a consulta e o engajamento realizado com as partes interessadas'
+                    className='min-h-[100px] bg-white'
+                    disabled={isLoading}
+                    {...field}
+                    value={field.value || ''}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </FormSection>
+
+        {/* 6. Ações Recomendadas */}
+        <FormSection
+          title='6. Ações Recomendadas'
+          description='Ações recomendadas com base na triagem realizada'
+        >
+          <FormField
+            control={form.control}
+            name='accoesRecomendadas'
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Ações Recomendadas</FormLabel>
+                <FormControl>
+                  <Textarea
+                    placeholder='Descreva as ações recomendadas com base na triagem'
+                    className='min-h-[100px] bg-white'
+                    disabled={isLoading}
+                    {...field}
+                    value={field.value || ''}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </FormSection>
+
+        {/* 7. Resultado da Triagem */}
+        <FormSection
+          title='7. Resultado da Triagem'
+          description='Resultado final da triagem ambiental e social'
+        >
+          <FormField
+            control={form.control}
+            name='resultadoTriagemId'
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>
+                  Resultado da Triagem
+                  <span className='text-destructive ml-1'>*</span>
+                </FormLabel>
+                <div className='flex items-center gap-2'>
+                  <FormControl>
+                    <Select
+                      disabled={isLoading || isLoadingResultados}
+                      value={field.value}
+                      onValueChange={field.onChange}
+                    >
+                      <SelectTrigger className='bg-white w-full'>
+                        <SelectValue placeholder='Selecione um resultado'>
+                          {field.value
+                            ? getResultadoTriagem(field.value)
+                            : 'Selecione um resultado'}
+                        </SelectValue>
+                      </SelectTrigger>
+                      <SelectContent>
+                        {isLoadingResultados ? (
+                          <div className='p-2'>
+                            <Skeleton className='h-8 w-full' />
+                          </div>
+                        ) : resultadosTriagem.length === 0 ? (
+                          <div className='p-2 text-sm text-muted-foreground text-center'>
+                            Nenhum resultado de triagem encontrado. Adicione um
+                            resultado primeiro.
+                          </div>
+                        ) : (
+                          resultadosTriagem
+                            .filter(
+                              (resultado) =>
+                                resultado.id && resultado.id.trim() !== ''
+                            )
+                            .map((resultado) => (
+                              <SelectItem
+                                key={resultado.id}
+                                value={resultado.id}
+                              >
+                                {resultado.categoriaRisco}
+                              </SelectItem>
+                            ))
+                        )}
+                      </SelectContent>
+                    </Select>
+                  </FormControl>
+                  <AddResultadoTriagemDialog
+                    onAdd={handleAddResultadoTriagem}
+                    subprojectos={subprojectos}
+                  />
+                </div>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </FormSection>
+
+        <Alert className='bg-blue-50 border-blue-200'>
+          <Info className='h-4 w-4 text-blue-600' />
+          <AlertTitle className='text-blue-600'>Informação</AlertTitle>
+          <AlertDescription className='text-blue-700'>
+            A triagem ambiental é um processo importante para identificar e
+            avaliar os potenciais impactos ambientais e sociais de um projeto. O
+            resultado da triagem determina quais instrumentos ambientais serão
+            necessários.
+          </AlertDescription>
+        </Alert>
 
         <FormActions
           isSubmitting={isSubmitting || isLoading}

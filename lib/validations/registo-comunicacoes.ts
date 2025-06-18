@@ -5,10 +5,20 @@ export const registoComunicacoesSchema = z.object({
   id: z.string().optional(),
   tenantId: z.string().min(1, { message: 'Tenant ID é obrigatório' }),
   projectId: z.string().min(1, { message: 'Project ID é obrigatório' }),
-  data: z.date({
-    required_error: 'Data é obrigatória',
-    invalid_type_error: 'Data deve ser uma data válida',
-  }),
+  data: z
+    .union([z.string(), z.date()])
+    .transform((val) => {
+      if (val instanceof Date) {
+        return val;
+      }
+      if (typeof val === 'string' && val.trim() !== '') {
+        return new Date(val);
+      }
+      throw new Error('Data é obrigatória');
+    })
+    .refine((date) => !isNaN(date.getTime()), {
+      message: 'Data deve ser uma data válida',
+    }),
   local: z
     .string()
     .min(1, { message: 'Local é obrigatório' })

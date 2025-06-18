@@ -570,8 +570,8 @@ export function Sidebar({ tenant, user }: SidebarProps) {
                       submenu: [
                         {
                           title:
-                            'FR.AS.024 - Registo de Comunicação, Dialogo e Relatórios as Partes Interessadas',
-                          href: `/esms-elements/ongoing-reporting-to-affected-communities/fr-as-024`,
+                            'FR.AS.021 - Registo de Comunicação, Dialogo e Relatórios as Partes Interessadas',
+                          href: `/esms-elements/ongoing-reporting-to-affected-communities/fr-as-021`,
                         },
                       ],
                     })}

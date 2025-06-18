@@ -47,7 +47,12 @@ export const createColumns = ({
     header: 'Data',
     cell: ({ row }) => {
       const date = row.getValue('data') as Date;
-      return format(new Date(date), 'dd/MM/yyyy', { locale: ptBR });
+      if (!date) return '-';
+
+      const dateObj = new Date(date);
+      if (isNaN(dateObj.getTime())) return '-';
+
+      return format(dateObj, 'dd/MM/yyyy', { locale: ptBR });
     },
   },
   {
@@ -169,7 +174,12 @@ export const createColumns = ({
     header: 'Data de Criação',
     cell: ({ row }) => {
       const date = row.original.createdAt;
-      return format(new Date(date), 'dd/MM/yyyy HH:mm', { locale: ptBR });
+      if (!date) return '-';
+
+      const dateObj = new Date(date);
+      if (isNaN(dateObj.getTime())) return '-';
+
+      return format(dateObj, 'dd/MM/yyyy HH:mm', { locale: ptBR });
     },
   },
   {
