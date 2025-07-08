@@ -139,7 +139,7 @@ export function Sidebar({ tenant, user }: SidebarProps) {
   // Add admin and manager specific items
   if (isAdminOrManager) {
     navItems.push({
-      title: 'User Management',
+      title: 'Gestão de Utilizadores',
       href: `/tenants/${tenant.slug}/settings/users`,
       icon: Users,
     });
@@ -148,7 +148,7 @@ export function Sidebar({ tenant, user }: SidebarProps) {
   // Add admin only items
   if (isAdmin) {
     navItems.push({
-      title: 'Organization Settings',
+      title: 'Configuração das Organizações',
       href: `/tenants/${tenant.slug}/settings/general`,
       icon: Settings,
     });
@@ -241,7 +241,7 @@ export function Sidebar({ tenant, user }: SidebarProps) {
     <div className='h-full border-r bg-white w-64 flex flex-col overflow-hidden'>
       <div className='p-4 border-b flex flex-col gap-2 flex-shrink-0'>
         <div className='flex justify-between items-center'>
-          <h2 className='font-semibold'>Navigation</h2>
+          <h2 className='font-semibold'>Navegação</h2>
         </div>
 
         {/* Project selector */}
@@ -335,7 +335,7 @@ export function Sidebar({ tenant, user }: SidebarProps) {
               >
                 <div className='flex items-center gap-3'>
                   <FileText className='h-4 w-4' />
-                  <span>ESMS Documents</span>
+                  <span>Documentos ESMS</span>
                 </div>
                 <div className='flex items-center'>
                   {!selectedProjectId && (
@@ -428,7 +428,7 @@ export function Sidebar({ tenant, user }: SidebarProps) {
               >
                 <div className='flex items-center gap-3'>
                   <FileStack className='h-4 w-4' />
-                  <span>ESMS Elements</span>
+                  <span>Elementos ESMS</span>
                 </div>
                 <div className='flex items-center'>
                   {!selectedProjectId && (
@@ -447,7 +447,7 @@ export function Sidebar({ tenant, user }: SidebarProps) {
                   {/* ES Risks and Impacts Identification */}
                   <div className='pl-4'>
                     {renderSubmenuItem({
-                      title: 'ES Risks and Impacts Identification',
+                      title: 'Identificação de Riscos e Impactos',
                       href: `/esms-elements/risks-impacts`,
                       submenu: [
                         {
@@ -479,7 +479,7 @@ export function Sidebar({ tenant, user }: SidebarProps) {
                   {/* Management Programs */}
                   <div className='pl-4'>
                     {renderSubmenuItem({
-                      title: 'Management Programs',
+                      title: 'Gestão de Programas',
                       href: `/esms-elements/management-programs`,
                       submenu: [
                         {
@@ -501,7 +501,7 @@ export function Sidebar({ tenant, user }: SidebarProps) {
                   {/* Organizational Capacity and Competence */}
                   <div className='pl-4'>
                     {renderSubmenuItem({
-                      title: 'Organizational Capacity and Competence',
+                      title: 'Capacidade e Competência Organizacional',
                       href: `/esms-elements/organizational-capacity-and-competence`,
                       submenu: [
                         {
@@ -516,7 +516,7 @@ export function Sidebar({ tenant, user }: SidebarProps) {
                   {/* Emergency Preparedness and Response */}
                   <div className='pl-4'>
                     {renderSubmenuItem({
-                      title: 'Emergency Preparedness and Response',
+                      title: 'Preparo e Resposta a Emergências',
                       href: `/esms-elements/emergency-preparedness-response`,
                       submenu: [
                         {
@@ -530,7 +530,7 @@ export function Sidebar({ tenant, user }: SidebarProps) {
                   {/* Stakeholders Engagement */}
                   <div className='pl-4'>
                     {renderSubmenuItem({
-                      title: 'Stakeholders Engagement',
+                      title: 'Engajamento de Partes Interessadas',
                       href: `/esms-elements/stakeholders-engagement`,
                       submenu: [
                         {
@@ -545,7 +545,7 @@ export function Sidebar({ tenant, user }: SidebarProps) {
                   {/* External Communication and Grievance mechanism */}
                   <div className='pl-4'>
                     {renderSubmenuItem({
-                      title: 'External Communication and Grievance mechanism',
+                      title: 'Comunicação Externa e Mecanismo de Reclamações',
                       href: `/esms-elements/external-communication-and-grievance-mechanism`,
                       submenu: [
                         {
@@ -565,7 +565,7 @@ export function Sidebar({ tenant, user }: SidebarProps) {
                   {/* Ongoing reporting to affected communities */}
                   <div className='pl-4'>
                     {renderSubmenuItem({
-                      title: 'Ongoing reporting to affected communities',
+                      title: 'Relatório Contínuo para Comunidades Afetadas',
                       href: `/esms-elements/ongoing-reporting-to-affected-communities`,
                       submenu: [
                         {
@@ -580,7 +580,7 @@ export function Sidebar({ tenant, user }: SidebarProps) {
                   {/* Monitoring and Review - Just showing a couple as examples */}
                   <div className='pl-4'>
                     {renderSubmenuItem({
-                      title: 'Monitoring and Review',
+                      title: 'Monitorização e Revisão',
                       href: `/esms-elements/monitoring-and-review`,
                       submenu: [
                         {
@@ -608,7 +608,7 @@ export function Sidebar({ tenant, user }: SidebarProps) {
                 <div className='flex items-center gap-3'>
                   <FolderKanban className='h-4 w-4' />
                   <span>
-                    {user.role === 'USER' ? 'My Projects' : 'Projects'}
+                    {user.role === 'USER' ? 'Meus Projetos' : 'Projetos'}
                   </span>
                 </div>
                 {isProjectsOpen ? (
@@ -630,8 +630,8 @@ export function Sidebar({ tenant, user }: SidebarProps) {
                   ) : projects.length === 0 ? (
                     <div className='text-sm text-gray-500 py-2'>
                       {user.role === 'USER'
-                        ? 'No projects assigned yet'
-                        : 'No projects created yet'}
+                        ? 'Nenhum projeto atribuído ainda'
+                        : 'Nenhum projeto criado ainda'}
                     </div>
                   ) : (
                     // Project list
@@ -664,7 +664,7 @@ export function Sidebar({ tenant, user }: SidebarProps) {
                       onClick={() => setIsCreateModalOpen(true)}
                     >
                       <Plus className='h-4 w-4 mr-2' />
-                      New Project
+                      Novo Projeto
                     </Button>
                   )}
                 </div>
