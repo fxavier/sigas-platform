@@ -78,7 +78,7 @@ export function AddAreaTreinamentoDialog({
       onOpenChange(false);
       onSuccess();
     } catch (error) {
-      console.error('Error creating area treinamento:', error);
+      console.error('Erro ao criar área de treinamento:', error);
       toast.error('Erro ao criar área de treinamento');
     } finally {
       setIsSubmitting(false);

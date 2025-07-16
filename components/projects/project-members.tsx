@@ -89,8 +89,8 @@ export function ProjectMembers({
   // Add selected users to project
   const addUsersToProject = async () => {
     if (selectedUsers.size === 0) {
-      toast.error('No users selected', {
-        description: 'Please select at least one user to add to the project.',
+      toast.error('Nenhum usuário selecionado', {
+        description: 'Por favor selecione pelo menos um usuário para adicionar ao projeto.',
       });
       return;
     }
@@ -105,8 +105,8 @@ export function ProjectMembers({
         }
       );
 
-      toast.success('Users added', {
-        description: `${selectedUsers.size} user(s) have been added to the project.`,
+      toast.success('Usuários adicionados', {
+        description: `${selectedUsers.size} usuário(s) foi(foram) adicionado(s) ao projeto.`,
       });
 
       setIsAddUsersOpen(false);
@@ -115,9 +115,9 @@ export function ProjectMembers({
       // Refresh the page to show the updated members
       window.location.reload();
     } catch (error: any) {
-      toast.error('Error', {
+      toast.error('Erro', {
         description:
-          error.response?.data || 'Failed to add users to the project.',
+          error.response?.data || 'Falha ao adicionar usuários ao projeto.',
       });
     } finally {
       setIsLoading(false);
@@ -133,16 +133,16 @@ export function ProjectMembers({
         `/api/tenants/${tenant.id}/projects/${project.id}/users/${userId}`
       );
 
-      toast.success('User removed', {
-        description: 'The user has been removed from the project.',
+      toast.success('Usuário removido', {
+        description: 'O usuário foi removido do projeto.',
       });
 
       // Refresh the page to show the updated members
       window.location.reload();
     } catch (error: any) {
-      toast.error('Error', {
+      toast.error('Erro', {
         description:
-          error.response?.data || 'Failed to remove user from the project.',
+          error.response?.data || 'Falha ao remover usuário do projeto.',
       });
     } finally {
       setIsLoading(false);
@@ -154,9 +154,9 @@ export function ProjectMembers({
       <CardHeader>
         <div className='flex items-center justify-between'>
           <div>
-            <CardTitle>Project Members</CardTitle>
+            <CardTitle>Membros do Projeto</CardTitle>
             <CardDescription>
-              People who have access to this project.
+              Pessoas que têm acesso a este projeto.
             </CardDescription>
           </div>
           {canManageMembers && (
@@ -165,7 +165,7 @@ export function ProjectMembers({
               disabled={availableUsers.length === 0}
             >
               <UserPlus className='h-4 w-4 mr-2' />
-              Add Members
+              Adicionar Membros
             </Button>
           )}
         </div>
@@ -174,7 +174,7 @@ export function ProjectMembers({
         {projectUsers.length === 0 ? (
           <div className='text-center p-6 bg-gray-50 rounded-lg'>
             <p className='text-gray-500'>
-              No members assigned to this project yet.
+              Nenhum membro atribuído a este projeto ainda.
             </p>
           </div>
         ) : (
@@ -191,7 +191,7 @@ export function ProjectMembers({
                   </Avatar>
                   <div>
                     <div className='font-medium'>
-                      {user.name || 'Anonymous'}
+                      {user.name || 'Anônimo'}
                     </div>
                     <div className='text-sm text-gray-500'>{user.email}</div>
                   </div>
@@ -216,17 +216,17 @@ export function ProjectMembers({
       <Dialog open={isAddUsersOpen} onOpenChange={setIsAddUsersOpen}>
         <DialogContent className='sm:max-w-md'>
           <DialogHeader>
-            <DialogTitle>Add Project Members</DialogTitle>
+            <DialogTitle>Adicionar Membros do Projeto</DialogTitle>
             <DialogDescription>
-              Add members to give them access to this project.
+              Adicione membros para dar-lhes acesso a este projeto.
             </DialogDescription>
           </DialogHeader>
 
           <div className='py-4'>
             <Command className='rounded-lg border shadow-md'>
-              <CommandInput placeholder='Search users...' />
+              <CommandInput placeholder='Pesquisar usuários...' />
               <CommandList>
-                <CommandEmpty>No users found.</CommandEmpty>
+                <CommandEmpty>Nenhum usuário encontrado.</CommandEmpty>
                 <CommandGroup>
                   <ScrollArea className='h-72'>
                     {availableUsers.map((user) => (
@@ -248,7 +248,7 @@ export function ProjectMembers({
                         </Avatar>
                         <div className='flex flex-col'>
                           <span className='font-medium'>
-                            {user.name || 'Anonymous'}
+                            {user.name || 'Anônimo'}
                           </span>
                           <span className='text-sm text-gray-500'>
                             {user.email}
@@ -264,7 +264,7 @@ export function ProjectMembers({
 
           <DialogFooter className='sm:justify-between'>
             <div className='flex items-center text-sm text-gray-500'>
-              {selectedUsers.size} user(s) selected
+              {selectedUsers.size} usuário(s) selecionado(s)
             </div>
             <div className='flex space-x-2'>
               <Button
@@ -272,13 +272,13 @@ export function ProjectMembers({
                 onClick={() => setIsAddUsersOpen(false)}
                 disabled={isLoading}
               >
-                Cancel
+                Cancelar
               </Button>
               <Button
                 onClick={addUsersToProject}
                 disabled={isLoading || selectedUsers.size === 0}
               >
-                {isLoading ? 'Adding...' : 'Add to Project'}
+                {isLoading ? 'Adicionando...' : 'Adicionar ao Projeto'}
               </Button>
             </div>
           </DialogFooter>

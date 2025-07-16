@@ -78,7 +78,7 @@ export function AddFuncaoDialog({
       onOpenChange(false);
       onSuccess();
     } catch (error) {
-      console.error('Error creating funcao:', error);
+      console.error('Erro ao criar função:', error);
       toast.error('Erro ao criar função');
     } finally {
       setIsSubmitting(false);

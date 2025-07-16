@@ -91,7 +91,7 @@ export function AddAccaoCorrectivaDialog({
         prazo: new Date(),
       });
     } catch (error) {
-      console.error('Error adding accao correctiva:', error);
+      console.error('Erro ao adicionar ação corretiva:', error);
       toast.error('Ocorreu um erro ao adicionar ação correctiva');
     } finally {
       setIsSubmitting(false);

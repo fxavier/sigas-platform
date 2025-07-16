@@ -75,7 +75,7 @@ export function AddMembroEquipaDialog({
         departamento: '',
       });
     } catch (error) {
-      console.error('Error adding membro:', error);
+      console.error('Erro ao adicionar membro:', error);
       toast.error('Ocorreu um erro ao adicionar membro');
     } finally {
       setIsSubmitting(false);

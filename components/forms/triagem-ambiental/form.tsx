@@ -42,7 +42,7 @@ import { AddResponsavelDialog } from './add-responsavel-dialog';
 import { AddSubprojectoDialog } from './add-subprojecto-dialog';
 import { AddResultadoTriagemDialog } from './add-resultado-triagem-dialog';
 // Debug log for component rendering
-console.log('TriagemAmbientalForm rendering');
+console.log('TriagemAmbientalForm a carregar');
 import { Badge } from '@/components/ui/badge';
 
 interface TriagemAmbientalFormProps {
@@ -429,13 +429,13 @@ export function TriagemAmbientalForm({
 
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData.error || 'Failed to add subprojecto');
+        throw new Error(errorData.error || 'Falha ao adicionar subprojecto');
       }
 
       const result = await response.json();
       setSubprojectos((prev) => [...prev, result]);
     } catch (error) {
-      console.error('Error adding subprojecto:', error);
+      console.error('Erro ao adicionar subprojecto:', error);
       throw error;
     }
   };
@@ -473,13 +473,13 @@ export function TriagemAmbientalForm({
 
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData.error || 'Failed to add resultado triagem');
+        throw new Error(errorData.error || 'Falha ao adicionar resultado triagem');
       }
 
       const result = await response.json();
       setResultadosTriagem((prev) => [...prev, result]);
     } catch (error) {
-      console.error('Error adding resultado triagem:', error);
+      console.error('Erro ao adicionar resultado triagem:', error);
       throw error;
     }
   };
@@ -498,7 +498,7 @@ export function TriagemAmbientalForm({
       params.append('tenantId', currentTenantId);
 
       console.log(
-        `Adding new ${type} with value "${value}" and tenantId "${currentTenantId}"`
+        `Adicionando novo ${type} com valor "${value}" e tenantId "${currentTenantId}"`
       );
 
       switch (type) {
@@ -541,17 +541,17 @@ export function TriagemAmbientalForm({
             tenantId: currentTenantId,
             subprojectoId: form.getValues('subprojectoId') || null,
           };
-          console.log('Sending request to:', endpoint);
-          console.log('Request body:', JSON.stringify(body));
-          console.log('Request URL:', `${endpoint}?${params.toString()}`);
+          console.log('Enviando pedido para:', endpoint);
+          console.log('Corpo do pedido:', JSON.stringify(body));
+          console.log('URL do pedido:', `${endpoint}?${params.toString()}`);
           break;
         default:
           toast.error('Tipo não suportado');
           return;
       }
 
-      console.log('Sending request to:', endpoint + '?' + params.toString());
-      console.log('Request body:', JSON.stringify(body));
+      console.log('Enviando pedido para:', endpoint + '?' + params.toString());
+      console.log('Corpo do pedido:', JSON.stringify(body));
 
       const response = await fetch(`${endpoint}?${params.toString()}`, {
         method: 'POST',
@@ -561,20 +561,20 @@ export function TriagemAmbientalForm({
         body: JSON.stringify(body),
       });
 
-      console.log('Response status:', response.status);
+      console.log('Estado da resposta:', response.status);
       console.log(
-        'Response headers:',
+        'Cabeçalhos da resposta:',
         Object.fromEntries(response.headers.entries())
       );
 
       if (!response.ok) {
         const errorData = await response.json();
-        console.error('Server error response:', errorData);
-        throw new Error(errorData.error || 'Failed to add new option');
+        console.error('Resposta de erro do servidor:', errorData);
+        throw new Error(errorData.error || 'Falha ao adicionar nova opção');
       }
 
       const result = await response.json();
-      console.log('Server response:', result);
+      console.log('Resposta do servidor:', result);
 
       // Update state based on the type
       switch (type) {
@@ -594,7 +594,7 @@ export function TriagemAmbientalForm({
 
       toast.success('Item adicionado com sucesso');
     } catch (error) {
-      console.error('Error adding new option:', error);
+      console.error('Erro ao adicionar nova opção:', error);
       toast.error(
         `Erro ao adicionar novo item: ${
           error instanceof Error ? error.message : 'Erro desconhecido'

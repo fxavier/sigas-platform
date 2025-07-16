@@ -148,7 +148,7 @@ export function RelatorioIncidenteForm({
       const data = await response.json();
       setPessoasEnvolvidas(data);
     } catch (error) {
-      console.error('Error fetching pessoas envolvidas:', error);
+      console.error('Erro ao carregar pessoas envolvidas:', error);
       toast.error('Erro ao carregar pessoas envolvidas');
     } finally {
       setIsLoadingPessoas(false);
@@ -169,7 +169,7 @@ export function RelatorioIncidenteForm({
       const data = await response.json();
       setAccoesCorrectivas(data);
     } catch (error) {
-      console.error('Error fetching accoes correctivas:', error);
+      console.error('Erro ao carregar ações corretivas:', error);
       toast.error('Erro ao carregar ações correctivas');
     } finally {
       setIsLoadingAccoes(false);
@@ -190,7 +190,7 @@ export function RelatorioIncidenteForm({
       const data = await response.json();
       setFotografias(data);
     } catch (error) {
-      console.error('Error fetching fotografias:', error);
+      console.error('Erro ao carregar fotografias:', error);
       toast.error('Erro ao carregar fotografias');
     } finally {
       setIsLoadingFotografias(false);
@@ -244,7 +244,7 @@ export function RelatorioIncidenteForm({
 
       await onSubmit(data);
     } catch (error) {
-      console.error('Error submitting form:', error);
+      console.error('Erro ao enviar formulário:', error);
     }
   };
 
@@ -1031,7 +1031,7 @@ export function RelatorioIncidenteForm({
                         toast.success('Fotografia adicionada com sucesso');
                         e.currentTarget.reset();
                       } catch (error) {
-                        console.error('Error:', error);
+                        console.error('Erro:', error);
                         toast.error('Erro ao adicionar fotografia');
                       }
                     }}

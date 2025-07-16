@@ -78,7 +78,7 @@ export function AddPessoaEnvolvidaDialog({
         funcao: '',
       });
     } catch (error) {
-      console.error('Error adding pessoa:', error);
+      console.error('Erro ao adicionar pessoa:', error);
       toast.error('Ocorreu um erro ao adicionar pessoa');
     } finally {
       setIsSubmitting(false);

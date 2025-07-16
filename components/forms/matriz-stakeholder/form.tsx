@@ -130,13 +130,13 @@ export function MatrizStakeholderForm({
         );
 
         if (!response.ok) {
-          throw new Error('Failed to fetch categorias');
+          throw new Error('Falha ao carregar categorias');
         }
 
         const data = await response.json();
         setCategorias(data);
       } catch (error) {
-        console.error('Error fetching categorias:', error);
+        console.error('Erro ao carregar categorias:', error);
         toast.error('Erro ao carregar categorias');
         setCategorias([]);
       } finally {
@@ -159,13 +159,13 @@ export function MatrizStakeholderForm({
         );
 
         if (!response.ok) {
-          throw new Error('Failed to fetch areas actuacao');
+          throw new Error('Falha ao carregar áreas de atuação');
         }
 
         const data = await response.json();
         setAreasActuacao(data);
       } catch (error) {
-        console.error('Error fetching areas actuacao:', error);
+        console.error('Erro ao carregar áreas de atuação:', error);
         toast.error('Erro ao carregar áreas de actuação');
         setAreasActuacao([]);
       } finally {
@@ -188,13 +188,13 @@ export function MatrizStakeholderForm({
         );
 
         if (!response.ok) {
-          throw new Error('Failed to fetch principais interesses');
+          throw new Error('Falha ao carregar principais interesses');
         }
 
         const data = await response.json();
         setPrincipaisInteresses(data);
       } catch (error) {
-        console.error('Error fetching principais interesses:', error);
+        console.error('Erro ao carregar principais interesses:', error);
         toast.error('Erro ao carregar principais interesses');
         setPrincipaisInteresses([]);
       } finally {
@@ -245,7 +245,7 @@ export function MatrizStakeholderForm({
 
       await onSubmit(submissionData);
     } catch (error) {
-      console.error('Error submitting form:', error);
+      console.error('Erro ao enviar formulário:', error);
     }
   };
 
@@ -299,7 +299,7 @@ export function MatrizStakeholderForm({
 
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData.error || 'Failed to add new option');
+        throw new Error(errorData.error || 'Falha ao adicionar nova opção');
       }
 
       const result = await response.json();
@@ -319,7 +319,7 @@ export function MatrizStakeholderForm({
 
       toast.success('Item adicionado com sucesso');
     } catch (error) {
-      console.error('Error adding new option:', error);
+      console.error('Erro ao adicionar nova opção:', error);
       toast.error(
         `Erro ao adicionar novo item: ${
           error instanceof Error ? error.message : 'Erro desconhecido'

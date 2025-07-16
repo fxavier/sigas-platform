@@ -119,7 +119,7 @@ export function RelatorioInicialIncidenteForm({
       const data = await response.json();
       setIncidentes(data);
     } catch (error) {
-      console.error('Error fetching incidentes:', error);
+      console.error('Erro ao carregar incidentes:', error);
       toast.error('Erro ao carregar incidentes');
     } finally {
       setIsLoadingIncidentes(false);
@@ -151,7 +151,7 @@ export function RelatorioInicialIncidenteForm({
         incidentesIds: selectedIncidentes,
       });
     } catch (error) {
-      console.error('Error submitting form:', error);
+      console.error('Erro ao enviar formulário:', error);
     } finally {
       setIsSubmitting(false);
     }
@@ -194,7 +194,7 @@ export function RelatorioInicialIncidenteForm({
 
       toast.success('Incidente criado com sucesso');
     } catch (error) {
-      console.error('Error creating incidente:', error);
+      console.error('Erro ao criar incidente:', error);
       toast.error('Erro ao criar incidente');
     } finally {
       setIsCreatingIncidente(false);

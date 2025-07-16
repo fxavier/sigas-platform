@@ -30,10 +30,10 @@ import { Textarea } from '@/components/ui/textarea';
 
 const formSchema = z.object({
   name: z.string().min(3, {
-    message: 'Project name must be at least 3 characters long.',
+    message: 'O nome do projeto deve ter pelo menos 3 caracteres.',
   }),
   description: z.string().min(10, {
-    message: 'Description must be at least 10 characters long.',
+    message: 'A descrição deve ter pelo menos 10 caracteres.',
   }),
 });
 
@@ -70,8 +70,8 @@ export function CreateProjectModal({
         values
       );
 
-      toast.success('Project created', {
-        description: 'Your project has been created successfully.',
+      toast.success('Projeto criado', {
+        description: 'Seu projeto foi criado com sucesso.',
       });
 
       onClose();
@@ -81,8 +81,8 @@ export function CreateProjectModal({
       router.push(`/tenants/${tenantSlug}/projects/${response.data.id}`);
       router.refresh();
     } catch (error: any) {
-      toast.error('Error', {
-        description: error.response?.data || 'Something went wrong.',
+      toast.error('Erro', {
+        description: error.response?.data || 'Algo deu errado.',
       });
     } finally {
       setIsLoading(false);
@@ -93,9 +93,9 @@ export function CreateProjectModal({
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Create a new project</DialogTitle>
+          <DialogTitle>Criar um novo projeto</DialogTitle>
           <DialogDescription>
-            Add a new project to your organization.
+            Adicione um novo projeto à sua organização.
           </DialogDescription>
         </DialogHeader>
 
@@ -106,11 +106,11 @@ export function CreateProjectModal({
               name='name'
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Project Name</FormLabel>
+                  <FormLabel>Nome do Projeto</FormLabel>
                   <FormControl>
                     <Input
                       {...field}
-                      placeholder='E.g., Website Redesign'
+                      placeholder='Ex: Redesign do Website'
                       disabled={isLoading}
                     />
                   </FormControl>
@@ -124,11 +124,11 @@ export function CreateProjectModal({
               name='description'
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Description</FormLabel>
+                  <FormLabel>Descrição</FormLabel>
                   <FormControl>
                     <Textarea
                       {...field}
-                      placeholder='Describe the project and its goals'
+                      placeholder='Descreva o projeto e seus objetivos'
                       rows={4}
                       disabled={isLoading}
                     />
@@ -145,10 +145,10 @@ export function CreateProjectModal({
                 onClick={onClose}
                 disabled={isLoading}
               >
-                Cancel
+                Cancelar
               </Button>
               <Button type='submit' disabled={isLoading}>
-                {isLoading ? 'Creating...' : 'Create Project'}
+                {isLoading ? 'Criando...' : 'Criar Projeto'}
               </Button>
             </DialogFooter>
           </form>

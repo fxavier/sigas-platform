@@ -202,7 +202,7 @@ export function IdentificacaoAvaliacaoRiscosForm({
         ]);
 
         if (!riscosResponse.ok || !fatoresResponse.ok) {
-          throw new Error('Failed to fetch options');
+          throw new Error('Falha ao carregar opções');
         }
 
         const [riscosData, fatoresData] = await Promise.all([
@@ -213,7 +213,7 @@ export function IdentificacaoAvaliacaoRiscosForm({
         setRiscosImpactos(riscosData);
         setFatoresAmbientais(fatoresData);
       } catch (error) {
-        console.error('Error fetching options:', error);
+        console.error('Erro ao carregar opções:', error);
         toast.error('Erro ao carregar opções de riscos e fatores ambientais');
       } finally {
         setIsLoadingOptions(false);
@@ -252,7 +252,7 @@ export function IdentificacaoAvaliacaoRiscosForm({
       });
 
       if (!response.ok) {
-        throw new Error('Failed to add new option');
+        throw new Error('Falha ao adicionar nova opção');
       }
 
       const newOption = await response.json();
@@ -268,7 +268,7 @@ export function IdentificacaoAvaliacaoRiscosForm({
         toast.success('Novo fator ambiental adicionado com sucesso');
       }
     } catch (error) {
-      console.error('Error adding new option:', error);
+      console.error('Erro ao adicionar nova opção:', error);
       toast.error('Erro ao adicionar nova opção');
     }
   };
@@ -279,7 +279,7 @@ export function IdentificacaoAvaliacaoRiscosForm({
       const formData = form.getValues();
 
       if (!tenantId || !projectId) {
-        throw new Error('Tenant and Project are required');
+        throw new Error('Tenant e Projeto são obrigatórios');
       }
 
       const dataToSubmit = {
@@ -298,7 +298,7 @@ export function IdentificacaoAvaliacaoRiscosForm({
         onSubmit(dataToSubmit);
       }
     } catch (error) {
-      console.error('Error submitting form:', error);
+      console.error('Erro ao enviar formulário:', error);
       toast.error('Erro ao enviar formulário');
     }
   };

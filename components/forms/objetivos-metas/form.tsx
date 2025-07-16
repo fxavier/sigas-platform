@@ -118,7 +118,7 @@ export function ObjetivosMetasForm({
       const data = await response.json();
       setMembrosEquipa(data);
     } catch (error) {
-      console.error('Error fetching membros equipa:', error);
+      console.error('Erro ao carregar membros da equipa:', error);
       toast.error('Erro ao carregar membros da equipa');
     } finally {
       setIsLoadingMembros(false);
@@ -140,7 +140,7 @@ export function ObjetivosMetasForm({
       const data = await response.json();
       setTabelaAccoes(data);
     } catch (error) {
-      console.error('Error fetching tabela acoes:', error);
+      console.error('Erro ao carregar tabela de ações:', error);
       toast.error('Erro ao carregar tabela de ações');
     } finally {
       setIsLoadingAcoes(false);
@@ -189,7 +189,7 @@ export function ObjetivosMetasForm({
 
       await onSubmit(data);
     } catch (error) {
-      console.error('Error submitting form:', error);
+      console.error('Erro ao enviar formulário:', error);
     }
   };
 

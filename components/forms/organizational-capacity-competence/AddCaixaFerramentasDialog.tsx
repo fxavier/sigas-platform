@@ -78,7 +78,7 @@ export function AddCaixaFerramentasDialog({
       onOpenChange(false);
       onSuccess();
     } catch (error) {
-      console.error('Error creating caixa ferramentas:', error);
+      console.error('Erro ao criar caixa de ferramentas:', error);
       toast.error('Erro ao criar caixa de ferramentas');
     } finally {
       setIsSubmitting(false);

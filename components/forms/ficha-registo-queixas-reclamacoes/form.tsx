@@ -146,7 +146,7 @@ export function FichaRegistoQueixasReclamacoesForm({
       const data = await response.json();
       setCategoriasQueixas(data);
     } catch (error) {
-      console.error('Error fetching categorias queixas:', error);
+      console.error('Erro ao carregar categorias de queixas:', error);
       toast.error('Erro ao carregar categorias de queixas');
     } finally {
       setIsLoadingCategorias(false);
@@ -170,7 +170,7 @@ export function FichaRegistoQueixasReclamacoesForm({
         const data = await response.json();
         setSubcategoriasQueixas(data);
       } catch (error) {
-        console.error('Error fetching subcategorias queixas:', error);
+        console.error('Erro ao carregar subcategorias de queixas:', error);
         toast.error('Erro ao carregar subcategorias de queixas');
       } finally {
         setIsLoadingSubcategorias(false);
@@ -193,7 +193,7 @@ export function FichaRegistoQueixasReclamacoesForm({
       const data = await response.json();
       setResolucoesQueixas(data);
     } catch (error) {
-      console.error('Error fetching resolucoes queixas:', error);
+      console.error('Erro ao carregar resoluções de queixas:', error);
       toast.error('Erro ao carregar resoluções de queixas');
     } finally {
       setIsLoadingResolucoes(false);
@@ -214,7 +214,7 @@ export function FichaRegistoQueixasReclamacoesForm({
       const data = await response.json();
       setFotosDocumentos(data);
     } catch (error) {
-      console.error('Error fetching fotos documentos:', error);
+      console.error('Erro ao carregar fotos e documentos:', error);
       toast.error('Erro ao carregar fotos e documentos');
     } finally {
       setIsLoadingFotos(false);
@@ -281,7 +281,7 @@ export function FichaRegistoQueixasReclamacoesForm({
 
       await onSubmit(data);
     } catch (error) {
-      console.error('Error submitting form:', error);
+      console.error('Erro ao enviar formulário:', error);
     }
   };
 
@@ -1518,7 +1518,7 @@ export function FichaRegistoQueixasReclamacoesForm({
                         toast.success('Foto/documento adicionado com sucesso');
                         e.currentTarget.reset();
                       } catch (error) {
-                        console.error('Error uploading file:', error);
+                        console.error('Erro ao fazer upload do arquivo:', error);
 
                         // Handle specific errors
                         if (error instanceof Error) {

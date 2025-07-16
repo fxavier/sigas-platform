@@ -130,7 +130,7 @@ export function RelatorioSimulacroForm({
         );
 
         if (!response.ok) {
-          throw new Error('Failed to fetch perguntas de avaliacao');
+          throw new Error('Falha ao carregar perguntas de avaliação');
         }
 
         const data = await response.json();
@@ -148,7 +148,7 @@ export function RelatorioSimulacroForm({
           form.setValue('avaliacaoClassificacaoEmergencia', initialAvaliacoes);
         }
       } catch (error) {
-        console.error('Error fetching perguntas:', error);
+        console.error('Erro ao carregar perguntas:', error);
         toast.error('Erro ao carregar perguntas de avaliação');
         setPerguntasAvaliacao([]);
       } finally {
@@ -176,7 +176,7 @@ export function RelatorioSimulacroForm({
 
       await onSubmit(submissionData);
     } catch (error) {
-      console.error('Error submitting form:', error);
+      console.error('Erro ao enviar formulário:', error);
       toast.error('Erro ao salvar formulário');
     } finally {
       setIsSubmitting(false);

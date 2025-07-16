@@ -92,7 +92,7 @@ export function AddTabelaAcaoDialog({
         dataConclusao: new Date(),
       });
     } catch (error) {
-      console.error('Error adding acao:', error);
+      console.error('Erro ao adicionar ação:', error);
       toast.error('Ocorreu um erro ao adicionar ação');
     } finally {
       setIsSubmitting(false);

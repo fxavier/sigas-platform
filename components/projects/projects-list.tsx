@@ -37,11 +37,11 @@ export function ProjectsList({
   return (
     <div>
       <div className='flex items-center justify-between mb-6'>
-        <h2 className='text-2xl font-bold'>Projects</h2>
+        <h2 className='text-2xl font-bold'>Projetos</h2>
         {canCreate && (
           <Button onClick={() => setIsModalOpen(true)}>
             <Plus className='mr-2 h-4 w-4' />
-            Create Project
+            Criar Projeto
           </Button>
         )}
       </div>
@@ -49,15 +49,15 @@ export function ProjectsList({
       {projects.length === 0 ? (
         <div className='text-center p-12 bg-gray-50 rounded-lg'>
           <h3 className='text-lg font-medium text-gray-700 mb-2'>
-            No projects yet
+            Nenhum projeto ainda
           </h3>
           <p className='text-gray-500 mb-6'>
-            Get started by creating your first project.
+            Comece criando seu primeiro projeto.
           </p>
           {canCreate && (
             <Button onClick={() => setIsModalOpen(true)}>
               <Plus className='mr-2 h-4 w-4' />
-              Create Project
+              Criar Projeto
             </Button>
           )}
         </div>
@@ -79,7 +79,7 @@ export function ProjectsList({
                 </p>
                 <div className='flex items-center text-sm text-gray-500'>
                   <Users className='h-4 w-4 mr-1' />
-                  <span>{project._count?.userProjects || 0} members</span>
+                  <span>{project._count?.userProjects || 0} membros</span>
                 </div>
               </CardContent>
               <CardFooter className='flex justify-between'>
@@ -89,7 +89,7 @@ export function ProjectsList({
                     router.push(`/tenants/${tenantSlug}/projects/${project.id}`)
                   }
                 >
-                  View Project
+                  Ver Projeto
                 </Button>
                 <Button
                   variant='ghost'
