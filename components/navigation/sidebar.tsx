@@ -66,6 +66,7 @@ export function Sidebar({ tenant, user }: SidebarProps) {
   const [isProjectsOpen, setIsProjectsOpen] = useState(true);
   const [isESMSDocumentsOpen, setIsESMSDocumentsOpen] = useState(false);
   const [isESMSElementsOpen, setIsESMSElementsOpen] = useState(false);
+  const [isFormsSettingsOpen, setIsFormsSettingsOpen] = useState(false);
   const [activeSubmenus, setActiveSubmenus] = useState<Record<string, boolean>>(
     {}
   );
@@ -114,9 +115,20 @@ export function Sidebar({ tenant, user }: SidebarProps) {
     setShowProjectSelection(false);
   };
 
-  // Check if the current path is related to ESMS
+  // Check if the current path is related to ESMS or Forms Settings
   const isESMSPath =
     pathname.includes('/esms-documents') || pathname.includes('/esms-elements');
+  const isFormsSettingsPath =
+    pathname.includes('/settings/forms') ||
+    pathname.includes('/biodiversidade-recursos') ||
+    pathname.includes('/perguntas-avaliacao-classificacao-emergencia');
+
+  // Auto-expand Forms Settings if on related path
+  useEffect(() => {
+    if (isFormsSettingsPath) {
+      setIsFormsSettingsOpen(true);
+    }
+  }, [isFormsSettingsPath]);
 
   // Define navigation items - ALWAYS include Dashboard
   const navItems = [
@@ -151,22 +163,6 @@ export function Sidebar({ tenant, user }: SidebarProps) {
       title: 'Configuração das Organizações',
       href: `/tenants/${tenant.slug}/settings/general`,
       icon: Settings,
-    });
-  }
-
-  if (isAdminOrManager) {
-    navItems.push({
-      title: 'Biodiversidade e Recursos Naturais',
-      href: `/tenants/${tenant.slug}/biodiversidade-recursos`,
-      icon: Sprout,
-    });
-  }
-
-  if (isAdminOrManager) {
-    navItems.push({
-      title: 'Perguntas para Avaliação de Classificação de Emergência',
-      href: `/tenants/${tenant.slug}/perguntas-avaliacao-classificacao-emergencia`,
-      icon: FileText,
     });
   }
 
@@ -319,6 +315,69 @@ export function Sidebar({ tenant, user }: SidebarProps) {
                 </Link>
               ))}
             </nav>
+
+            {/* Configurações dos Formulários Section with Subitens - Available for ADMIN and MANAGER */}
+            {isAdminOrManager && (
+              <div className='mt-6'>
+                <div
+                  className='flex items-center justify-between px-3 py-2 text-sm font-medium text-gray-500 cursor-pointer hover:text-gray-900'
+                  onClick={() => setIsFormsSettingsOpen(!isFormsSettingsOpen)}
+                >
+                  <div className='flex items-center gap-3'>
+                    <FileText className='h-4 w-4' />
+                    <span>Configurações dos Formulários</span>
+                  </div>
+                  {isFormsSettingsOpen ? (
+                    <ChevronDown className='h-4 w-4' />
+                  ) : (
+                    <ChevronRight className='h-4 w-4' />
+                  )}
+                </div>
+
+                {isFormsSettingsOpen && (
+                  <div className='mt-1 pl-9 space-y-1'>
+                    {/* <Link
+                      href={`/tenants/${tenant.slug}/settings/forms`}
+                      className={cn(
+                        'block rounded-md px-3 py-2 text-sm font-medium',
+                        pathname === `/tenants/${tenant.slug}/settings/forms`
+                          ? 'bg-primary/10 text-primary'
+                          : 'text-gray-500 hover:text-gray-900 hover:bg-gray-50'
+                      )}
+                    >
+                      Configurações Gerais
+                    </Link> */}
+                    <Link
+                      href={`/tenants/${tenant.slug}/biodiversidade-recursos`}
+                      className={cn(
+                        'block rounded-md px-3 py-2 text-sm font-medium',
+                        pathname ===
+                          `/tenants/${tenant.slug}/biodiversidade-recursos`
+                          ? 'bg-primary/10 text-primary'
+                          : 'text-gray-500 hover:text-gray-900 hover:bg-gray-50'
+                      )}
+                    >
+                      <div className='flex items-center gap-2'>
+                        <Sprout className='h-4 w-4' />
+                        <span>Biodiversidade e Recursos Naturais</span>
+                      </div>
+                    </Link>
+                    <Link
+                      href={`/tenants/${tenant.slug}/perguntas-avaliacao-classificacao-emergencia`}
+                      className={cn(
+                        'block rounded-md px-3 py-2 text-sm font-medium',
+                        pathname ===
+                          `/tenants/${tenant.slug}/perguntas-avaliacao-classificacao-emergencia`
+                          ? 'bg-primary/10 text-primary'
+                          : 'text-gray-500 hover:text-gray-900 hover:bg-gray-50'
+                      )}
+                    >
+                      Perguntas para Avaliação de Classificação de Emergência
+                    </Link>
+                  </div>
+                )}
+              </div>
+            )}
 
             {/* ESMS Documents Section - Available to all users */}
             <div className='mt-6'>
