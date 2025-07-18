@@ -538,7 +538,7 @@ export function Sidebar({ tenant, user }: SidebarProps) {
                   {/* Management Programs */}
                   <div className='pl-4'>
                     {renderSubmenuItem({
-                      title: 'Gestão de Programas',
+                      title: 'Programas de Gestão',
                       href: `/esms-elements/management-programs`,
                       submenu: [
                         {
